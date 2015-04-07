@@ -4,7 +4,10 @@
  */
 #include "statki.hpp"
 
-//implementation
-CALC_DLL( int getNumber() ) {
+
+
+STATKI_DLL( int getNumber() ) {
 	return 1234;
 }
+
+

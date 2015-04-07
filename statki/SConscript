@@ -1,7 +1,7 @@
 # -*- mode: Python; -*- 
 
-## @file calc/SConscript
-#  @brief scons build for calc C++ library
+## @file statki/SConscript
+#  @brief scons build for statki C++ library
 
 import os, platform, shutil
 
@@ -55,10 +55,10 @@ env_dll = env.Clone()
 if(platform.system() == "Linux"):
    pass
 elif(platform.system() == "Windows"):
-   env_dll.Append( CPPFLAGS = ' /D "CALC_EXPORTS" ')
+   env_dll.Append( CPPFLAGS = ' /D "STATKI_EXPORTS" ')
 
 #build C++ library
-cpplib = env_dll.SharedLibrary( target = 'calc', source = ['../statki/src/statki.cpp', '../statki/src/statki.cpp'])
+cpplib = env_dll.SharedLibrary( target = 'statki', source = ['../statki/src/statki.cpp', '../statki/src/statkipy.cpp'])
 if(platform.system() == "Linux"):
    target = '../build_web/statkipy/statki.so'
 elif(platform.system() == "Windows"):
