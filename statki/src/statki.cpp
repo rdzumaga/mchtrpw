@@ -69,30 +69,124 @@ std::string Player::getId(){
 	return IP;
 }
 
+std::deque<Position*> Player::getShipsPos(){
+	if (ships.empty())
+		int x = 1;
+	//	placeShipsRandomly();
+	
+	std::deque<Position*> answer;
+	int r, t;
+	r = t = 0;
+	//for (int i = 0; i < ships.size(); i++){
+		//r++;
+		//std::deque<Position*> shipPositions = ships.at(i)->getPositions();
+		//for (int j = 0; j < shipPositions.size(); j++)
+			//t++;
+			//answer.push_back(shipPositions[j]);
+	//}
+
+
+	return answer;
+}
+
+void Player::placeShipsRandomly(){
+	//temporarily, positions are hardcoded
+	static int playerNr = 0;
+
+	//for each ship
+	Ship* ship;
+	for (int i = 0; i < shipsNr; i++){
+		int length = statkiLen[i];
+		Ship::Orientation or = statkiOrientation[i];
+		int s_i = statkiPos[i][0];
+		int s_j = statkiPos[i][1];
+		ship = new Ship(this, length, or, s_i, s_j);
+
+		int dx = 1;
+		int dy = -1;
+		if (or == Ship::HORIZONTAL)
+			dy = 0;
+		else
+			dx = 0;
+
+		for (int l = 0; l < length; l++){
+			board.fields[s_i][s_j].attach(ship);
+			s_i += dx;
+			s_j += dy;
+		}
+		ships.push_back(ship);
+	}
+	//for each field on the board
+	for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			;
+		}
+	}
+	/*
+
+	for (int i = 0; i < N; i++){		
+		for (int j = 0; j < N; j++){
+			int length = 0;
+			if (!sameShip)
+				ship = new Ship(this, Position(i, j));
+			if (boardA[i][j]){
+				length++;
+			}
+			else{
+				if (length)
+					ship = new Ship(this, Position(i, j), length, Ship::HORIZONTAL);
+				length = 0;
+			}
+				sameShip = false;
+		}
+	}*/
+
+
+	playerNr++;
+}
+//-----------------------Ship-------------------------
+Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
+	this->owner = owner;
+	this->length = length;
+	remainingSegements = length;
+	this->orientation = or;
+	pos = Position(i, j);
+
+}
+Ship::Ship(Player* owner){
+	//this->owner = owner;
+	//this->pos = pos;
+}
+
+
+
+
+
+
+
+//-----------------------Board-------------------------
+
+void Board::populateField(int i, int j, bool shipFlag){
+	//if (shipFlag){
+		;//fields[i][j]
+	//}
+	
+}
+
+
+
+
+
+
+
+
 
 //-----------------------Ship-------------------------
 
+void Field::attach(Ship* ship){
+	this->ship = ship;
+}
 
-
-
-
-
-
-
-
-
-//-----------------------Game-------------------------
-
-
-
-
-
-
-
-
-
-
-//-----------------------Game-------------------------
 
 
 
