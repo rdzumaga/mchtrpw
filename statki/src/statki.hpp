@@ -21,6 +21,7 @@ Assumption:
 	- The game board's size is 10x10. The Fields are numbered from 0 till 9
 	- A ships' position on the game board is defined by it starting position (uppermost segment or the first segment on the left side) 
 	  and its orientation. So if lenght=3, orientation=horizontal and pos=(1,1), then the ship is placed on the following fields: (1,1), (1,2), (1,3)
+	- A player cannot should the same field more than once (should be implemented in the client)
 
 */
 
@@ -45,6 +46,7 @@ enum Mode { IDLE, WAITING, ONGOING, FINISHED };
 class Attack{
 public:
 	Attack();
+	Attack(Position* pos, bool successful, std::string attackerId);
 	Position * pos;
 	bool successful;
 	std::string attackerId;
@@ -54,7 +56,7 @@ class GameState{
 public:
 	GameState();
 	Mode mode;
-	std::string attackingPlayerId;
+	std::string attackingPlayerId; 
 	std::string attackedPlayerId;
 	//a queue listing attacks of the active player in one turn
 	std::queue<Attack *> attacks;
@@ -69,9 +71,11 @@ public:
 	bool awaitSecondPlayer();
 	bool addPlayer(std::string id);
 	bool begin();
-	void finish();
+	
 	bool shoot(int i, int j, int attackerId);
 	std::deque<Position*> getShipsPos(std::string playerId);
+	GameState* getGameState();
+	bool shoot(int i, int j, std::string attackerId);
 	
 	
 	
@@ -85,6 +89,7 @@ private:
 	void switchActivePlayer();
 	void updateGameState();
 	Player* getPlayer(std::string playerId);
+	void finish();
 
 };
 
@@ -144,15 +149,16 @@ public:
 	std::deque<Position*> getShipsPos();
 	
 	void update();
-
-	bool isAttacking;
+	void setActive(bool active);
+	bool isActive();
 	std::string getId();
 private:
 	Board board;
-	int remainingShips;
+	int remainingShipUnits;
 	std::deque<Ship*> ships;
 	bool sustainedDamage;
 	std::string IP;
+	bool activeFlag;
 
 	void placeShipsRandomly();
 };
@@ -163,7 +169,7 @@ private:
 const int statkiLen[shipsNr] = { 5, 4, 3};
 const int statkiPos[][2] = { 
 		{0,0},
-		{9.0},
+		{9,0},
 		{2,0}
 };
 
