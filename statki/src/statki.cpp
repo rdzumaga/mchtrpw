@@ -38,9 +38,9 @@ bool Game::begin(){
 }
 
 std::deque<Position*> Game::getShipsPos(std::string playerId){
-	std::deque<Position*> temp;
-	return temp;
-	//return getPlayer(playerId)->getShipsPos();
+	//std::deque<Position*> temp;
+	//return temp;
+	return getPlayer(playerId)->getShipsPos();
 }
 
 Player* Game::getPlayer(std::string playerId){
@@ -48,6 +48,40 @@ Player* Game::getPlayer(std::string playerId){
 		return playerA;
 	else
 		return playerB;
+}
+
+GameState* Game::getGameState(){
+	return &state; //maybe pop an attack from queue if sender id==attacked?
+}
+
+bool Game::shoot(int i, int j, std::string attackerId){
+	Player* attacker = getPlayer(attackerId);
+	Player* attacked = getPlayer(state.attackedPlayerId);
+	bool attackSuccesful=attacked->underAttack(i, j);
+	Attack* attack = new Attack(new Position(i, j), attackSuccesful, attackerId);
+	if (attacked->hasLost())
+		 finish();
+
+	if (!attackSuccesful)
+		switchActivePlayer();
+	
+	state.attacks.push(attack);
+	return attackSuccesful;
+}
+
+void Game::switchActivePlayer(){
+	Player* newAttacker = getPlayer(state.attackedPlayerId);
+	state.attackedPlayerId = state.attackingPlayerId;
+	state.attackingPlayerId=newAttacker->getId();
+	activePlayer->setActive(false);
+	activePlayer = newAttacker;
+	activePlayer->setActive(true);	
+	//clear the attacks queue
+	std::queue<Attack*> empty;
+}
+
+void Game::finish(){
+	state.mode = FINISHED;
 }
 //-----------------------GameState-------------------------
 GameState::GameState(){
@@ -63,6 +97,7 @@ GameState::GameState(){
 Player::Player(std::string id){
 	IP = id;
 	sustainedDamage = false;
+	remainingShipUnits = 5 + 4 + 4 + 3 + 3 + 3 + 2 + 2 + 2 + 2;
 }
 
 std::string Player::getId(){
@@ -140,6 +175,30 @@ void Player::placeShipsRandomly(){
 
 	playerNr++;
 }
+
+void Player::setActive(bool active){
+	activeFlag = active;
+}
+
+bool Player::isActive(){
+	return activeFlag;
+}
+
+bool Player::underAttack(int i, int j){
+	sustainedDamage = false;
+	board.shootField(i, j);
+	return sustainedDamage;
+}
+
+bool Player::hasLost(){
+	if (remainingShipUnits > 0)
+		return false;
+	return true;
+}
+
+void Player::update(){
+	remainingShipUnits--;
+}
 //-----------------------Ship-------------------------
 Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
 	this->owner = owner;
@@ -176,7 +235,14 @@ std::deque<Position*> Ship::getPositions(){
 	return answer;
 }
 
+void Ship::update(){
+	remainingSegements--;
+	notify();
+}
 
+void Ship::notify(){
+	owner->update();
+}
 
 
 //-----------------------Board-------------------------
@@ -188,6 +254,9 @@ void Board::populateField(int i, int j, bool shipFlag){
 	
 }
 
+void Board::shootField(int i, int j){
+	fields[i][j].notify();
+}
 
 
 
@@ -196,12 +265,24 @@ void Board::populateField(int i, int j, bool shipFlag){
 
 
 
-//-----------------------Ship-------------------------
+//-----------------------Field-------------------------
 
 void Field::attach(Ship* ship){
 	this->ship = ship;
 }
 
+void Field::notify(){
+	if (ship)
+		ship->update();
+}
+
+//-----------------------Attack-------------------------
+
+Attack::Attack(Position* pos, bool successful, std::string attackerId){
+	this->pos = pos;
+	this->successful = successful;
+	this->attackerId = attackerId;
+}
 
 
 
