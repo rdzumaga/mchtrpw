@@ -70,21 +70,17 @@ std::string Player::getId(){
 }
 
 std::deque<Position*> Player::getShipsPos(){
-	if (ships.empty())
-		int x = 1;
-	//	placeShipsRandomly();
-	
 	std::deque<Position*> answer;
-	int r, t;
-	r = t = 0;
-	//for (int i = 0; i < ships.size(); i++){
-		//r++;
-		//std::deque<Position*> shipPositions = ships.at(i)->getPositions();
-		//for (int j = 0; j < shipPositions.size(); j++)
-			//t++;
-			//answer.push_back(shipPositions[j]);
-	//}
+	if (ships.empty())
+		placeShipsRandomly();
+	
+	//TODO: calculate ships positions and return them
 
+	for (int i = 0; i < ships.size(); i++){
+		std::deque<Position*> shipPositions = ships.at(i)->getPositions();
+		for (int j = 0; j < shipPositions.size(); j++)
+			answer.push_back(shipPositions.at(j));
+	}
 
 	return answer;
 }
@@ -159,7 +155,26 @@ Ship::Ship(Player* owner){
 }
 
 
+std::deque<Position*> Ship::getPositions(){
+	std::deque<Position*> answer;
+	answer.push_back(&pos);
+	int dx = 1;
+	int dy = -1;
+	if (orientation == HORIZONTAL)
+		dy = 0;
+	else
+		dx = 0;
 
+	int x = pos.i;
+	int y = pos.j;
+	for (int i = 0; i < length; i++){
+		x += dx;
+		y += dy;
+		answer.push_back(new Position(x, y));
+	}
+
+	return answer;
+}
 
 
 
