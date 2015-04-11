@@ -16,14 +16,16 @@ bool Game::addPlayer(std::string id){
 		return false;
 
 	if (playerA == NULL){
-		playerA = new Player(id);
+		playerA = new Player(id, true);
 		state.mode = WAITING;
 		state.attackingPlayerId = id;
+		activePlayer = playerA;
 	}
 	else if (playerB == NULL){
-		playerB=new Player(id);
+		playerB=new Player(id, false);
 		state.mode = ONGOING;
 		state.attackedPlayerId = id;
+
 	}
 	return true;
 }
@@ -65,7 +67,8 @@ bool Game::shoot(int i, int j, std::string attackerId){
 	if (!attackSuccesful)
 		switchActivePlayer();
 	
-	state.attacks.push(attack);
+	state.attacks.push_back(attack);
+	//state.attacks.push(attack);//for queue
 	return attackSuccesful;
 }
 
@@ -77,7 +80,9 @@ void Game::switchActivePlayer(){
 	activePlayer = newAttacker;
 	activePlayer->setActive(true);	
 	//clear the attacks queue
-	std::queue<Attack*> empty;
+	//std::queue<Attack*> empty;
+	std::deque<Attack*> empty;
+	state.attacks.swap(empty);
 }
 
 void Game::finish(){
@@ -94,10 +99,11 @@ GameState::GameState(){
 
 //-----------------------Player-------------------------
 
-Player::Player(std::string id){
+Player::Player(std::string id, bool isFirstPlayer){
 	IP = id;
 	sustainedDamage = false;
 	remainingShipUnits = 5 + 4 + 4 + 3 + 3 + 3 + 2 + 2 + 2 + 2;
+	activeFlag = isFirstPlayer;
 }
 
 std::string Player::getId(){
@@ -134,7 +140,7 @@ void Player::placeShipsRandomly(){
 		ship = new Ship(this, length, or, s_i, s_j);
 
 		int dx = 1;
-		int dy = -1;
+		int dy = 1;
 		if (or == Ship::HORIZONTAL)
 			dy = 0;
 		else
@@ -142,8 +148,8 @@ void Player::placeShipsRandomly(){
 
 		for (int l = 0; l < length; l++){
 			board.fields[s_i][s_j].attach(ship);
-			s_i += dx;
-			s_j += dy;
+			s_i += dy;
+			s_j += dx;
 		}
 		ships.push_back(ship);
 	}
@@ -198,6 +204,7 @@ bool Player::hasLost(){
 
 void Player::update(){
 	remainingShipUnits--;
+	sustainedDamage = true;
 }
 //-----------------------Ship-------------------------
 Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
@@ -209,8 +216,8 @@ Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
 
 }
 Ship::Ship(Player* owner){
-	//this->owner = owner;
-	//this->pos = pos;
+	this->owner = owner;
+	this->pos = pos;
 }
 
 
@@ -218,18 +225,18 @@ std::deque<Position*> Ship::getPositions(){
 	std::deque<Position*> answer;
 	answer.push_back(&pos);
 	int dx = 1;
-	int dy = -1;
+	int dy = 1;
 	if (orientation == HORIZONTAL)
 		dy = 0;
 	else
 		dx = 0;
 
-	int x = pos.i;
-	int y = pos.j;
-	for (int i = 0; i < length; i++){
+	int x = pos.j;
+	int y = pos.i;
+	for (int i = 1; i < length; i++){
 		x += dx;
 		y += dy;
-		answer.push_back(new Position(x, y));
+		answer.push_back(new Position(y,x));
 	}
 
 	return answer;
@@ -255,7 +262,9 @@ void Board::populateField(int i, int j, bool shipFlag){
 }
 
 void Board::shootField(int i, int j){
-	fields[i][j].notify();
+	Field * f = &fields[i][j];
+	f->notify();
+	//fields[i][j].notify();
 }
 
 
@@ -266,13 +275,16 @@ void Board::shootField(int i, int j){
 
 
 //-----------------------Field-------------------------
-
+Field::Field(){
+	ship = NULL;
+}
 void Field::attach(Ship* ship){
 	this->ship = ship;
+	int temp = 0;
 }
 
 void Field::notify(){
-	if (ship)
+	if (ship!=NULL)
 		ship->update();
 }
 

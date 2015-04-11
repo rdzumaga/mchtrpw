@@ -21,8 +21,8 @@ Assumption:
 	- The game board's size is 10x10. The Fields are numbered from 0 till 9
 	- A ships' position on the game board is defined by it starting position (uppermost segment or the first segment on the left side) 
 	  and its orientation. So if lenght=3, orientation=horizontal and pos=(1,1), then the ship is placed on the following fields: (1,1), (1,2), (1,3)
-	- A player cannot should the same field more than once (should be implemented in the client)
-
+	- A player cannot shoot the same field more than once (should be implemented in the client)
+	- The player can shoot only fields with indexes between 0 and 9 (checked by client)
 */
 
 #include <deque>
@@ -39,7 +39,7 @@ class Position;
 class Attack;
 class GameState;
 class Game;
-
+//			0		1		2			3
 enum Mode { IDLE, WAITING, ONGOING, FINISHED };
 
 
@@ -59,7 +59,8 @@ public:
 	std::string attackingPlayerId; 
 	std::string attackedPlayerId;
 	//a queue listing attacks of the active player in one turn
-	std::queue<Attack *> attacks;
+	//std::queue<Attack *> attacks;
+	std::deque<Attack *> attacks;
 };
 
 class Game{
@@ -79,8 +80,8 @@ public:
 	
 	
 	
-private:
-	Player* activePlayer;
+//private:
+	Player* activePlayer; //necessary?
 	Player* playerA;
 	Player* playerB;
 	//Mode mode;
@@ -105,7 +106,7 @@ public:
 
 class Field{
 public:
-	Field(){}
+	Field();
 	void attach(Ship* ship);
 	void detach(Ship* ship); //unnecessary?
 	void notify();
@@ -131,7 +132,7 @@ public:
 	void update();
 	void attacked();
 	std::deque<Position*> getPositions();
-private:
+//private:
 	Player* owner;
 	int length;
 	int remainingSegements;
@@ -143,7 +144,7 @@ private:
 
 class Player{
 public:
-	Player(std::string id);
+	Player(std::string id, bool isFirstPlayer);
 	bool underAttack(int i, int j);
 	bool hasLost();
 	std::deque<Position*> getShipsPos();
@@ -152,7 +153,7 @@ public:
 	void setActive(bool active);
 	bool isActive();
 	std::string getId();
-private:
+//private:
 	Board board;
 	int remainingShipUnits;
 	std::deque<Ship*> ships;
