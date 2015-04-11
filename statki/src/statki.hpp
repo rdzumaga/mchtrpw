@@ -67,20 +67,16 @@ class Game{
 	//friend class GameState;
 public:
 	Game();
-	
 
-	bool awaitSecondPlayer();
-	bool addPlayer(std::string id);
-	bool begin();
-	
+	std::deque<Position*> addPlayer(std::string id);
+		
 	bool shoot(int i, int j, int attackerId);
-	std::deque<Position*> getShipsPos(std::string playerId);
 	GameState* getGameState();
 	bool shoot(int i, int j, std::string attackerId);
 	
 	
 	
-//private:
+private:
 	Player* activePlayer; //necessary?
 	Player* playerA;
 	Player* playerB;
@@ -91,6 +87,7 @@ public:
 	void updateGameState();
 	Player* getPlayer(std::string playerId);
 	void finish();
+	bool begin();
 
 };
 
@@ -132,7 +129,7 @@ public:
 	void update();
 	void attacked();
 	std::deque<Position*> getPositions();
-//private:
+private:
 	Player* owner;
 	int length;
 	int remainingSegements;
@@ -153,7 +150,7 @@ public:
 	void setActive(bool active);
 	bool isActive();
 	std::string getId();
-//private:
+private:
 	Board board;
 	int remainingShipUnits;
 	std::deque<Ship*> ships;
@@ -234,16 +231,21 @@ const int boardA[][N] = {
 STATKI_DLL( int getNumber(); )
 
 
-/*
+
 class Y;
 class X
 {
 public:
 	X(int x, Y* y) : m_y(y) {}
-	X(double);
+	//X(double);
 private:
 	Y* m_y;
 };
-*/
+
+class Y{
+public:
+	Y(int in){ j = in; }
+	int j;
+};
 
 #endif //STATKI_HPP

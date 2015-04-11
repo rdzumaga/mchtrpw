@@ -11,23 +11,26 @@ Game::Game(){
 	playerA = playerB = activePlayer = NULL;
 }
 
-bool Game::addPlayer(std::string id){
-	if (state.mode == ONGOING || state.mode == FINISHED)
-		return false;
+std::deque<Position*> Game::addPlayer(std::string id){
+	if (state.mode == ONGOING || state.mode == FINISHED){
+		std::deque<Position*> empty;
+		return empty;
+	}
 
 	if (playerA == NULL){
 		playerA = new Player(id, true);
 		state.mode = WAITING;
 		state.attackingPlayerId = id;
 		activePlayer = playerA;
+		return playerA->getShipsPos();
 	}
 	else if (playerB == NULL){
 		playerB=new Player(id, false);
 		state.mode = ONGOING;
 		state.attackedPlayerId = id;
+		return playerB->getShipsPos();
 
 	}
-	return true;
 }
 
 bool Game::begin(){
@@ -37,12 +40,6 @@ bool Game::begin(){
 		return true;
 	}
 	return false;
-}
-
-std::deque<Position*> Game::getShipsPos(std::string playerId){
-	//std::deque<Position*> temp;
-	//return temp;
-	return getPlayer(playerId)->getShipsPos();
 }
 
 Player* Game::getPlayer(std::string playerId){
@@ -112,8 +109,9 @@ std::string Player::getId(){
 
 std::deque<Position*> Player::getShipsPos(){
 	std::deque<Position*> answer;
-	if (ships.empty())
+	if (ships.empty()){
 		placeShipsRandomly();
+	}
 	
 	//TODO: calculate ships positions and return them
 
