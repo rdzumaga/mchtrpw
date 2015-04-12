@@ -25,9 +25,9 @@ WEB_CLIENT_HOST = '127.0.0.1'
 WEB_CLIENT_PORT = '9000'
 
 #database
-DB_NAME='mydb'
-DB_USER='mydb'
-DB_PASSWORD='mydb'
+DB_NAME='robert'
+DB_USER='robert'
+DB_PASSWORD='robert'
 
 Export('MYAPP_VER_MAJOR MYAPP_VER_MINOR MYAPP_VER_COMPILATION MYAPP_VER_INSTALL')
 Export('WWW_BROWSER_WINDOWS WWW_BROWSER_LINUX')
@@ -122,7 +122,7 @@ elif env['doxygen'] == 1:
     os.system('doxygen')
     env.SideEffect('Doxygen', 'Doxygen_in')
 else: #build app
-    SConscript(['calc/SConscript', 'statki/SConscript', 'web/SConscript', 'client/SConscript'], exports=['env'] )
+    SConscript(['calc/SConscript', 'web/SConscript', 'client/SConscript'], exports=['env'] )
 
 env.Clean('.','../doc/doxygen')
 env.Clean('.','Doxyfile')
