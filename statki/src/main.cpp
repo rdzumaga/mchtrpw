@@ -11,7 +11,7 @@ void printAttacks(deque<Attack*> a){
 	cout << "Attacks:\n";
 	if (a.size()){
 		for (int i = 0; i < a.size(); i++){
-			cout << "(" << a.at(i)->pos->i << ", " << a.at(i)->pos->j << "): " << a.at(i)->successful << endl;
+			cout << "(" << a.at(i)->pos->get_i << ", " << a.at(i)->pos->get_j << "): " << a.at(i)->successful << endl;
 		}
 	}
 }
@@ -32,8 +32,8 @@ void addPlayer(Game* game, string id){
 void printShipsPos(std::deque<Position*> poss){
 	cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPrinting ships positions now:\n";
 	for (int i = 0; i < poss.size(); i++){
-		cout << "(" << poss[i]->i << ",";//
-		cout << poss[i]->j << "), ";
+		cout << "(" << poss[i]->get_i << ",";//
+		cout << poss[i]->get_j<< "), ";
 	}
 }
 

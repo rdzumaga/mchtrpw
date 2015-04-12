@@ -53,20 +53,23 @@ GameState* Game::getGameState(){
 	return &state; //maybe pop an attack from queue if sender id==attacked?
 }
 
-bool Game::shoot(int i, int j, std::string attackerId){
+int Game::shoot(int i, int j, std::string attackerId){
 	Player* attacker = getPlayer(attackerId);
-	Player* attacked = getPlayer(state.attackedPlayerId);
-	bool attackSuccesful=attacked->underAttack(i, j);
-	Attack* attack = new Attack(new Position(i, j), attackSuccesful, attackerId);
-	if (attacked->hasLost())
-		 finish();
+	if (activePlayer == attacker){
+		Player* attacked = getPlayer(state.attackedPlayerId);
+		bool attackSuccesful = attacked->underAttack(i, j);
+		Attack* attack = new Attack(new Position(i, j), attackSuccesful, attackerId);
+		if (attacked->hasLost())
+			finish();
 
-	if (!attackSuccesful)
-		switchActivePlayer();
-	
-	state.attacks.push_back(attack);
-	//state.attacks.push(attack);//for queue
-	return attackSuccesful;
+		if (!attackSuccesful)
+			switchActivePlayer();
+
+		state.attacks.push_back(attack);
+		//state.attacks.push(attack);//for queue
+		return attackSuccesful;
+	}
+	return ERROR;
 }
 
 void Game::switchActivePlayer(){
@@ -213,10 +216,11 @@ Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
 	pos = Position(i, j);
 
 }
+/*
 Ship::Ship(Player* owner){
 	this->owner = owner;
 	this->pos = pos;
-}
+}*/
 
 
 std::deque<Position*> Ship::getPositions(){
@@ -229,8 +233,8 @@ std::deque<Position*> Ship::getPositions(){
 	else
 		dx = 0;
 
-	int x = pos.j;
-	int y = pos.i;
+	int x = pos.get_j();
+	int y = pos.get_i();
 	for (int i = 1; i < length; i++){
 		x += dx;
 		y += dy;
@@ -252,20 +256,21 @@ void Ship::notify(){
 
 //-----------------------Board-------------------------
 
-void Board::populateField(int i, int j, bool shipFlag){
-	//if (shipFlag){
-		;//fields[i][j]
-	//}
-	
-}
-
 void Board::shootField(int i, int j){
 	Field * f = &fields[i][j];
 	f->notify();
 	//fields[i][j].notify();
 }
 
+//-------------------------Position------------------
 
+int Position::get_i(){
+	return i;
+}
+
+int Position::get_j(){
+	return j;
+}
 
 
 

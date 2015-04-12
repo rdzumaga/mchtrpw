@@ -46,10 +46,43 @@ BOOST_PYTHON_MODULE(statki)
 				.def_readwrite("attacks", &GameState::attacks)
 				;
 
-			//class_<Game>("Game", "TODO: description")
-			//	.def("addPlayer", &Game::addPlayer)
+			class_<Game>("Game", "TODO: description")
+				.def("addPlayer", &Game::addPlayer)
+				.def("getGameState", &Game::getGameState, return_value_policy<reference_existing_object>()) 
+				.def("shoot", &Game::shoot)
+				.def("begin", &Game::begin)
+				;
+
+			class_<Position>("Position", "TODO Description")
+				.def(init<int, int>())
+				.def("get_i", &Position::get_i)
+				.def("get_j", &Position::get_j)
+				;
+
+			class_<Field>("Field", "TODO Description")
+				.def("attach", &Field::attach, with_custodian_and_ward<1, 2>())
+				.def("notify", &Field::notify)
+				;
+
+			class_<Board>("Board", "TODO Description")
+				.def("shootField", &Board::shootField)
+				;
 
 
+			enum_<Ship::Orientation>("Orientation")
+				.value("HORIZONTAL", Ship::HORIZONTAL)
+				.value("VERTICAL", Ship::VERTICAL)
+				//.export_values()
+				;
+
+			class_<Ship>("Ship", "TODO Description",
+				init<Player*, int, Ship::Orientation, int, int>(args("player", "lenght", "or", "i", "j"))[
+					with_custodian_and_ward<1, 2>()])
+						.def("update", &Ship::update)
+						.def("getPositions", &Ship::getPositions)
+			//
+				;
+			
 }
 
 
