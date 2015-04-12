@@ -13,3 +13,15 @@ def getNumber(params):
     return {
         "number" : calc.getNumber()
     }
+
+
+def getParam(params):
+    """the calculation from C++ library"""
+
+    data = (params.dict())
+    _var1 = int(data['x'])
+    _var2 = int(data['y'])
+    return {
+        "param" : calc.getParam(_var1,_var2)
+    }
+

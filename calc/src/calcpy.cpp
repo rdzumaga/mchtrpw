@@ -16,4 +16,6 @@ BOOST_PYTHON_MODULE( calc )
 {
 	//! exports getNumber to Python
     boost::python::def( "getNumber", getNumber );
+	
+	boost::python::def( "getParam", getParam );
 }

@@ -17,4 +17,6 @@
 //! Example C++ calculation. This function return a number.
 CALC_DLL( int getNumber(); )
 
+CALC_DLL( int getParam(int x, int y); )
+
 #endif //CALC_HPP
