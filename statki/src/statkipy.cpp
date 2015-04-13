@@ -82,6 +82,18 @@ BOOST_PYTHON_MODULE(statki)
 						.def("getPositions", &Ship::getPositions)
 			//
 				;
+				
+			class_<Player>("Player", "TODO: description",
+			init<std::string, bool>(args("id", "isFirstPlayer")))
+				.def("getId", &Player::getId)
+				.def("getShipsPos", &Player::getShipsPos) 
+				.def("placeShipsRandomly", &Player::placeShipsRandomly)
+				.def("setActive", &Player::setActive)
+				.def("isActive", &Player::isActive)
+				.def("underAttack", &Player::underAttack)
+				.def("hasLost", &Player::hasLost)
+				.def("update", &Player::update)
+				;
 			
 }
 
