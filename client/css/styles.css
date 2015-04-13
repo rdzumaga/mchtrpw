@@ -7,6 +7,88 @@
     display: none;
 }
 
+.main_wrap {
+	text-align: center;
+    border: 2px;
+    border-color: black;
+    background-color: white;
+	margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    width: 960px;
+    min-height: 600px;
+    height: 800px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 20px;
+    line-height: 22px;
+}
+
+.logoTable {
+	margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    text-align: end;
+    vertical-align: bottom;
+    width: 960px;
+    height: 80px;
+    color: white;
+}
+
+.enemyTable {
+	border-collapse: collapse;
+	border: 2px ridge #dddada;
+	 margin-left: 100px !important;
+    box-shadow: 0px 5px 10px #36a5ef;
+	position:absolute;
+    text-align:center;  
+    align-content:center;
+	width:500px; 
+	height: 500px; 
+}
+
+.enemyTable td{
+    border: 2px ridge #dddada;
+	width: 45px;
+	height: 45px;
+	cursor:pointer;
+    background: -moz-linear-gradient(top, #ffffff, #D1E3E9);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffffff), to(#D1E3E9));
+    text-align:center;
+  }
+
+.enemyTable td:hover{
+	background: -moz-linear-gradient(top, #249ee4, #057cc0);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#249ee4), to(#057cc0));
+  }
+
+.enemyTable td:active{
+    background: -moz-linear-gradient(top, #057cc0, #249ee4);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#057cc0), to(#249ee4));
+  }
+
+.ownTable {
+	border-collapse: collapse;
+	border: 2px ridge #dddada;
+	margin-left: 670px;
+	margin-top: 370px;
+    box-shadow: 0px 5px 10px #808080;
+	position:absolute;
+    text-align:center;  
+    align-content:center;
+	width:250px; 
+	height: 250px;
+}  
+
+.ownTable td{
+    border: 2px ridge #dddada;
+	width: 22px;
+	height: 22px;
+	cursor:not-allowed;
+    background: -moz-linear-gradient(top, #ffffff, #d2fee4);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffffff), to(#d2fee4));
+    text-align:center;
+  }
+  
 .error {
     font-size: 2em;
     color:red;
@@ -17,13 +99,33 @@
     color:green;
 }
 
+.selectedCell {
+	width:150px;
+	height:80px;
+	margin-left: 100px;
+	line-height:80px;
+	border:4px ridge #0090dc;
+	vertical-align: middle;
+	color:red;
+}
+
+html {
+    height: 100%;
+   	background-image: url("/pict/background.jpg"); 
+	background-position: absolute;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
 body {
+	min-height: 100%;
     margin: 0px;
     padding: 0px;
     font-family: 'Noto Sans', sans-serif;
 	font-size: 100.01%;
 }
 
+	
 #icons_ul {
 	list-style-type:none;
 	margin:0;
@@ -35,3 +137,8 @@ body {
     padding: 5px;
 }
 
+h3 {
+	font-size: 2Opx;
+    color:black;
+	margin-left: 600px;
+}

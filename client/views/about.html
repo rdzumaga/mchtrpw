@@ -3,14 +3,101 @@
     @brief the AngularJS partial 'about'
 -->
 
-<h1>My application - {{'ABOUT' | translate}}</h1>
 
-<ul ng-controller="versionController">
-  <li id="server_time" ng-controller="currentController">{{'TIME' | translate}}: <em id="server_time_val">{{current.time}}</em></li>
-  <li id="server_version">{{'SRV_VER' | translate}}: <em id="server_version_val">{{server_ver.server}}</em></li>
-  <li id="client_version">{{'CLI_VER' | translate}}: <em id="client_version_val">{{client_ver}}</em></li>
-  <li id="cpp_get_number">C++ getNumber() result: <em id="cpp_get_number_val">{{cpp_get.number}}</em></li>
-</ul>
-<button onclick=DoStuff();>Guzik</button>
-<button onclick=DoMoreStuff();>DrugiGuzik</button>
+<table class="logoTable">
+<br />
+    <tr>
+		<td>
+			<img src="/pict/logo.png" alt="Statki" width="960" height="100" style="float: left;" />
+        </td>
+	</tr>
+</table>
+<br />
+ <form id="startPage" runat="server">
+        <div class="main_wrap" >
+<br />
+<h1>Gra w statki - wersja 1.0</h1>
 
+<br /><br />
+<table id="enemyTable" class="enemyTable" >
+				<thead>
+					<tr>
+						<th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th>
+					</tr>
+				</thead>
+				<tr>
+					<th>1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>5</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>6</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>7</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>8</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>9</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>10</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+			</table>
+			
+			<table id="ownTable" class="ownTable" >
+				<thead>
+					<tr>
+						<th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th>
+					</tr>
+				</thead>
+				<tr>
+					<th>1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>5</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>6</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>7</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>8</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>9</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+				<tr>
+					<th>10</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+				</tr>
+			</table>
+			<img src="/pict/ship.png" alt="Ship" width="70" height="70" style="vertical-align: bottom;  margin-top: 860px; position: absolute; top: 0px; float: right;" />
+			<h3>Wybrane pole to: <h3>
+			<div class="selectedCell" id="selectedCell"></div>
+			<h3 style="margin-top:170px;">Podgląd własnej planszy:<h3>
+					
+ </div>
+    </form>
