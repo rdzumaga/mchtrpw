@@ -67,7 +67,14 @@ int Game::shoot(int i, int j, std::string attackerId){
 
 		state.attacks.push_back(attack);
 		//state.attacks.push(attack);//for queue
-		return attackSuccesful;
+		if (attackSuccesful == true)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}		
 	}
 	return ERROR;
 }

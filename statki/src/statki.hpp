@@ -85,13 +85,13 @@ public:
 	int shoot(int i, int j, std::string attackerId);
 	bool begin();
 	
-	
-private:
 	Player* activePlayer; //necessary?
 	Player* playerA;
 	Player* playerB;
 	//Mode mode;
 	GameState state;
+private:
+	
 
 	void switchActivePlayer();
 	void updateGameState();
