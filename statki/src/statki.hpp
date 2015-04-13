@@ -28,8 +28,13 @@ Assumption:
 #include <deque>
 #include <string>
 #include <queue>
+
+//typedef boost::shared_ptr<GameS> gate_ptr;
+
+
 const int N = 10;
 const int shipsNr = 3;
+const int ERROR = -1;
 
 class Player;
 
@@ -69,11 +74,16 @@ public:
 	Game();
 
 	std::deque<Position*> addPlayer(std::string id);
-		
-	bool shoot(int i, int j, int attackerId);
 	GameState* getGameState();
-	bool shoot(int i, int j, std::string attackerId);
 	
+	/*
+	returns:
+	-1: error
+	 0: shot missed
+	 1: shot successful
+	*/
+	int shoot(int i, int j, std::string attackerId);
+	bool begin();
 	
 	
 private:
@@ -87,7 +97,7 @@ private:
 	void updateGameState();
 	Player* getPlayer(std::string playerId);
 	void finish();
-	bool begin();
+	
 
 };
 
@@ -97,6 +107,9 @@ class Position{
 public:
 	Position(){}
 	Position(int i, int j) : i(i), j(j) {}
+	int get_i();
+	int get_j();
+private:
 	int i;
 	int j;
 };
@@ -105,7 +118,7 @@ class Field{
 public:
 	Field();
 	void attach(Ship* ship);
-	void detach(Ship* ship); //unnecessary?
+	//void detach(Ship* ship); //unnecessary?
 	void notify();
 private:
 	Ship* ship;
@@ -115,19 +128,19 @@ class Board{
 public:
 	Board(){}
 	void shootField(int i, int j);
-	void populateField(int i, int j, bool shipFlag);
+	//void populateField(int i, int j, bool shipFlag);
 	Field fields[N][N];
 };
 
 class Ship{
 public:
 	enum Orientation { HORIZONTAL, VERTICAL };
-	Ship(Player* owner);
+	//Ship(Player* owner); //unnecessary?
 	Ship(Player* owner, int length, Orientation or, int i, int j);
 	
-	bool isSunk();
+	//bool isSunk(); //unnecessary?
 	void update();
-	void attacked();
+
 	std::deque<Position*> getPositions();
 private:
 	Player* owner;
