@@ -11,7 +11,7 @@ void printAttacks(deque<Attack*> a){
 	cout << "Attacks:\n";
 	if (a.size()){
 		for (int i = 0; i < a.size(); i++){
-			cout << "(" << a.at(i)->pos->get_i << ", " << a.at(i)->pos->get_j << "): " << a.at(i)->successful << endl;
+			cout << "(" << a.at(i)->pos->get_i() << ", " << a.at(i)->pos->get_j() << "): " << a.at(i)->successful << endl;
 		}
 	}
 }
@@ -32,8 +32,8 @@ void addPlayer(Game* game, string id){
 void printShipsPos(std::deque<Position*> poss){
 	cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPrinting ships positions now:\n";
 	for (int i = 0; i < poss.size(); i++){
-		cout << "(" << poss[i]->get_i << ",";//
-		cout << poss[i]->get_j<< "), ";
+		cout << "(" << poss[i]->get_i() << ",";//
+		cout << poss[i]->get_j()<< "), ";
 	}
 }
 
@@ -52,11 +52,11 @@ int main(){
 	addPlayer(game, idB);
 	printGameState(game);
 
-	std::deque<Position*> shipsA = game->getShipsPos(idA);
+	std::deque<Position*> shipsA = game->playerA->getShipsPos();
 	printShipsPos(shipsA);
 
 
-	std::deque<Position*> shipsB = game->getShipsPos(idB);
+	std::deque<Position*> shipsB = game->playerB->getShipsPos();
 	printShipsPos(shipsB);
 
 	game->begin();
@@ -64,13 +64,13 @@ int main(){
 	int i, j;
 	i = 0;
 	j = 5;
-	bool response = game->shoot(i, j, idA);
+	int response = game->shoot(i, j, idA);
 	cout << "Just shot (" << i << "," << j << "). The result is: " << response;
 
 	j = 4;
 	response = game->shoot(i, j, idB);
 	cout << "Just shot (" << i << "," << j << "). The result is: " << response;
-
+	printGameState(game);
 	int wait;
 	cin >> wait;
 	return 0;
