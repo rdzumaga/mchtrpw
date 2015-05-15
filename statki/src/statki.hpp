@@ -15,7 +15,7 @@
 #endif
 
 /*
-Assumption:
+Assumptions:
 	- Each field can have a pointer to only one ship
 	- Each player has a different ID (int)
 	- The game board's size is 10x10. The Fields are numbered from 0 till 9
@@ -33,7 +33,7 @@ Assumption:
 
 
 const int N = 10;
-const int shipsNr = 3;
+const int shipsNr = 10;
 const int ERROR = -1;
 
 class Player;
@@ -83,15 +83,15 @@ public:
 	 1: shot successful
 	*/
 	int shoot(int i, int j, std::string attackerId);
-	bool begin();
+	bool begin(); //unnecessary
 	
+	
+private:
 	Player* activePlayer; //necessary?
 	Player* playerA;
 	Player* playerB;
 	//Mode mode;
 	GameState state;
-private:
-	
 
 	void switchActivePlayer();
 	void updateGameState();
@@ -120,6 +120,7 @@ public:
 	void attach(Ship* ship);
 	//void detach(Ship* ship); //unnecessary?
 	void notify();
+	bool isEmpty();
 private:
 	Ship* ship;
 };
@@ -130,6 +131,10 @@ public:
 	void shootField(int i, int j);
 	//void populateField(int i, int j, bool shipFlag);
 	Field fields[N][N];
+	bool canPlaceShip(int i, int j, int length, int dx, int dy);
+	void placeShip(Ship* ship);
+
+	
 };
 
 class Ship{
@@ -172,20 +177,20 @@ private:
 	bool activeFlag;
 
 	void placeShipsRandomly();
+	Ship* placeShipRandomly(int length, Ship::Orientation or);
 };
 
 
 
-//const int statkiLen[] = { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
-const int statkiLen[shipsNr] = { 5, 4, 3};
-const int statkiPos[][2] = { 
+const int statkiLen[] = { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
+//const int statkiLen[shipsNr] = { 5, 4, 3};
+/*const int statkiPos[][2] = { 
 		{0,0},
 		{9,0},
 		{2,0}
 };
-
+*/
 const Ship::Orientation statkiOrientation[] = {
-	Ship::Orientation::HORIZONTAL,
 	Ship::Orientation::HORIZONTAL,
 	Ship::Orientation::VERTICAL
 };

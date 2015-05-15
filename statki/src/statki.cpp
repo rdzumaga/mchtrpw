@@ -4,6 +4,9 @@
  */
 #include "statki.hpp"
 
+#include <cstdlib>     /* srand, rand */
+#include <ctime>
+#include <iostream>
 
 //-----------------------Game-------------------------
 
@@ -67,14 +70,7 @@ int Game::shoot(int i, int j, std::string attackerId){
 
 		state.attacks.push_back(attack);
 		//state.attacks.push(attack);//for queue
-		if (attackSuccesful == true)
-		{
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}		
+		return attackSuccesful;
 	}
 	return ERROR;
 }
@@ -124,9 +120,11 @@ std::deque<Position*> Player::getShipsPos(){
 	}
 	
 	//TODO: calculate ships positions and return them
-
+	int temp = ships.size();
+	Ship* shipTemp;
 	for (int i = 0; i < ships.size(); i++){
-		std::deque<Position*> shipPositions = ships.at(i)->getPositions();
+		shipTemp = ships[i];
+		std::deque<Position*> shipPositions = shipTemp->getPositions();
 		for (int j = 0; j < shipPositions.size(); j++)
 			answer.push_back(shipPositions.at(j));
 	}
@@ -135,6 +133,61 @@ std::deque<Position*> Player::getShipsPos(){
 }
 
 void Player::placeShipsRandomly(){
+	static int playerNr = 0;
+	/* initialize random seed: */
+	//srand(time(NULL));
+	srand(5000);
+
+	Ship* ship;
+	for (int k = 0; k < shipsNr; k++){
+		int length = statkiLen[k];
+		Ship::Orientation or = statkiOrientation[rand() % 2];
+		ship = placeShipRandomly(length, or);
+		if (ship != NULL)
+			ships.push_back(ship);
+		//TO DO remove printing
+		else
+			std::cout << "Error: new random ship is null!\n";
+	}
+	playerNr++;
+}
+
+Ship* Player::placeShipRandomly(int length, Ship::Orientation or){
+	//set the initial scope for placing ships for i and j index - initally it is set to the full lenght of the board
+	int iScope = N;
+	int jScope = N;
+
+	//variables for calculating the position of all tiles belonging to one ship
+	int dx = 0;
+	int dy = 0;
+
+	if (or == Ship::Orientation::HORIZONTAL){
+		jScope = N - length ;
+		dx = 1;
+	}
+	else {
+		iScope = N - length ;
+		dy = 1;
+	}
+
+	int i = rand() % iScope;
+	int j = rand() % jScope;
+	
+	int failsafe = 0;
+	while (!board.canPlaceShip(i, j, length, dx, dy)){
+		i = rand() % iScope;
+		j = rand() % jScope;
+		failsafe++;
+		if (failsafe > 1000)
+			return NULL;
+	}
+	Ship* ship = new Ship(this, length, or, i, j);
+	board.placeShip(ship);
+	return ship;
+}
+
+/*
+void Player::placeShipsRandomly0(){
 	//temporarily, positions are hardcoded
 	static int playerNr = 0;
 
@@ -167,28 +220,9 @@ void Player::placeShipsRandomly(){
 			;
 		}
 	}
-	/*
-
-	for (int i = 0; i < N; i++){		
-		for (int j = 0; j < N; j++){
-			int length = 0;
-			if (!sameShip)
-				ship = new Ship(this, Position(i, j));
-			if (boardA[i][j]){
-				length++;
-			}
-			else{
-				if (length)
-					ship = new Ship(this, Position(i, j), length, Ship::HORIZONTAL);
-				length = 0;
-			}
-				sameShip = false;
-		}
-	}*/
-
-
+	
 	playerNr++;
-}
+}*/
 
 void Player::setActive(bool active){
 	activeFlag = active;
@@ -269,6 +303,29 @@ void Board::shootField(int i, int j){
 	//fields[i][j].notify();
 }
 
+
+bool Board::canPlaceShip(int i, int j, int length, int dx, int dy){
+	//check if all fields starting from (i,j) are empty
+	for (int l = 0; l < length; l++){
+		Field * field = &fields[i][j];
+		if (!field->isEmpty())
+			return false;
+		//check for neighbours
+		if (!fields[i + 1][j].isEmpty() || !fields[i - 1][j].isEmpty() || !fields[i][j + 1].isEmpty() || !fields[i][j - 1].isEmpty())
+			return false;
+		i += dy;
+		j += dx;
+	}
+	return true;
+}
+
+void Board::placeShip(Ship* ship){
+	std::deque<Position*> shipPos = ship->getPositions();
+	for (int k = 0; k < shipPos.size(); k++){
+		fields[shipPos[k]->get_i()][shipPos[k]->get_j()].attach(ship);
+	}
+
+}
 //-------------------------Position------------------
 
 int Position::get_i(){
@@ -296,6 +353,10 @@ void Field::attach(Ship* ship){
 void Field::notify(){
 	if (ship!=NULL)
 		ship->update();
+}
+
+bool Field::isEmpty(){
+	return ship == NULL;
 }
 
 //-----------------------Attack-------------------------
