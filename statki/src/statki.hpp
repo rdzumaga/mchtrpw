@@ -64,14 +64,17 @@ public:
 	std::string attackingPlayerId; 
 	std::string attackedPlayerId;
 	//a queue listing attacks of the active player in one turn
-	//std::queue<Attack *> attacks;
-	std::deque<Attack *> attacks;
+	std::queue<Attack *> attacks;
+	//std::deque<Attack *> attacks;
 };
 
 class Game{
 	//friend class GameState;
 public:
-	Game();
+	static Game& getInstance(){
+		static Game instance;
+		return instance;
+	}
 
 	std::deque<Position*> addPlayer(std::string id);
 	GameState* getGameState();
@@ -81,6 +84,7 @@ public:
 	-1: error
 	 0: shot missed
 	 1: shot successful
+	//TODO 2: ship sunk
 	*/
 	int shoot(int i, int j, std::string attackerId);
 	bool begin(); //unnecessary
@@ -97,6 +101,9 @@ private:
 	void updateGameState();
 	Player* getPlayer(std::string playerId);
 	void finish();
+	Game();
+	Game(Game const &) = delete;
+	void operator=(Game const &) = delete;
 	
 
 };

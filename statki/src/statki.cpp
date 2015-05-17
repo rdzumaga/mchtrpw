@@ -12,6 +12,7 @@
 
 Game::Game(){
 	playerA = playerB = activePlayer = NULL;
+	state.mode = IDLE;
 }
 
 std::deque<Position*> Game::addPlayer(std::string id){
@@ -68,7 +69,7 @@ int Game::shoot(int i, int j, std::string attackerId){
 		if (!attackSuccesful)
 			switchActivePlayer();
 
-		state.attacks.push_back(attack);
+		state.attacks.push(attack);
 		//state.attacks.push(attack);//for queue
 		return attackSuccesful;
 	}
@@ -84,8 +85,11 @@ void Game::switchActivePlayer(){
 	activePlayer->setActive(true);	
 	//clear the attacks queue
 	//std::queue<Attack*> empty;
-	std::deque<Attack*> empty;
-	state.attacks.swap(empty);
+	while (!state.attacks.empty()){
+		state.attacks.pop();
+	}
+	//std::deque<Attack*> empty;
+	//state.attacks.swap(empty);
 }
 
 void Game::finish(){

@@ -1,7 +1,7 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include <string>
+
 #include <iostream>
 #include "statki.hpp" 
 
@@ -14,14 +14,20 @@ public:
 	~Client();
 	static int iToInt(string target);
 	static int jToInt(string target);
+	static string numToLetter(int num);
 	void connect();
 	void inquireAndReact();
-	void shoot();
+	int shoot(string target);
 
 	//attributes
 	string board[N][N];
 	string opponentBoard[N][N];
 	string id;
+private:
+	void loadShipsPos(deque<Position*> shipsPos);
+	void printBoards();
+	void attack(GameState* state);
+	void reactToAttack(GameState* state);
 
 };
 
