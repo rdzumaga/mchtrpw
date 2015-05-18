@@ -37,115 +37,14 @@ int main(){
 	clientA.inquireAndReact();
 	clientB.inquireAndReact();
 
-
-	/*std::string idA, idB;
-	cin >> idA;
-	std::deque<Position*> shipsA = game->addPlayer(idA);
-	cout << "Welcome playerA!\nAwaiting playerB to come and enter theirs ID...\n";
-
-	//2.
-	cout << "Player A waits for player B...\n";
-	//printGameState(game);
-	cout << "\nPlayer B, enter your ID:\n";
-
-	//3.
-	std::cin >> idB;
-	cout << "Welcome playerB. Your ID is " << idB << "\n*******************************************************************\n";
-	std::deque<Position*> shipsB = game->addPlayer(idB);
-
-	//print boards
-	setShipsPos(shipsA, shipsB);
-	printBoards(idA, idB);
+	//6.
+	clientA.inquireAndReact();
+	clientB.inquireAndReact();
+	clientA.inquireAndReact();
+	clientB.inquireAndReact();
+	clientA.inquireAndReact();
+	clientB.inquireAndReact();
 	
-	//4.
-	cout << "----------------------------------------------------\nThe game begins!\n\n";
-	cout << "Player B checks if they have been attacked and if they can shoot...\n";
-	printGameState(game);
-	gstate = *(game->getGameState());
-	if (gstate.attacks.size() > 0)
-		cout << "Player B is under attack!\n";
-	else if (gstate.attackedPlayerId == idB)
-		cout << "Player B is waiting for the attack from playerA\n";
-
-	//5.
-	//printPlayersId(idA, idB);
-	//printGameState(game);
-	cout << "It is now the turn of player with the ID=" << gstate.attackingPlayerId << endl << endl;
-	cout << "Player, enter the field nr you want to shoot, eg.: A1\n";
-	string target;
-	cin >> target;
-	int result = shootWrapper(target, idA, game);
-
-	cout << "Player B checks if they have been attacked and if they can shoot...\n";
-	printGameState(game);
-	gstate = *(game->getGameState());
-	if (gstate.attacks.size() > 0){
-		cout << "Player B is under attack!\n";
-		//note the attack on board
-		Attack * attack = gstate.attacks[0];
-		int i, j;
-		i = attack->pos->get_i();
-		j = attack->pos->get_j();
-		mapB[i][j] = "! ";
-	}
-	else if (gstate.attackedPlayerId == idB)
-		cout << "Player B is waiting for the attack from playerA\n";
-
-	if (result == -1)
-		cout << "Error while shooting field " << target << endl;
-	else if (result == 0){
-		cout << "You missed! No ship found at " << target << endl;
-		mapA_opponent[iToInt(target)][jToInt(target)] = "X ";
-	}
-	else if (result == 1){
-		cout << "Well done! You hit a ship!\n";
-		mapA_opponent[iToInt(target)][jToInt(target)] = "! ";
-	}
-
-	printBoards(idA, idB);
-	cout << "Player, enter the field nr you want to shoot, eg.: A1\n";
-	cin >> target;
-	result = shootWrapper(target, idA, game);
-
-	cout << "Player B checks if they have been attacked and if they can shoot...\n";
-	printGameState(game);
-	gstate = *(game->getGameState());
-	if (gstate.attacks.size() > 0){
-		cout << "Player B is under attack!\n";
-		//note the attack on board
-		Attack * attack = gstate.attacks[0];
-		int i, j;
-		i = attack->pos->get_i();
-		j = attack->pos->get_j();
-		mapB[i][j] = "! ";
-	}
-	else if (gstate.attackedPlayerId == idB)
-		cout << "Player B is waiting for the attack from playerA\n";
-
-	if (result == -1)
-		cout << "Error while shooting field " << target << endl;
-	else if (result == 0){
-		cout << "You missed! No ship found at " << target << endl;
-		mapA_opponent[iToInt(target)][jToInt(target)] = "X ";
-	}
-	else if (result == 1){
-		cout << "Well done! You hit a ship!\n";
-		mapA_opponent[iToInt(target)][jToInt(target)] = "! ";
-	}
-
-	printBoards(idA, idB);
-		
-
-		
-	//	printGameState(game);
-
-	//	printGameState(game);
-
-
-		//game->begin();
-
-
-	*/
 	int wait;
 	std::cin >> wait;
 	return 0;

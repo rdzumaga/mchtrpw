@@ -108,30 +108,43 @@ void Client::printBoards(){
 void Client::inquireAndReact(){
 	cout << "\n__________________ info for player " << id << " _________________________\n";
 	Game & game = Game::getInstance();
-	GameState * state = game.getGameState();
+	Info * gameInfo = game.getInfo(id);
+	//GameState * state = game.getGameState();
 	
-	if (state->mode == WAITING)
+	if (gameInfo->gameMode == WAITING)
 		cout << "\nPlayer " << id << " is waiting for the second player to join the game\n.......................................................\n";
-	else if (state->mode == ONGOING){
-		if (state->attackingPlayerId == id)
-			attack(state);
-		else if (state->attackedPlayerId == id)
-			reactToAttack(state);
+	else if (gameInfo->gameMode == ONGOING){
+		while (gameInfo->lastAttack != NULL){
+			reactToAttack(gameInfo);
+			inquireAndReact();
+			break;
+		}
+		gameInfo = game.getInfo(id);
+		if (!gameInfo->playerIsUnderAttack)
+			attack();
 		else
-			cout << "Error:Player id doesn't match attacker or attacked it!\n";
+			cout << "Waiting for the opponent to make a move...\n";
 	}
-	else if (state->mode == IDLE)
+
+	else if (gameInfo->gameMode == IDLE)
 		cout << "Game state is idle...\n";
 	else
-		cout << "Game state is finished\n";
+		cout << "You lost :(\nGame state is finished\n";
 }
 
-void Client::attack(GameState* state){
+void Client::attack(){
 	cout << "Player " << id << ", it is your turn to shoot.\nEnter the field nr you want to shoot, eg.: A1\n";
 	string target;
 	int result;
 	cin >> target;
 	result=shoot(target);
+	
+	//attack is a recursive function for client. Check for changes in game state for this iteration
+	Info* info = Game::getInstance().getInfo(id);
+	if (info->gameMode == FINISHED){
+		cout << "\n\nYOU WON!!!!!!!\n";
+		return;
+	}
 
 	if (result == -1)
 		cout << "Error while shooting field " << target << endl;
@@ -146,7 +159,7 @@ void Client::attack(GameState* state){
 				cout << "Well done! You hit a ship!\n";
 				opponentBoard[iToInt(target)][jToInt(target)] = "! ";
 				printBoards();
-				attack(Game::getInstance().getGameState());
+				attack();
 				result = 0;
 			}
 		}
@@ -157,29 +170,25 @@ int Client::shoot(string target){
 	int i, j;
 	i = iToInt(target);
 	j = jToInt(target);
-	return Game::getInstance().shoot(i, j, id);
+	return Game::getInstance().shoot(i, j);
 }
-void Client::reactToAttack(GameState* state){	
+void Client::reactToAttack(Info* gameInfo){
 	cout << "react To Attack()\n";
-	if (!state->attacks.empty()){		
-		Attack * attack = state->attacks.front();
-		state->attacks.pop(); 
-		Position* pos = attack->pos;
-		cout << "The opponent shot at " << Client::numToLetter(pos->get_i()) << pos->get_j() << endl;
-		int i, j;
-		i = attack->pos->get_i();
-		j = attack->pos->get_j();
-		if (attack->successful){
-			cout << "Oh no, you've been hit!\n";
-			board[i][j] = "! ";
-		}
-		else{
-			cout << "Your opponent missed!\n";
-			board[i][j] = "X ";
-		}
+	
+	Attack * attack = gameInfo->lastAttack;
+	Position* pos = attack->pos;  
+	
+	int i, j;
+	i = attack->pos->get_i();
+	j = attack->pos->get_j();
+	cout << "The opponent shot at " << Client::numToLetter(j) << i << endl;
+	if (attack->successful){
+		cout << "Oh no, you've been hit!\n";
+		board[i][j] = "! ";
+	}		
+	else{
+		cout << "Your opponent missed!\n";
+		board[i][j] = "X ";
 	}
-	else if (state->attackedPlayerId == id)
-		cout << "\nWaiting for the opponent to make a move...\n";
-
 	printBoards();
 }

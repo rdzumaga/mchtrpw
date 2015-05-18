@@ -11,119 +11,97 @@
 //-----------------------Game-------------------------
 
 Game::Game(){
-	playerA = playerB = activePlayer = NULL;
-	state.mode = IDLE;
+	//playerA = playerB = activePlayer = NULL;
+	attacked = attacker = NULL;
+	gameState = IDLE;
 }
 
 std::deque<Position*> Game::addPlayer(std::string id){
-	if (state.mode == ONGOING || state.mode == FINISHED){
+	if (gameState == ONGOING || gameState == FINISHED){
 		std::deque<Position*> empty;
 		return empty;
 	}
 
-	if (playerA == NULL){
-		playerA = new Player(id, true);
-		state.mode = WAITING;
-		state.attackingPlayerId = id;
-		activePlayer = playerA;
-		return playerA->getShipsPos();
+	if (attacker == NULL){
+		attacker = new Player(id, true);
+		gameState = WAITING;
+		return attacker->getShipsPos();
 	}
-	else if (playerB == NULL){
-		playerB=new Player(id, false);
-		state.mode = ONGOING;
-		state.attackedPlayerId = id;
-		return playerB->getShipsPos();
-
+	else if (attacked == NULL){
+		attacked=new Player(id, false);
+		gameState = ONGOING;
+		return attacked->getShipsPos();
 	}
 }
 
-bool Game::begin(){
-	if (playerA != NULL && playerB != NULL){
-		state.mode = ONGOING;
-		state.attackingPlayerId = playerA->getId();
-		return true;
-	}
-	return false;
-}
 
 Player* Game::getPlayer(std::string playerId){
-	if (playerId == playerA->getId())
-		return playerA;
-	else
-		return playerB;
-}
-
-GameState* Game::getGameState(){
-	return &state; //maybe pop an attack from queue if sender id==attacked?
-}
-
-int Game::shoot(int i, int j, std::string attackerId){
-	Player* attacker = getPlayer(attackerId);
-	if (activePlayer == attacker){
-		Player* attacked = getPlayer(state.attackedPlayerId);
-		bool attackSuccesful = attacked->underAttack(i, j);
-		Attack* attack = new Attack(new Position(i, j), attackSuccesful, attackerId);
-		if (attacked->hasLost())
-			finish();
-
-		if (!attackSuccesful)
-			switchActivePlayer();
-
-		state.attacks.push(attack);
-		//state.attacks.push(attack);//for queue
-		return attackSuccesful;
+	if (attacker != NULL){
+		if (playerId == attacker->getId())
+			return attacker;
+		else if (attacked != NULL)
+			return attacked;
 	}
-	return ERROR;
+	return new Player();
+}
+int Game::shoot(int i, int j){
+	bool attackSuccesful = attacked->underAttack(i, j);
+	if (attacked->hasLost())
+		finish();
+
+	if (!attackSuccesful)
+		switchActivePlayer();
+
+	return attackSuccesful;
 }
 
 void Game::switchActivePlayer(){
-	Player* newAttacker = getPlayer(state.attackedPlayerId);
-	state.attackedPlayerId = state.attackingPlayerId;
-	state.attackingPlayerId=newAttacker->getId();
-	activePlayer->setActive(false);
-	activePlayer = newAttacker;
-	activePlayer->setActive(true);	
-	//clear the attacks queue
-	//std::queue<Attack*> empty;
-	while (!state.attacks.empty()){
-		state.attacks.pop();
-	}
-	//std::deque<Attack*> empty;
-	//state.attacks.swap(empty);
+	attacker->toggleActive();
+	Player* newAttacker = attacked;
+	attacked = attacker;
+	attacker = newAttacker;
+	attacker->toggleActive();
 }
 
 void Game::finish(){
-	state.mode = FINISHED;
-}
-//-----------------------GameState-------------------------
-GameState::GameState(){
-	mode = IDLE;
-	attackedPlayerId = attackingPlayerId = "";
-
+	gameState = FINISHED;
 }
 
+Info* Game::getInfo(std::string playerId){
+	Player * player = getPlayer(playerId);
+	Info * gameInfo = new Info(player, gameState);
+	return gameInfo;
+}
 
 
 //-----------------------Player-------------------------
 
+//dummy constructor for avoiding null exceptions
+Player::Player(){
+	IP = "dummy";
+	sustainedDamage = false;
+	activeFlag = false;
+}
 Player::Player(std::string id, bool isFirstPlayer){
 	IP = id;
 	sustainedDamage = false;
-	remainingShipUnits = 5 + 4 + 4 + 3 + 3 + 3 + 2 + 2 + 2 + 2;
+	//remainingShipUnits = 5 + 4 + 4 + 3 + 3 + 3 + 2 + 2 + 2 + 2;
+	remainingShipUnits = 5;
 	activeFlag = isFirstPlayer;
 }
 
+void Player::toggleActive(){
+	activeFlag = !activeFlag;
+}
 std::string Player::getId(){
 	return IP;
 }
 
 std::deque<Position*> Player::getShipsPos(){
 	std::deque<Position*> answer;
-	if (ships.empty()){
+	if (ships.empty())
 		placeShipsRandomly();
-	}
 	
-	//TODO: calculate ships positions and return them
 	int temp = ships.size();
 	Ship* shipTemp;
 	for (int i = 0; i < ships.size(); i++){
@@ -138,6 +116,7 @@ std::deque<Position*> Player::getShipsPos(){
 
 void Player::placeShipsRandomly(){
 	static int playerNr = 0;
+
 	/* initialize random seed: */
 	//srand(time(NULL));
 	srand(5000);
@@ -189,48 +168,10 @@ Ship* Player::placeShipRandomly(int length, Ship::Orientation or){
 	board.placeShip(ship);
 	return ship;
 }
-
 /*
-void Player::placeShipsRandomly0(){
-	//temporarily, positions are hardcoded
-	static int playerNr = 0;
-
-	//for each ship
-	Ship* ship;
-	for (int i = 0; i < shipsNr; i++){
-		int length = statkiLen[i];
-		Ship::Orientation or = statkiOrientation[i];
-		int s_i = statkiPos[i][0];
-		int s_j = statkiPos[i][1];
-		ship = new Ship(this, length, or, s_i, s_j);
-
-		int dx = 1;
-		int dy = 1;
-		if (or == Ship::HORIZONTAL)
-			dy = 0;
-		else
-			dx = 0;
-
-		for (int l = 0; l < length; l++){
-			board.fields[s_i][s_j].attach(ship);
-			s_i += dy;
-			s_j += dx;
-		}
-		ships.push_back(ship);
-	}
-	//for each field on the board
-	for (int i = 0; i < N; i++){
-		for (int j = 0; j < N; j++){
-			;
-		}
-	}
-	
-	playerNr++;
-}*/
-
 void Player::setActive(bool active){
 	activeFlag = active;
-}
+}*/
 
 bool Player::isActive(){
 	return activeFlag;
@@ -239,6 +180,8 @@ bool Player::isActive(){
 bool Player::underAttack(int i, int j){
 	sustainedDamage = false;
 	board.shootField(i, j);
+	Attack * attack = new Attack(new Position(i, j), sustainedDamage);
+	receivedAttacks.push(attack);
 	return sustainedDamage;
 }
 
@@ -252,6 +195,16 @@ void Player::update(){
 	remainingShipUnits--;
 	sustainedDamage = true;
 }
+
+Attack* Player::getLastAttack(){
+	Attack* attack = NULL;
+	if (!receivedAttacks.empty()){
+		attack = receivedAttacks.front();
+		receivedAttacks.pop();
+	}
+	return attack;
+	
+}
 //-----------------------Ship-------------------------
 Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
 	this->owner = owner;
@@ -261,12 +214,6 @@ Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
 	pos = Position(i, j);
 
 }
-/*
-Ship::Ship(Player* owner){
-	this->owner = owner;
-	this->pos = pos;
-}*/
-
 
 std::deque<Position*> Ship::getPositions(){
 	std::deque<Position*> answer;
@@ -364,16 +311,19 @@ bool Field::isEmpty(){
 }
 
 //-----------------------Attack-------------------------
-
-Attack::Attack(Position* pos, bool successful, std::string attackerId){
+Attack::Attack(Position* pos, bool succcessful){
 	this->pos = pos;
-	this->successful = successful;
-	this->attackerId = attackerId;
+	this->successful = succcessful;
 }
 
 
 
-
+//-------------------------------Info --------------------------------
+Info::Info(Player* player, Mode gameMode){
+	this->gameMode = gameMode;
+	this->playerIsUnderAttack = !player->isActive();
+	this->lastAttack = player->getLastAttack();
+}
 
 
 

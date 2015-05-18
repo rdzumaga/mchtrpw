@@ -26,8 +26,8 @@ public:
 private:
 	void loadShipsPos(deque<Position*> shipsPos);
 	void printBoards();
-	void attack(GameState* state);
-	void reactToAttack(GameState* state);
+	void attack();
+	void reactToAttack(Info* gameInfo);
 
 };
 
