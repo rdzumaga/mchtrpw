@@ -17,10 +17,6 @@ Game::Game(){
 }
 
 std::deque<Position*> Game::addPlayer(std::string id){
-	if (gameState == ONGOING || gameState == FINISHED){
-		std::deque<Position*> empty;
-		return empty;
-	}
 
 	if (attacker == NULL){
 		attacker = new Player(id, true);
@@ -32,6 +28,8 @@ std::deque<Position*> Game::addPlayer(std::string id){
 		gameState = ONGOING;
 		return attacked->getShipsPos();
 	}
+		std::deque<Position*> empty;
+		return empty;
 }
 
 
@@ -85,8 +83,8 @@ Player::Player(){
 Player::Player(std::string id, bool isFirstPlayer){
 	IP = id;
 	sustainedDamage = false;
-	//remainingShipUnits = 5 + 4 + 4 + 3 + 3 + 3 + 2 + 2 + 2 + 2;
-	remainingShipUnits = 5;
+	remainingShipUnits = 5 + 4 + 4 + 3 + 3 + 3 + 2 + 2 + 2 + 2;
+	//remainingShipUnits = 5;
 	activeFlag = isFirstPlayer;
 }
 
@@ -96,6 +94,7 @@ void Player::toggleActive(){
 std::string Player::getId(){
 	return IP;
 }
+
 
 std::deque<Position*> Player::getShipsPos(){
 	std::deque<Position*> answer;
@@ -118,8 +117,8 @@ void Player::placeShipsRandomly(){
 	static int playerNr = 0;
 
 	/* initialize random seed: */
-	//srand(time(NULL));
-	srand(5000);
+	srand(time(NULL));
+	//srand(5000);
 
 	Ship* ship;
 	for (int k = 0; k < shipsNr; k++){
