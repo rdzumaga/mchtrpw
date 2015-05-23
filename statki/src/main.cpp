@@ -16,35 +16,9 @@ Game scenario:
 
 */
 int main(){
-	//1.
-	std::cout << "Battleships!\n";
-	Client clientA;
-	clientA.connect();
-
-	//2.
-	clientA.inquireAndReact();
-	clientA.inquireAndReact();
-	clientA.inquireAndReact();
-
-	//3.
-	Client clientB;
-	clientB.connect();
-
-	//4.
-	clientB.inquireAndReact();
-
-	//5.
-	clientA.inquireAndReact();
-	clientB.inquireAndReact();
-
-	//6.
-	clientA.inquireAndReact();
-	clientB.inquireAndReact();
-	clientA.inquireAndReact();
-	clientB.inquireAndReact();
-	clientA.inquireAndReact();
-	clientB.inquireAndReact();
 	
+	Game & game = Game::getInstance();
+
 	int wait;
 	std::cin >> wait;
 	return 0;
