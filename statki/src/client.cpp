@@ -1,5 +1,6 @@
 #include "client.h"
-
+#include <cstdlib> 
+#include <ctime>
 
 Client::Client() {
 
@@ -73,6 +74,7 @@ string Client::numToLetter(int num){
 void Client::connect(){
 	//cout << "Player is connecting to server. Please enter player id (any string)\n";
 	//cin >> id;
+	srand(time(NULL));
 	id = to_string(rand() % 100);
 	cout << "Player is connecting to server. Player id is: " +id+ "\n";
 	Game & game = Game::getInstance();
