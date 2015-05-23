@@ -23,8 +23,8 @@ GameData Fasada::ConnectPlayer()
 	for(int i = 0; i < shipsPos.size(); i++)
 	{
 		MapPosition pos;
-		pos.x = shipsPos[i]->get_i;
-		pos.x = shipsPos[j]->get_j;
+		pos.x = shipsPos[i]->get_i();
+		pos.x = shipsPos[i]->get_j();
 		myShips.push_back(pos);
 	}
 
