@@ -10,6 +10,7 @@ import json
 import traceback
 
 #all modules should be imported here
+#tutaj nazwy zgodne z nazwami plikow
 import version
 import version.views
 import current
