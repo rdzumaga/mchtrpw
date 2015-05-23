@@ -42,7 +42,7 @@ GameData ConnectPlayer()
 	dataToReturn.ID = id;
 	dataToReturn.MyShips = myShips;
 	
-	cout << myShips.size();
+	
 
 	return dataToReturn;
 }
