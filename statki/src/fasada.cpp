@@ -1,5 +1,5 @@
 #include "fasada.h"
-
+#include <iostream>
 
 
 GameData ConnectPlayer()
@@ -17,7 +17,7 @@ GameData ConnectPlayer()
 	{
 		MapPosition pos;
 		pos.x = shipsPos[i]->get_i();
-		pos.x = shipsPos[i]->get_j();
+		pos.y = shipsPos[i]->get_j();
 		myShips.push_back(pos);
 	}
 
@@ -28,6 +28,7 @@ GameData ConnectPlayer()
 	dataToReturn.ID = id;
 	dataToReturn.MyShips = myShips;
 	
+	cout << myShips.size();
 
 	return dataToReturn;
 }

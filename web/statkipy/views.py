@@ -7,11 +7,12 @@ fasada library interface to client
 export fasada results to client
 """
 import fasada
-import pdb
 
 def ConnectPlayer(params):
-    """fasada from C++ library"""
-    pdb.set_trace()
+    """fasada from C++ library"""    
     return {		
-        "GameData" : fasada.ConnectPlayer()
+        "ID" : fasada.ConnectPlayer().ID,
+		"GameState" : fasada.ConnectPlayer().GameMode,
+		"MyShips" : fasada.ConnectPlayer().MyShips
+		
     }

@@ -6,6 +6,11 @@ using namespace std;
 struct MapPosition{
 public:
 	int x, y;
+
+	bool operator==(const MapPosition& mp1)
+	{
+		return true;
+	}
 };
 
 struct ShotPosition{
@@ -13,13 +18,16 @@ struct ShotPosition{
 	bool TargetHit;
 };
 
+typedef vector<MapPosition> MapPos;
+//typedef vector<ShotPosition> ShotPos;
+
 class GameData{
 public:
 	string ID;
 	string GameMode;
-	vector<MapPosition> MyShips;
-	vector<MapPosition> EnemyShots;
-	vector<ShotPosition> MyShots;	
+	MapPos MyShips;
+	//MapPos EnemyShots;
+	//ShotPos MyShots;	
 };
 
 
