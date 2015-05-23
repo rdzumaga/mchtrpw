@@ -3,5 +3,5 @@
 #include "statki.hpp"
 #include <ctime>
 
-	GameData ConnectPlayer();
+GameData ConnectPlayer();
 

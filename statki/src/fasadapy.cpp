@@ -15,7 +15,7 @@ using namespace boost::python;
 BOOST_PYTHON_MODULE( fasada )
 {
 	//! exports getNumber to Python
-	//boost::python::def( "ConnectPlayer", ConnectPlayer );
+	boost::python::def( "ConnectPlayer", ConnectPlayer );
 	
 	class_<MapPosition>("MapPosition", "TODO Description")
 				.def_readonly("x", &MapPosition::x)
@@ -26,7 +26,7 @@ BOOST_PYTHON_MODULE( fasada )
 				.def_readonly("x", &ShotPosition::x)
 				.def_readonly("y", &ShotPosition::y)
 				.def_readonly("TargetHit", &ShotPosition::TargetHit)
-				;	
+				;
 	
 	class_<GameData>("GameData", "TODO Description")
 				.def_readonly("ID", &GameData::ID)
