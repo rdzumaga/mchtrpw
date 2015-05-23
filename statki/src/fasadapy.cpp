@@ -12,7 +12,7 @@ using namespace boost::python;
 /**
 * Python wrapper using Boost.Python
 */
-BOOST_PYTHON_MODULE(fasada)
+BOOST_PYTHON_MODULE( fasada )
 {
 	//! exports getNumber to Python
 	boost::python::def( "ConnectPlayer", ConnectPlayer );

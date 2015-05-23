@@ -1,16 +1,8 @@
 #include "fasada.h"
 
 
-Fasada::Fasada()
-{
-}
 
-
-Fasada::~Fasada()
-{
-}
-
-GameData Fasada::ConnectPlayer()
+GameData ConnectPlayer()
 {
 	string id;
 	srand(time(NULL));

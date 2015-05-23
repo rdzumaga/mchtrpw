@@ -8,6 +8,7 @@ export calculation results to client
 """
 import calc
 
+
 def getNumber(params):
     """the calculation from C++ library"""
     return {
