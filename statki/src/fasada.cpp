@@ -1,7 +1,6 @@
 #include "fasada.h"
 #include <iostream>
 
-
 GameData ConnectPlayer()
 {
 	string id;
@@ -24,7 +23,22 @@ GameData ConnectPlayer()
 	Info * gameInfo = game.getInfo(id);
 
 	GameData dataToReturn;
-	dataToReturn.GameMode = gameInfo->gameMode;
+
+	switch (gameInfo->gameMode) {
+	case IDLE:
+		dataToReturn.GameMode = "IDLE";
+		break;			
+	case WAITING:
+		dataToReturn.GameMode = "WAITING";
+		break;
+	case ONGOING:
+		dataToReturn.GameMode = "ONGOING";
+		break;
+	case FINISHED:
+		dataToReturn.GameMode = "FINISHED";
+		break;
+	}
+
 	dataToReturn.ID = id;
 	dataToReturn.MyShips = myShips;
 	
