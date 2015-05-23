@@ -12,8 +12,9 @@ Fasada::~Fasada()
 
 GameData Fasada::ConnectPlayer()
 {
-	//TODO add id generation
 	string id;
+	srand(time(NULL));
+	id = to_string(rand() % 100);
 
 	Game & game = Game::getInstance();
 	deque<Position*> shipsPos = game.addPlayer(id);

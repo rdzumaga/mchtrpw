@@ -18,7 +18,7 @@ DoStuff = function(){
 DoMoreStuff = function(){
 	
 	$.ajax({
-		url:"srvmyapp/ajax/calcpy/ConnectPlayer"
+		url:"srvmyapp/ajax/fasada/ConnectPlayer"
 		
 	})
 	
