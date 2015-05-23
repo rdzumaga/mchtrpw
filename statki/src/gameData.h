@@ -19,15 +19,15 @@ struct ShotPosition{
 };
 
 typedef vector<MapPosition> MapPos;
-//typedef vector<ShotPosition> ShotPos;
+typedef vector<ShotPosition> ShotPos;
 
 class GameData{
 public:
 	string ID;
 	string GameMode;
 	MapPos MyShips;
-	//MapPos EnemyShots;
-	//ShotPos MyShots;	
+	MapPos EnemyShots;
+	ShotPos MyShots;	
 };
 
 

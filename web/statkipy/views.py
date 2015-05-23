@@ -30,7 +30,7 @@ def ConnectPlayer(params):
             superlista.append([val.x, val.y])
 
     x = Data(srvResponse.ID, srvResponse.GameMode, superlista)
-    pdb.set_trace() 
+    """pdb.set_trace()"""
     return {
-            json.dumps(x)
+            json.dumps(x.__dict__)
     }

@@ -42,7 +42,6 @@ GameData ConnectPlayer()
 	dataToReturn.ID = id;
 	dataToReturn.MyShips = myShips;
 	
-	
 
 	return dataToReturn;
 }
