@@ -59,10 +59,12 @@ elif(platform.system() == "Windows"):
 
 #build C++ library
 cpplib = env_dll.SharedLibrary( target = 'statki', source = ['../statki/src/statki.cpp', '../statki/src/statkipy.cpp'])
+cpplib = env_dll.SharedLibrary( target = 'fasada', source = ['../statki/src/fasada.cpp', '../statki/src/fasadapy.cpp'])
 if(platform.system() == "Linux"):
    target = '../build_web/statkipy/statki.so'
 elif(platform.system() == "Windows"):
    target = '../build_web/statkipy/statki.pyd'
+    target = '../build_web/fasadapy/fasada.pyd'
 env_dll.Command(target, cpplib, copyLibBuilder )
 
 """
