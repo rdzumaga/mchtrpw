@@ -1,11 +1,13 @@
 #pragma once
-class fasada
+#include "gameData.h"
+#include "statki.hpp"
+class Fasada
 {
 public:
-	fasada();
-	~fasada();
+	Fasada();
+	~Fasada();
 
-
+	GameData ConnectPlayer();
 
 };
 

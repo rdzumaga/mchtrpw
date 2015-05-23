@@ -3,7 +3,7 @@ using namespace std;
 #include <string>
 #include <vector>
 
-struct Position{
+struct MapPosition{
 public:
 	int x, y;
 };
@@ -13,12 +13,12 @@ struct ShotPosition{
 	bool TargetHit;
 };
 
-class gameData{
+class GameData{
 public:
 	string ID;
 	string GameMode;
-	vector<Position> MyShips;
-	vector<Position> EnemyShots;
+	vector<MapPosition> MyShips;
+	vector<MapPosition> EnemyShots;
 	vector<ShotPosition> MyShots;	
 };
 
