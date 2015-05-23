@@ -36,16 +36,3 @@ for (var i = 0; i < rows.length; i++) {
 	
 }
 
-function arrangeShips() {
-	//TODO podpiac logike, chwilowe rozwiazanie:
-	var ownTable = document.getElementById("ownTable");
-	ownTable.rows[1].cells[1].style.background = '#64b167';
-	ownTable.rows[2].cells[1].style.background = '#64b167';
-	ownTable.rows[4].cells[5].style.background = '#64b167';
-	ownTable.rows[5].cells[5].style.background = '#64b167';
-	ownTable.rows[6].cells[5].style.background = '#64b167';
-	ownTable.rows[9].cells[4].style.background = '#64b167';
-	ownTable.rows[9].cells[5].style.background = '#64b167';
-	ownTable.rows[9].cells[6].style.background = '#64b167';
-	ownTable.rows[9].cells[7].style.background = '#64b167';
-}
