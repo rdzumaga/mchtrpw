@@ -1,7 +1,8 @@
 
 //#include "statki.hpp"//
-#include "client.h"
-//#include <iostream>//
+//#include "client.h"
+#include "fasada.h"
+#include <iostream>//
 //#include <string>//
 //#include <queue>
 //#include <deque>
@@ -16,7 +17,7 @@ Game scenario:
 
 */
 int main(){
-	
+	ConnectPlayer();
 	Game & game = Game::getInstance();
 
 	int wait;

@@ -24,15 +24,12 @@ class Data(object):
 def ConnectPlayer(params):
     """fasada from C++ library"""       
     srvResponse = fasada.ConnectPlayer()
-    ls = list(srvResponse.MyShips)
-    superlista = []
-    for i, val in enumerate(ls):
-            superlista.append([val.x, val.y])
-
     
-
-    x = Data(srvResponse.ID, srvResponse.GameMode, superlista)
-    pdb.set_trace()
+    #pdb.set_trace()
     return {
-            json.dumps(x.__dict__)
+            "ID" : srvResponse.ID,
+            "GameMode" : srvResponse.GameMode,
+            "MyShips" : srvResponse.MyShips,
+            "MyShots" : srvResponse.MyShots,
+            "EnemyShots" : srvResponse.EnemyShots
     }

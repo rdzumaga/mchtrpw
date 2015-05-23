@@ -17,19 +17,19 @@ BOOST_PYTHON_MODULE( fasada )
 	//! exports getNumber to Python
 	boost::python::def( "ConnectPlayer", ConnectPlayer );
 	
-	class_<MapPosition>("MapPosition", "TODO Description")
-				.def_readonly("x", &MapPosition::x)
-				.def_readonly("y", &MapPosition::y)
-				;	
+	// class_<MapPosition>("MapPosition", "TODO Description")
+				// .def_readonly("x", &MapPosition::x)
+				// .def_readonly("y", &MapPosition::y)
+				// ;	
 				
-	 class_<ShotPosition>("ShotPosition", "TODO Description")
-				.def_readonly("x", &ShotPosition::x)
-				.def_readonly("y", &ShotPosition::y)
-				.def_readonly("TargetHit", &ShotPosition::TargetHit)
-				;
+	 // class_<ShotPosition>("ShotPosition", "TODO Description")
+				// .def_readonly("x", &ShotPosition::x)
+				// .def_readonly("y", &ShotPosition::y)
+				// .def_readonly("TargetHit", &ShotPosition::TargetHit)
+				// ;
 				
-	class_<MapPos>("MapPos")
-				.def(vector_indexing_suite<MapPos>() );
+	// class_<MapPos>("MapPos")
+				// .def(vector_indexing_suite<MapPos>() );
 	
 	class_<GameData>("GameData", "TODO Description")
 				.def_readonly("ID", &GameData::ID)
