@@ -29,8 +29,10 @@ def ConnectPlayer(params):
     for i, val in enumerate(ls):
             superlista.append([val.x, val.y])
 
+    
+
     x = Data(srvResponse.ID, srvResponse.GameMode, superlista)
-    """pdb.set_trace()"""
+    pdb.set_trace()
     return {
             json.dumps(x.__dict__)
     }
