@@ -1,15 +1,15 @@
 ## @file statkipy/views.py
-#  @brief statki library interface to client
+#  @brief fasada library interface to client
 
 """
-statki library interface to client
+fasada library interface to client
 
-export statki results to client
+export fasada results to client
 """
-import statki
+import fasada
 
-def getNumber(params):
-    """statki from C++ library"""
+def ConnectPlayer(params):
+    """fasada from C++ library"""
     return {
-        "number" : statki.getNumber()
+        "GameData" : fasada.ConnectPlayer()
     }

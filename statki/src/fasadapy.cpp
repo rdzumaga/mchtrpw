@@ -15,6 +15,6 @@ using namespace boost::python;
 BOOST_PYTHON_MODULE(fasada)
 {
 	//! exports getNumber to Python
-	def("ConnectPlayer", ConnectPlayer);
+	boost::python::def( "ConnectPlayer", ConnectPlayer );
 
 }

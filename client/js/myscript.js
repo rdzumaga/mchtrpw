@@ -15,3 +15,18 @@ DoStuff = function(){
 };
 
 
+DoMoreStuff = function(){
+	
+	$.ajax({
+		url:"srvmyapp/ajax/calcpy/ConnectPlayer"
+		
+	})
+	
+	.success(function(data){
+		alert(data);
+	});
+	
+	
+};
+
+
