@@ -71,8 +71,10 @@ string Client::numToLetter(int num){
 
 }
 void Client::connect(){
-	cout << "Player is connecting to server. Please enter player id (any string)\n";
-	cin >> id;
+	//cout << "Player is connecting to server. Please enter player id (any string)\n";
+	//cin >> id;
+	id = to_string(rand() % 100);
+	cout << "Player is connecting to server. Player id is: " +id+ "\n";
 	Game & game = Game::getInstance();
 	deque<Position*> shipsPos = game.addPlayer(id);
 	loadShipsPos(shipsPos);
