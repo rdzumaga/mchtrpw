@@ -7,19 +7,7 @@ fasada library interface to client
 export fasada results to client
 """
 import fasada
-import json
-import pdb
-
-class Data(object):
-	id = ""
-	gameState = ""
-	myShips = []
-	
-	def __init__(self, id, state, list):
-		self.id = id
-		self.gameState = state
-		self.myShips = list
-
+#import pdb
 
 def ConnectPlayer(params):
     """fasada from C++ library"""       
