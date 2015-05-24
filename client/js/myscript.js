@@ -1,4 +1,4 @@
-
+var redXImage = "<img src='/pict/red_x.png' alt='X' width='10px' height='10px'/>";
 
 DoStuff = function(){
 	
@@ -41,5 +41,24 @@ function arrangeShips(ownShipsPositions) {
 	}
 }
 
+function doOnLoad() {
+		$.ajax({
+		url:"srvmyapp/ajax/statkipy/ConnectPlayer"
+		
+	})
 
+	.success(function(data){
+		var enemyShots = data.EnemyShots;
+		var ownTable = document.getElementById("ownTable");
+		if (enemyShots){
+			var shots = enemyShots.split(";");
+			for(i=0; i < shots.length-1; ++i){
+				var shot = shots[i].split("-");
+				ownTable.rows[parseInt(shots[0])+1].cells[parseInt(shots[1])+1].innerHTML = redXImage;
+		}
+	}
+	debugger;
+			
+	});
+}
 
