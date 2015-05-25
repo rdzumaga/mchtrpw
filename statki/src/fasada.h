@@ -9,4 +9,4 @@ string GetGameState(string playerID);
 
 GameData ConnectPlayer();
 
-ShotResponse Shoot(string playerID, string pos_i, string pos_j);
+ShotResponse Shoot(string playerID, int pos_i, int pos_j);

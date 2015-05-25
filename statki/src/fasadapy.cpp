@@ -15,9 +15,10 @@ using namespace boost::python;
 BOOST_PYTHON_MODULE( fasada )
 {
 	//! exports getNumber to Python
+	boost::python::def( "Shoot", Shoot );
 	boost::python::def( "ConnectPlayer", ConnectPlayer );
 	boost::python::def( "GetGameState", GetGameState );
-	boost::python::def( "Shoot", Shoot );
+	
 	
 	// class_<MapPosition>("MapPosition", "TODO Description")
 				// .def_readonly("x", &MapPosition::x)
