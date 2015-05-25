@@ -29,6 +29,7 @@ for (var i = 0; i < rows.length; i++) {
         console.log(cell);
         cell.onclick = function () {
 			tableText(this.rowIndex, this.positionIndex);
+			
 			//TODO podpiac logike
         };
     }
