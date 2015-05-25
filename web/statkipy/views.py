@@ -38,3 +38,4 @@ def Shoot(params):
             "GameMode" : srvResponse.GameMode,
             "TargetHit" : srvResponse.TargetHit }
 
+#dziala?
