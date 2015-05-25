@@ -1,5 +1,16 @@
 var redXImage = "<img src='/pict/red_x.png' alt='X' width='10px' height='10px'/>";
 
+Shoot = function(_pID, _i, _j){
+	$.ajax({
+		url:"srvmyapp/ajax/statkipy/Shoot",
+		data: { playerID : _pID, pos_i : _i, pos_j : _j }
+	})
+	
+	.success(function(data){
+		//alert(data);
+	});
+}
+
 GetGameState = function(_pID){
 	
 	$.ajax({
@@ -15,7 +26,7 @@ GetGameState = function(_pID){
 };
 
 
- DoMoreStuff = function(){
+ConnectPlayer = function(){
 	
 	 $.ajax({
 		 url:"srvmyapp/ajax/statkipy/ConnectPlayer"

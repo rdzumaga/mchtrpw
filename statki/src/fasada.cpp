@@ -28,7 +28,6 @@ string GetGameState(string playerID)
 	return GameModeToString(gameInfo->gameMode);
 }
 
-
 GameData ConnectPlayer()
 {
 	string id;
@@ -69,4 +68,28 @@ GameData ConnectPlayer()
 	dataToReturn.MyShots = "";
 
 	return dataToReturn;
+}
+
+ShotResponse Shoot(string playerID, int pos_i, int pos_j){
+
+	Game & game = Game::getInstance();	
+	Info* info = game.getInfo(playerID);
+	ShotResponse response;
+
+	if (info->playerIsUnderAttack == true)
+	{		
+		response.GameMode = GameModeToString(info->gameMode);
+		response.TargetHit = false;
+		return response;
+	}
+	else
+	{	
+		response.GameMode = GameModeToString(game.getInfo(playerID)->gameMode);
+		response.TargetHit = game.shoot((pos_i), (pos_j));
+		return response;
+	}
+
+
+
+
 }

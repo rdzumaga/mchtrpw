@@ -27,7 +27,12 @@ public:
 	string GameMode;
 	string MyShips;
 	string EnemyShots;
-	string MyShots;	
+	string MyShots;
 };
 
 
+class ShotResponse{
+public:
+	string GameMode;
+	bool TargetHit;
+};

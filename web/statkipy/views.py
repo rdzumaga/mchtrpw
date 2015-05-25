@@ -26,3 +26,15 @@ def GetGameState(params):
     data = (params.dict())
     _playerID = str(data['playerID'])
     return { "GameMode" : fasada.GetGameState(_playerID) }
+
+def Shoot(params):
+    data = (params.dict())
+    _playerID = str(data['playerID'])
+    _pos_i = int(data['pos_i'])
+    _pos_j = int(data['pos_j'])
+
+    srvResponse = fasada.Shoot(_playerID, _pos_i, _pos_j)
+    return {
+            "GameMode" : srvResponse.GameMode,
+            "TargetHit" : srvResponse.TargetHit }
+

@@ -17,6 +17,7 @@ BOOST_PYTHON_MODULE( fasada )
 	//! exports getNumber to Python
 	boost::python::def( "ConnectPlayer", ConnectPlayer );
 	boost::python::def( "GetGameState", GetGameState );
+	boost::python::def( "Shoot", Shoot );
 	
 	// class_<MapPosition>("MapPosition", "TODO Description")
 				// .def_readonly("x", &MapPosition::x)
@@ -38,6 +39,11 @@ BOOST_PYTHON_MODULE( fasada )
 				.def_readonly("MyShips", &GameData::MyShips)
 				.def_readonly("EnemyShots", &GameData::EnemyShots)
 				.def_readonly("MyShots", &GameData::MyShots)
+				;
+				
+	class_<ShotResponse>("ShotResponse", "TODO Description")
+				.def_readonly("TargetHit", &ShotResponse::TargetHit)
+				.def_readonly("GameMode", &ShotResponse::GameMode)
 				;
 						
 }
