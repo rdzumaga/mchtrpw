@@ -17,9 +17,9 @@ Game scenario:
 
 */
 int main(){
-	ConnectPlayer();
+	
 	Game & game = Game::getInstance();
-
+	
 	int wait;
 	std::cin >> wait;
 	return 0;

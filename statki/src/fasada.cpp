@@ -1,6 +1,34 @@
 #include "fasada.h"
 #include <iostream>
 
+
+string GameModeToString(Mode mode)
+{
+	switch (mode) {
+	case IDLE:
+		return "IDLE";
+		break;
+	case WAITING:
+		return "WAITING";
+		break;
+	case ONGOING:
+		return "ONGOING";
+		break;
+	case FINISHED:
+		 return"FINISHED";
+		break;
+	}
+}
+
+string GetGameState(string playerID)
+{
+	Game & game = Game::getInstance();
+	Info* gameInfo = game.getInfo(playerID);
+
+	return GameModeToString(gameInfo->gameMode);
+}
+
+
 GameData ConnectPlayer()
 {
 	string id;
@@ -33,21 +61,8 @@ GameData ConnectPlayer()
 
 	GameData dataToReturn;
 
-	switch (gameInfo->gameMode) {
-	case IDLE:
-		dataToReturn.GameMode = "IDLE";
-		break;			
-	case WAITING:
-		dataToReturn.GameMode = "WAITING";
-		break;
-	case ONGOING:
-		dataToReturn.GameMode = "ONGOING";
-		break;
-	case FINISHED:
-		dataToReturn.GameMode = "FINISHED";
-		break;
-	}
-
+	
+	dataToReturn.GameMode = GameModeToString(gameInfo->gameMode);
 	dataToReturn.ID = id;
 	dataToReturn.MyShips = myShips;
 	dataToReturn.EnemyShots = "";

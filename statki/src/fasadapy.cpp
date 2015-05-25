@@ -16,6 +16,7 @@ BOOST_PYTHON_MODULE( fasada )
 {
 	//! exports getNumber to Python
 	boost::python::def( "ConnectPlayer", ConnectPlayer );
+	boost::python::def( "GetGameState", GetGameState );
 	
 	// class_<MapPosition>("MapPosition", "TODO Description")
 				// .def_readonly("x", &MapPosition::x)

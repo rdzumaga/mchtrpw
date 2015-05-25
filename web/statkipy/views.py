@@ -10,9 +10,9 @@ import fasada
 #import pdb
 
 def ConnectPlayer(params):
-    """fasada from C++ library"""       
+    """fasada from C++ library"""
     srvResponse = fasada.ConnectPlayer()
-    
+
     #pdb.set_trace()
     return {
             "ID" : srvResponse.ID,
@@ -21,3 +21,8 @@ def ConnectPlayer(params):
             "MyShots" : srvResponse.MyShots,
             "EnemyShots" : srvResponse.EnemyShots
     }
+
+def GetGameState(params):
+    data = (params.dict())
+    _playerID = str(data['playerID'])
+    return { "GameMode" : fasada.GetGameState(_playerID) }
