@@ -1,10 +1,10 @@
 var redXImage = "<img src='/pict/red_x.png' alt='X' width='10px' height='10px'/>";
 
-DoMoreStuff = function(){
+GetGameState = function(_pID){
 	
 	$.ajax({
 		url:"srvmyapp/ajax/statkipy/GetGameState",
-		data: { playerID : "12" }
+		data: { playerID : _pID }
 	})
 	
 	.success(function(data){
@@ -15,20 +15,20 @@ DoMoreStuff = function(){
 };
 
 
-// DoMoreStuff = function(){
+ DoMoreStuff = function(){
 	
-	// $.ajax({
-		// url:"srvmyapp/ajax/statkipy/ConnectPlayer"
+	 $.ajax({
+		 url:"srvmyapp/ajax/statkipy/ConnectPlayer"
 		
-	// })
+	 })
 	
-	// .success(function(data){
+	 .success(function(data){
 
-	// document.getElementById("guzik").style.display = "none";
-	// var ownShipsPos = data.MyShips;
-	// arrangeShips(ownShipsPos);
-	// });
-// };
+	 document.getElementById("guzik").style.display = "none";
+	 var ownShipsPos = data.MyShips;
+	 arrangeShips(ownShipsPos);
+	 });
+ };
 
 function arrangeShips(ownShipsPositions) {
 	var ownTable = document.getElementById("ownTable");
