@@ -33,8 +33,7 @@ ConnectPlayer = function(){
 	})
 	
 	.success(function(data){
-
-	document.getElementById("guzik").style.display = "none";
+	
 	var ownShipsPos = data.MyShips;
 	ID=data.ID;
 	arrangeShips(ownShipsPos);
@@ -57,7 +56,7 @@ function doOnLoad() {
 	setEnemyTable();
 	$("body").append('<div id="pop_up">');
 	var pop = document.getElementById("pop_up");
-	pop.innerHTML='<div cclass="pop_up" ><h1>hello</h1></div>';
+	pop.innerHTML='<div class="pop_up" ><h1>hello</h1></div>';
 	debugger;
 // }
 		// $.ajax({
@@ -82,9 +81,10 @@ function doOnLoad() {
 
 window.onload = function () {
 	setEnemyTable();
-	$("body").append('<div id="pop_up">');
+	$("body").append('<div id="pop_up" class="pop_up">');
 	var pop = document.getElementById("pop_up");
-	pop.innerHTML='<div cclass="pop_up" ><h1>hello</h1></div>';
+	pop.innerHTML='<div ><h1>hello</h1><button id="guzik" onclick=startGame()>guzik</button></div>';
+	
 }
 
 function setEnemyTable() {
@@ -104,6 +104,16 @@ function setEnemyTable() {
 		}
 	}
 	
+}
+
+function startGame() {
+	ConnectPlayer();
+	var millisecondsToWait = 500;
+setTimeout(function() {
+    // Whatever you want to do after the wait
+}, millisecondsToWait);
+	ConnectPlayer();
+	document.getElementById("pop_up").style.display = "none";
 }
 
 
