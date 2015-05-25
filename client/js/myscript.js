@@ -83,7 +83,7 @@ window.onload = function () {
 	setEnemyTable();
 	$("body").append('<div id="pop_up" class="pop_up">');
 	var pop = document.getElementById("pop_up");
-	pop.innerHTML='<div ><h1>hello</h1><button id="guzik" onclick=startGame()>guzik</button></div>';
+	pop.innerHTML='<div class="message" ><br/><h4>Aby rozpoczac gre, kliknij ponizszy przycisk:</h4><br /><br/><button id="guzik" class="startButton" onclick=startGame()>START</button></div>';
 	
 }
 
