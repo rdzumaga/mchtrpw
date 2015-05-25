@@ -13,7 +13,7 @@ def ConnectPlayer(params):
     """fasada from C++ library"""
     srvResponse = fasada.ConnectPlayer()
 
-    #pdb.set_trace()
+
     return {
             "ID" : srvResponse.ID,
             "GameMode" : srvResponse.GameMode,
@@ -33,9 +33,24 @@ def Shoot(params):
     _pos_i = int(data['pos_i'])
     _pos_j = int(data['pos_j'])
 
+
     srvResponse = fasada.Shoot(_playerID, _pos_i, _pos_j)
+    #pdb.set_trace()
     return {
             "GameMode" : srvResponse.GameMode,
             "TargetHit" : srvResponse.TargetHit }
 
-#dziala?
+
+def Update(params):
+    data = (params.dict())
+    _playerID = str(data['playerID'])
+
+
+
+    srvResponse = fasada.Update(_playerID)
+    #pdb.set_trace()
+    return {
+            "GameMode" : srvResponse.GameMode,
+            "ID" : srvResponse.ID,
+            "EnemyShots" : srvResponse.EnemyShots }
+

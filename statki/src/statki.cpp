@@ -195,15 +195,9 @@ void Player::update(){
 	sustainedDamage = true;
 }
 
-Attack* Player::getLastAttack(){
-	Attack* attack = NULL;
-	if (!receivedAttacks.empty()){
-		attack = receivedAttacks.front();
-		receivedAttacks.pop();
-	}
-	return attack;
+
 	
-}
+
 //-----------------------Ship-------------------------
 Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
 	this->owner = owner;
@@ -321,7 +315,7 @@ Attack::Attack(Position* pos, bool succcessful){
 Info::Info(Player* player, Mode gameMode){
 	this->gameMode = gameMode;
 	this->playerIsUnderAttack = !player->isActive();
-	this->lastAttack = player->getLastAttack();
+	this->receivedAttacks = player->receivedAttacks;
 }
 
 

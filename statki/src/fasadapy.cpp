@@ -18,6 +18,7 @@ BOOST_PYTHON_MODULE( fasada )
 	boost::python::def( "Shoot", Shoot );
 	boost::python::def( "ConnectPlayer", ConnectPlayer );
 	boost::python::def( "GetGameState", GetGameState );
+	boost::python::def( "Update", Update );
 	
 	
 	// class_<MapPosition>("MapPosition", "TODO Description")
@@ -45,6 +46,12 @@ BOOST_PYTHON_MODULE( fasada )
 	class_<ShotResponse>("ShotResponse", "TODO Description")
 				.def_readonly("TargetHit", &ShotResponse::TargetHit)
 				.def_readonly("GameMode", &ShotResponse::GameMode)
+				;
+				
+	class_<UpdateResponse>("UpdateResponse", "TODO Description")
+				.def_readonly("ID", &UpdateResponse::ID)
+				.def_readonly("GameMode", &UpdateResponse::GameMode)
+				.def_readonly("EnemyShots", &UpdateResponse::EnemyShots)
 				;
 						
 }

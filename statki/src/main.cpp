@@ -19,7 +19,14 @@ Game scenario:
 int main(){
 	
 	Game & game = Game::getInstance();
-	
+
+	GameData first = ConnectPlayer();
+
+	GameData data = ConnectPlayer();
+
+	Shoot(first.ID, 2, 3);
+	Shoot(data.ID, 2, 3);
+
 	int wait;
 	std::cin >> wait;
 	return 0;

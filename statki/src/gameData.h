@@ -34,5 +34,12 @@ public:
 class ShotResponse{
 public:
 	string GameMode;
-	bool TargetHit;
+	int TargetHit;
+};
+
+class UpdateResponse{
+public:
+	string ID;
+	string EnemyShots;
+	string GameMode;
 };

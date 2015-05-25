@@ -59,10 +59,10 @@ public:
 class Info{
 public:
 	Info(Player* player, Mode gameMode);
-	
+	std::queue<Attack *> receivedAttacks;
 	bool playerIsUnderAttack;
 	Mode gameMode;
-	Attack* lastAttack;
+	
 };
 
 class Game{
@@ -150,8 +150,8 @@ public:
 	bool underAttack(int i, int j);
 	bool hasLost();
 	std::deque<Position*> getShipsPos();
-	Attack* getLastAttack();
 	
+	std::queue<Attack *> receivedAttacks;
 	void update();
 	void toggleActive();
 	bool isActive();
@@ -164,7 +164,7 @@ private:
 	bool sustainedDamage;
 	std::string IP;
 	bool activeFlag;
-	std::queue<Attack *> receivedAttacks;
+	
 
 	void placeShipsRandomly();
 	Ship* placeShipRandomly(int length, Ship::Orientation or);

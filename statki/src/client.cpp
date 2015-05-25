@@ -118,11 +118,7 @@ void Client::inquireAndReact(){
 	if (gameInfo->gameMode == WAITING)
 		cout << "\nPlayer " << id << " is waiting for the second player to join the game\n.......................................................\n";
 	else if (gameInfo->gameMode == ONGOING){
-		while (gameInfo->lastAttack != NULL){
-			reactToAttack(gameInfo);
-			inquireAndReact();
-			break;
-		}
+		
 		gameInfo = game.getInfo(id);
 		if (!gameInfo->playerIsUnderAttack)
 			attack();
@@ -179,20 +175,7 @@ int Client::shoot(string target){
 void Client::reactToAttack(Info* gameInfo){
 	cout << "react To Attack()\n";
 	
-	Attack * attack = gameInfo->lastAttack;
-	Position* pos = attack->pos;  
 	
-	int i, j;
-	i = attack->pos->get_i();
-	j = attack->pos->get_j();
-	cout << "The opponent shot at " << Client::numToLetter(j) << i << endl;
-	if (attack->successful){
-		cout << "Oh no, you've been hit!\n";
-		board[i][j] = "! ";
-	}		
-	else{
-		cout << "Your opponent missed!\n";
-		board[i][j] = "X ";
-	}
+	
 	printBoards();
 }

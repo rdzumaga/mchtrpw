@@ -15,7 +15,7 @@ string GameModeToString(Mode mode)
 		return "ONGOING";
 		break;
 	case FINISHED:
-		 return"FINISHED";
+		return"FINISHED";
 		break;
 	}
 }
@@ -34,13 +34,13 @@ GameData ConnectPlayer()
 	string myShips = "";
 	srand(time(NULL));
 	id = to_string(rand() % 100);
-	
+
 	Game & game = Game::getInstance();
 	deque<Position*> shipsPos = game.addPlayer(id);
 
 	//vector<MapPosition> myShips;
 
-	for(int i = 0; i < shipsPos.size(); i++)
+	for (int i = 0; i < shipsPos.size(); i++)
 	{
 		/*MapPosition pos;
 		pos.x = shipsPos[i]->get_i();
@@ -60,7 +60,7 @@ GameData ConnectPlayer()
 
 	GameData dataToReturn;
 
-	
+
 	dataToReturn.GameMode = GameModeToString(gameInfo->gameMode);
 	dataToReturn.ID = id;
 	dataToReturn.MyShips = myShips;
@@ -72,18 +72,18 @@ GameData ConnectPlayer()
 
 ShotResponse Shoot(string playerID, int pos_i, int pos_j){
 
-	Game & game = Game::getInstance();	
+	Game & game = Game::getInstance();
 	Info* info = game.getInfo(playerID);
 	ShotResponse response;
 
 	if (info->playerIsUnderAttack == true)
-	{		
+	{
 		response.GameMode = GameModeToString(info->gameMode);
 		response.TargetHit = false;
 		return response;
 	}
 	else
-	{	
+	{
 		response.GameMode = GameModeToString(game.getInfo(playerID)->gameMode);
 		response.TargetHit = game.shoot((pos_i), (pos_j));
 		return response;
@@ -92,4 +92,41 @@ ShotResponse Shoot(string playerID, int pos_i, int pos_j){
 
 
 
+}
+
+UpdateResponse Update(string playerID)
+{
+	Game & game = Game::getInstance();
+	Info* info = game.getInfo(playerID);
+	UpdateResponse response;
+	string enemyShots = "";
+	std::queue<Attack*> enemyAttacks = info->receivedAttacks;
+
+	for (int i = 0; i < enemyAttacks.size(); i++)
+	{
+		Attack* current = enemyAttacks.front();
+		int x, y;
+		x = current->pos->get_i();
+		y = current->pos->get_j();
+		enemyShots += std::to_string(x);
+		enemyShots += "-";
+		enemyShots += std::to_string(y);
+		enemyShots += ";";
+	}
+
+	if (info->playerIsUnderAttack == false)
+	{
+		response.ID = playerID;
+	}
+	else
+	{
+		response.ID = "";
+	}
+
+	
+	response.GameMode = GameModeToString(info->gameMode);
+	response.EnemyShots = enemyShots;
+	
+
+	return response;
 }
