@@ -1,4 +1,4 @@
-var redXImageEnemy = "<img src='/pict/red_x.png' alt='X' width='10px' height='10px'/>";
+var redXImageSmall = "<img src='/pict/red_x.png' alt='X' width='10px' height='10px'/>";
 var redXImage = "<img src='/pict/red_x.png' alt='X' width='20px' height='20px'/>";
 var waitingForPlayer;
 var gamePlaying;
@@ -42,7 +42,7 @@ ConnectPlayer = function(){
 	.success(function(data){	
 		var ownShipsPos = data.MyShips;
 		ID=data.ID;
-		arrangeShips(ownShipsPos, "ownTable", '#64b167');
+		arrangeShips(ownShipsPos, "ownTable", false);
 	});
 };
 
@@ -56,7 +56,7 @@ Update = function(_pID){
 		debugger;
 		whichPlayer(data.ID);
 		if(data.ID == ID){
-			arrangeShips(data.EnemyShots, "enemyTable", 'red');			
+			arrangeShips(data.EnemyShots, "ownTable", true);			
 			document.getElementById("enemyTable").cursor = "pointer";
 		}
 		else{
@@ -71,13 +71,20 @@ Update = function(_pID){
 	});	
 };
 
-function arrangeShips(shipsPositions, tableId, color) {
-	var ownTable = document.getElementById(tableId);
+function arrangeShips(shipsPositions, tableId, ifAddImg) {
+	var table = document.getElementById(tableId);
 	if (shipsPositions){
 	var ships = shipsPositions.split(";");
 		for(i=0; i < ships.length-1; ++i){
 			var ship = ships[i].split("-");
-			ownTable.rows[parseInt(ship[0])+1].cells[parseInt(ship[1])+1].style.background = color;
+			if (!ifAddImg)
+			{
+				table.rows[parseInt(ship[0])+1].cells[parseInt(ship[1])+1].style.background = '#64b167';
+			}
+			else
+			{
+				table.rows[parseInt(ship[0])+1].cells[parseInt(ship[1])+1].innerHTML = redXImageSmall;
+			}
 		}
 	}
 }
