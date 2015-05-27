@@ -102,7 +102,7 @@ function setEnemyTable() {
 			cell.positionIndex = j;
 			console.log(cell);
 			cell.onclick = function () {
-				Shoot(ID, this.rowIndex, this.positionIndex);
+				Shoot(ID, (this.rowIndex-1), this.positionIndex);
 				tableText(this.rowIndex, this.positionIndex);
 			};
 		}
