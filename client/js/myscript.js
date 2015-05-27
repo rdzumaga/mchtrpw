@@ -1,4 +1,7 @@
-var redXImage = "<img src='/pict/red_x.png' alt='X' width='10px' height='10px'/>";
+var redXImageEnemy = "<img src='/pict/red_x.png' alt='X' width='10px' height='10px'/>";
+var redXImage = "<img src='/pict/red_x.png' alt='X' width='20px' height='20px'/>";
+var waitingForPlayer;
+var gamePlaying;
 var ID;
 
 Shoot = function(_pID, _i, _j){
@@ -20,7 +23,12 @@ GetGameState = function(_pID){
 	})
 	
 	.success(function(data){
-		//alert(data);
+		debugger;
+		if(data.GameMode == "ONGOING"){
+			document.getElementById("pop_up").style.display = "none";
+			alert("Drugi gracz polaczony");
+			stopWaitingForPlayer();
+		}
 	});	
 };
 
@@ -28,16 +36,37 @@ GetGameState = function(_pID){
 ConnectPlayer = function(){
 	
 	$.ajax({
-		url:"srvmyapp/ajax/statkipy/ConnectPlayer"
-		
+		url:"srvmyapp/ajax/statkipy/ConnectPlayer"		
+	})
+	
+	.success(function(data){	
+		var ownShipsPos = data.MyShips;
+		ID=data.ID;
+		arrangeShips(ownShipsPos);
+	});
+};
+
+Update = function(_pID){
+	
+	$.ajax({
+		url:"srvmyapp/ajax/statkipy/Update",
+		data: { playerID : _pID }
 	})
 	
 	.success(function(data){
-	
-	var ownShipsPos = data.MyShips;
-	ID=data.ID;
-	arrangeShips(ownShipsPos);
-	});
+		debugger;
+		if(data.ID == ID){
+			updateOwnShipsFiels();			
+			document.getElementById("enemyTable").cursor = "pointer";
+			alert("Twoja kolej!");
+			stopWaitingForMove(); 
+		}
+		else{
+			$("enemyTable").unbind();
+			$("enemyTable").removeAttr("onclick");
+			document.getElementById("enemyTable").cursor = "not-allowed";
+		}
+	});	
 };
 
 function arrangeShips(ownShipsPositions) {
@@ -51,39 +80,11 @@ function arrangeShips(ownShipsPositions) {
 	}
 }
 
-function doOnLoad() {
-	
-	setEnemyTable();
-	$("body").append('<div id="pop_up">');
-	var pop = document.getElementById("pop_up");
-	pop.innerHTML='<div class="pop_up" ><h1>hello</h1></div>';
-	debugger;
-// }
-		// $.ajax({
-		// url:"srvmyapp/ajax/statkipy/ConnectPlayer"
-		
-	// })
-
-	// .success(function(data){
-		// var enemyShots = data.EnemyShots;
-		// var ownTable = document.getElementById("ownTable");
-		// if (enemyShots){
-			// var shots = enemyShots.split(";");
-			// for(i=0; i < shots.length-1; ++i){
-				// var shot = shots[i].split("-");
-				// ownTable.rows[parseInt(shots[0])+1].cells[parseInt(shots[1])+1].innerHTML = redXImage;
-		// }
-	// }
-	// debugger;
-			
-	// });
-}
-
 window.onload = function () {
 	setEnemyTable();
 	$("body").append('<div id="pop_up" class="pop_up">');
 	var pop = document.getElementById("pop_up");
-	pop.innerHTML='<div class="message" ><br/><h4>Aby rozpoczac gre, kliknij ponizszy przycisk:</h4><br /><br/><button id="guzik" class="startButton" onclick=startGame()>START</button></div>';
+	pop.innerHTML='<div id="message" class="message" ><br/><h4>Aby rozpoczac gre, kliknij ponizszy przycisk:</h4><br /><br/><button id="startButton" class="startButton" onclick=startGame()>START</button></div>';
 	
 }
 
@@ -100,6 +101,7 @@ function setEnemyTable() {
 			console.log(cell);
 			cell.onclick = function () {
 				Shoot(ID, this.rowIndex, this.positionIndex);
+				tableText(this.rowIndex, this.positionIndex);
 			};
 		}
 	}
@@ -107,13 +109,53 @@ function setEnemyTable() {
 }
 
 function startGame() {
+	disableButton();
 	ConnectPlayer();
-	var millisecondsToWait = 500;
-setTimeout(function() {
-    // Whatever you want to do after the wait
-}, millisecondsToWait);
-	ConnectPlayer();
-	document.getElementById("pop_up").style.display = "none";
+	if(waitingForPlayer = setInterval(function(){ myTimer() }, 1000))
+		{
+			gamePlaying = setInterval(function(){ myGameTimer() }, 1000);
+		}
+	
+}
+
+function tableText(row, col) {
+    var colName = document.getElementById("enemyTable").rows[0].cells[col+1].innerHTML;
+	document.getElementById("selectedCell").innerHTML=colName +" "+ row;
+	var cell = document.getElementById("enemyTable").rows[row].cells[col+1];
+	cell.innerHTML = (!cell.innerHTML) ? redXImage : '';
+
+}
+
+function myTimer() {
+	GetGameState(ID);
+}
+
+function myGameTimer() {
+	Update(ID);
+}
+
+function stopWaitingForPlayer() {
+    clearInterval(waitingForPlayer);
+}
+
+function stopWaitingForMove() {
+    clearInterval(gamePlaying);
+}
+
+function disableButton() {
+	//document.getElementById("startButton").remove();
+	var img = document.createElement("img");
+	img.src = "/pict/loader.gif";
+	img.height = 50;
+	img.width = 50;
+
+	var txt = document .createElement("txt");
+	txt.innerHTML = " Oczekiwanie na drugiego gracza";
+	
+	var src = document.getElementById("message");
+	src.innerHTML = "<br /><br /><br />";
+	src.appendChild(img);
+	src.appendChild(txt);
 }
 
 
