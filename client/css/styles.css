@@ -94,6 +94,16 @@
     color:red;
 }
 
+.playerInfo {
+	color = red;
+	font-style: italic;
+	height: 30px;
+	margin-top: 40px;
+	margin-left: 0px;
+	vertical-align: middle;
+
+} 
+
 .info {
     font-size: 2em;
     color:green;
@@ -102,11 +112,11 @@
 .selectedCell {
 	width:150px;
 	height:80px;
-	margin-left: 100px;
+	margin-left: 80px;
 	line-height:80px;
 	border:4px ridge #0090dc;
 	vertical-align: middle;
-	color:red;
+	color = red;
 }
 
 .pop_up {
@@ -195,5 +205,10 @@ body {
 h3 {
 	font-size: 2Opx;
     color:black;
+	margin-left: 600px;
+}
+h5 {
+	font-size: 20px;
+    color:red;
 	margin-left: 600px;
 }

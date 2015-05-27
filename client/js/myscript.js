@@ -42,12 +42,11 @@ ConnectPlayer = function(){
 	.success(function(data){	
 		var ownShipsPos = data.MyShips;
 		ID=data.ID;
-		arrangeShips(ownShipsPos);
+		arrangeShips(ownShipsPos, "ownTable", '#64b167');
 	});
 };
 
-Update = function(_pID){
-	
+Update = function(_pID){	
 	$.ajax({
 		url:"srvmyapp/ajax/statkipy/Update",
 		data: { playerID : _pID }
@@ -55,27 +54,30 @@ Update = function(_pID){
 	
 	.success(function(data){
 		debugger;
+		whichPlayer(data.ID);
 		if(data.ID == ID){
-			updateOwnShipsFiels();			
+			arrangeShips(data.EnemyShots, "enemyTable", 'red');			
 			document.getElementById("enemyTable").cursor = "pointer";
-			alert("Twoja kolej!");
-			stopWaitingForMove(); 
 		}
 		else{
 			$("enemyTable").unbind();
 			$("enemyTable").removeAttr("onclick");
-			document.getElementById("enemyTable").cursor = "not-allowed";
+			document.getElementsByTagName("enemyTable td").cursor = "not-allowed !important";
+			
+		}
+		if(data.GameMode != "ONGOING"){
+			stopWaitingForMove();
 		}
 	});	
 };
 
-function arrangeShips(ownShipsPositions) {
-	var ownTable = document.getElementById("ownTable");
-	if (ownShipsPositions){
-	var ships = ownShipsPositions.split(";");
+function arrangeShips(shipsPositions, tableId, color) {
+	var ownTable = document.getElementById(tableId);
+	if (shipsPositions){
+	var ships = shipsPositions.split(";");
 		for(i=0; i < ships.length-1; ++i){
 			var ship = ships[i].split("-");
-			ownTable.rows[parseInt(ship[0])+1].cells[parseInt(ship[1])+1].style.background = '#64b167';
+			ownTable.rows[parseInt(ship[0])+1].cells[parseInt(ship[1])+1].style.background = color;
 		}
 	}
 }
@@ -111,11 +113,7 @@ function setEnemyTable() {
 function startGame() {
 	disableButton();
 	ConnectPlayer();
-	if(waitingForPlayer = setInterval(function(){ myTimer() }, 1000))
-		{
-			gamePlaying = setInterval(function(){ myGameTimer() }, 1000);
-		}
-	
+	waitingForPlayer = setInterval(function(){ myTimer() }, 1000);
 }
 
 function tableText(row, col) {
@@ -136,6 +134,7 @@ function myGameTimer() {
 
 function stopWaitingForPlayer() {
     clearInterval(waitingForPlayer);
+	gamePlaying = setInterval(function(){ myGameTimer() }, 1000);
 }
 
 function stopWaitingForMove() {
@@ -143,7 +142,6 @@ function stopWaitingForMove() {
 }
 
 function disableButton() {
-	//document.getElementById("startButton").remove();
 	var img = document.createElement("img");
 	img.src = "/pict/loader.gif";
 	img.height = 50;
@@ -156,6 +154,17 @@ function disableButton() {
 	src.innerHTML = "<br /><br /><br />";
 	src.appendChild(img);
 	src.appendChild(txt);
+}
+
+function whichPlayer(playerId){
+	var playerInfoText = document.getElementById("playerInfo");
+	if (playerId == ID){
+		playerInfoText.innerHTML = "Twoja kolej!";
+	}
+	else {
+		playerInfoText.innerHTML = "Kolej przeciwnika";
+	}
+	
 }
 
 
