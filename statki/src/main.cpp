@@ -20,12 +20,21 @@ int main(){
 	
 	Game & game = Game::getInstance();
 
-	GameData first = ConnectPlayer();
+	/*GameData first = ConnectPlayer();
 
 	GameData data = ConnectPlayer();
 
-	Shoot(first.ID, 2, 3);
-	Shoot(data.ID, 2, 3);
+	ShotResponse r = Shoot(first.ID, 2, 3);
+	r = Shoot(data.ID, 5, 6);
+
+	UpdateResponse res =  Update(first.ID);
+	res = Update(data.ID);
+
+	Shoot(first.ID, 4, 5);
+	Shoot(data.ID, 7, 8);
+
+	res = Update(first.ID);
+	res = Update(data.ID);*/
 
 	int wait;
 	std::cin >> wait;

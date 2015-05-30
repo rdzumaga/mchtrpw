@@ -102,9 +102,10 @@ UpdateResponse Update(string playerID)
 	string enemyShots = "";
 	std::queue<Attack*> enemyAttacks = info->receivedAttacks;
 
-	for (int i = 0; i < enemyAttacks.size(); i++)
+	for (int i = 0; i < info->receivedAttacks.size(); i++)
 	{
 		Attack* current = enemyAttacks.front();
+		enemyAttacks.pop();
 		int x, y;
 		x = current->pos->get_i();
 		y = current->pos->get_j();
