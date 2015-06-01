@@ -65,6 +65,9 @@ Update = function(_pID){
 
 		if(data.GameMode != "ONGOING"){
 			stopWaitingForMove();
+			if(data.GameMode == "FINISHED"){
+				addEndMessage();
+			}
 		}
 	});	
 };
@@ -109,7 +112,7 @@ function setEnemyTable() {
 			cell.positionIndex = j;
 			console.log(cell);
 			cell.onclick = function () {
-				if (tableClickable){
+				if (tableClickable && cell.innerHTML == ""){
 					Shoot(ID, (this.rowIndex), this.positionIndex);					
 				}
 			};
@@ -179,4 +182,8 @@ function whichPlayer(playerId){
 	
 }
 
-
+function addEndMessage(){
+	$("body").append('<div id="endMessage" class="pop_up">');
+	var endMessage = document.getElementById("endMessage");
+	endMessage.innerHTML='<div id="endMsg" class="message" ><br/><h4>Gra zakonczona</h4><br /><br/></div>';
+}
