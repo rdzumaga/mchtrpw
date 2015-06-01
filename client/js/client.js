@@ -2,18 +2,10 @@ var redXImage = "<img src='/pict/red_x.png' alt='X' width='20px' height='20px'/>
 
 window.onload = function () {
 	debugger;
-	setEnemyTable();
+	//setEnemyTable();
 	//arrangeShips();
 	
 } 
-
-function tableText(row, col) {
-    var colName = document.getElementById("enemyTable").rows[0].cells[col+1].innerHTML;
-	document.getElementById("selectedCell").innerHTML=colName +" "+ row;
-	var cell = document.getElementById("enemyTable").rows[row].cells[col+1];
-	cell.innerHTML = (!cell.innerHTML) ? redXImage : '';
-
-}
 
 function setEnemyTable() {
 	var table = document.getElementById('enemyTable');

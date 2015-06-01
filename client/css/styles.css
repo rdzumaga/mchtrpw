@@ -44,13 +44,14 @@
     align-content:center;
 	width:500px; 
 	height: 500px; 
+	cursor:pointer;
 }
 
 .enemyTable td{
     border: 2px ridge #dddada;
 	width: 45px;
 	height: 45px;
-	cursor:pointer;
+
     background: -moz-linear-gradient(top, #ffffff, #D1E3E9);
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffffff), to(#D1E3E9));
     text-align:center;
@@ -173,6 +174,10 @@
   background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
   text-decoration: none;
 }
+
+.occupied {
+	background: #64b167 !important;
+}  
 
 html {
     height: 100%;

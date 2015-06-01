@@ -1,8 +1,11 @@
-var redXImageSmall = "<img src='/pict/red_x.png' alt='X' width='10px' height='10px'/>";
-var redXImage = "<img src='/pict/red_x.png' alt='X' width='20px' height='20px'/>";
+var hitImgSmall = "<img src='/pict/red_x.png' alt='X' width='10px' height='10px'/>";
+var hitImg = "<img src='/pict/red_x.png' alt='X' width='20px' height='20px'/>";
+var missImg = "<img src='/pict/dot.png' alt='O' width='25px' height='25px'/>";
+var missImgSmall ="<img src='/pict/splash.png' alt='O' width='15px' height='15px'/>";
 var waitingForPlayer;
 var gamePlaying;
 var ID;
+var tableClickable = true;
 
 Shoot = function(_pID, _i, _j){
 	$.ajax({
@@ -23,7 +26,6 @@ GetGameState = function(_pID){
 	})
 	
 	.success(function(data){
-		debugger;
 		if(data.GameMode == "ONGOING"){
 			document.getElementById("pop_up").style.display = "none";
 			alert("Drugi gracz polaczony");
@@ -53,18 +55,12 @@ Update = function(_pID){
 	})
 	
 	.success(function(data){
-		debugger;
 		whichPlayer(data.ID);
 		if(data.ID == ID){
 			arrangeShips(data.EnemyShots, "ownTable", true);			
-			document.getElementById("enemyTable").cursor = "pointer";
-		}
-		else{
-			$("enemyTable").unbind();
-			$("enemyTable").removeAttr("onclick");
-			document.getElementsByTagName("enemyTable td").cursor = "not-allowed !important";
 			
 		}
+
 		if(data.GameMode != "ONGOING"){
 			stopWaitingForMove();
 		}
@@ -77,13 +73,15 @@ function arrangeShips(shipsPositions, tableId, ifAddImg) {
 	var ships = shipsPositions.split(";");
 		for(i=0; i < ships.length-1; ++i){
 			var ship = ships[i].split("-");
+			var cell = table.rows[parseInt(ship[0])+1].cells[parseInt(ship[1])+1];
+	
 			if (!ifAddImg)
 			{
-				table.rows[parseInt(ship[0])+1].cells[parseInt(ship[1])+1].style.background = '#64b167';
+				cell.className = "occupied";
 			}
 			else
 			{
-				table.rows[parseInt(ship[0])+1].cells[parseInt(ship[1])+1].innerHTML = redXImageSmall;
+				cell.innerHTML = (cell.className == "occupied") ? hitImgSmall : missImgSmall;
 			}
 		}
 	}
@@ -109,8 +107,10 @@ function setEnemyTable() {
 			cell.positionIndex = j;
 			console.log(cell);
 			cell.onclick = function () {
-				Shoot(ID, (this.rowIndex-1), this.positionIndex);
-				tableText(this.rowIndex, this.positionIndex);
+				if (tableClickable){
+					Shoot(ID, (this.rowIndex-1), this.positionIndex);
+					tableText(this.rowIndex, this.positionIndex);
+				}
 			};
 		}
 	}
@@ -127,7 +127,7 @@ function tableText(row, col) {
     var colName = document.getElementById("enemyTable").rows[0].cells[col+1].innerHTML;
 	document.getElementById("selectedCell").innerHTML=colName +" "+ row;
 	var cell = document.getElementById("enemyTable").rows[row].cells[col+1];
-	cell.innerHTML = (!cell.innerHTML) ? redXImage : '';
+	cell.innerHTML = (!cell.innerHTML) ? missImg : hitImg;
 
 }
 
@@ -167,8 +167,12 @@ function whichPlayer(playerId){
 	var playerInfoText = document.getElementById("playerInfo");
 	if (playerId == ID){
 		playerInfoText.innerHTML = "Twoja kolej!";
+		document.getElementById('enemyTable').style.cursor = "pointer";
+		tableClickable = true;
 	}
 	else {
+		tableClickable = false;
+		document.getElementById('enemyTable').style.cursor = "not-allowed";
 		playerInfoText.innerHTML = "Kolej przeciwnika";
 	}
 	
