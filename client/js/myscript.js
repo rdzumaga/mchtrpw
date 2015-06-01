@@ -1,7 +1,7 @@
-var hitImgSmall = "<img src='/pict/red_x.png' alt='X' width='10px' height='10px'/>";
+var hitImgSmall = "<img src='/pict/red_x.png' alt='X' width='15px' height='15px'/>";
 var hitImg = "<img src='/pict/red_x.png' alt='X' width='20px' height='20px'/>";
 var missImg = "<img src='/pict/dot.png' alt='O' width='25px' height='25px'/>";
-var missImgSmall ="<img src='/pict/splash.png' alt='O' width='15px' height='15px'/>";
+var missImgSmall ="<img src='/pict/dot.png' alt='O' width='15px' height='15px'/>";
 var waitingForPlayer;
 var gamePlaying;
 var ID;
@@ -10,11 +10,13 @@ var tableClickable = true;
 Shoot = function(_pID, _i, _j){
 	$.ajax({
 		url:"srvmyapp/ajax/statkipy/Shoot",
-		data: { playerID : _pID, pos_i : _i, pos_j : _j }
+		data: { playerID : _pID, pos_i : _i-1, pos_j : _j }
 	})
 	
 	.success(function(data){
-		//alert(data);
+				if(data.GameMode == "ONGOING"){
+		tableText(_i, _j, data.TargetHit);
+				}
 	});
 }
 
@@ -57,7 +59,7 @@ Update = function(_pID){
 	.success(function(data){
 		whichPlayer(data.ID);
 		if(data.ID == ID){
-			arrangeShips(data.EnemyShots, "ownTable", true);			
+			arrangeShips(data.EnemyShots, "ownTable", true);		
 			
 		}
 
@@ -108,8 +110,7 @@ function setEnemyTable() {
 			console.log(cell);
 			cell.onclick = function () {
 				if (tableClickable){
-					Shoot(ID, (this.rowIndex-1), this.positionIndex);
-					tableText(this.rowIndex, this.positionIndex);
+					Shoot(ID, (this.rowIndex), this.positionIndex);					
 				}
 			};
 		}
@@ -123,11 +124,11 @@ function startGame() {
 	waitingForPlayer = setInterval(function(){ myTimer() }, 1000);
 }
 
-function tableText(row, col) {
+function tableText(row, col, targetHit) {
     var colName = document.getElementById("enemyTable").rows[0].cells[col+1].innerHTML;
 	document.getElementById("selectedCell").innerHTML=colName +" "+ row;
 	var cell = document.getElementById("enemyTable").rows[row].cells[col+1];
-	cell.innerHTML = (!cell.innerHTML) ? missImg : hitImg;
+	cell.innerHTML = (targetHit == 0) ? missImg : hitImg;
 
 }
 
