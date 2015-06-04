@@ -5,7 +5,7 @@ var missImgSmall ="<img src='/pict/dot.png' alt='O' width='15px' height='15px'/>
 var yourTurn = "<img src='/pict/play.png' alt='+' width='100px' height='100px'/>";
 var opTurn ="<img src='/pict/STOP.png' alt='-' width='100px' height='100px'/>";
 var winPict = "<img src='/pict/win.png' alt='-' width='100px' height='80px'/>";
-var failPict = "<img src='/pict/fail.png' alt='-' width='100px' height='80px'/>";
+var failPict = "<img src='/pict/fail.png' alt='-' width='80px' height='80px'/>";
 
 var waitingForPlayer;
 var gamePlaying;
