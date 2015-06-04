@@ -3,6 +3,16 @@ using namespace std;
 #include <string>
 #include <vector>
 
+
+#ifdef FASADA_EXPORTS
+//Workaround for Windows DLL library exports
+#define FASADA_DLL(X) __declspec(dllexport)X
+#else
+//Workaround for Unix Shared Library exports
+#define FASADA_DLL(X) X
+#endif
+
+
 //struct MapPosition{
 //public:
 //	int x, y;
@@ -28,7 +38,7 @@ using namespace std;
  * 			GameMode - current game state.
  * 			MyShips - specially formated string containing player's ships positions. 
  */
-class GameData{
+class FASADA_DLL(GameData){
 public:
 	string ID;
 	string GameMode;
@@ -44,7 +54,7 @@ public:
  * 			TargetHit - 0 if shot missed, 1 if shot was on target.
  * 
  */
-class ShotResponse{
+class FASADA_DLL(ShotResponse){
 public:
 	string GameMode;
 	int TargetHit;
@@ -58,7 +68,7 @@ public:
  * 			GameMode - current game state.
  *  
  */
-class UpdateResponse{
+class FASADA_DLL(UpdateResponse){
 public:
 	string ID;
 	string EnemyShots;

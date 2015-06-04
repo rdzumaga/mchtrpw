@@ -3,7 +3,7 @@
 
 
 #include <iostream>
-#include "statki.hpp" 
+#include "game.h" 
 
 using namespace std;
 

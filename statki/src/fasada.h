@@ -4,14 +4,6 @@
 #include <ctime>
 
 
-#ifdef FASADA_EXPORTS
-//Workaround for Windows DLL library exports
-#define FASADA_DLL(X) __declspec(dllexport)X
-#else
-//Workaround for Unix Shared Library exports
-#define FASADA_DLL(X) X
-#endif
-
 
 /**
  * \fn	string GameModeToString(Mode mode);
