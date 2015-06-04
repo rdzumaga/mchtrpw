@@ -4,6 +4,8 @@ var missImg = "<img src='/pict/dot.png' alt='O' width='25px' height='25px'/>";
 var missImgSmall ="<img src='/pict/dot.png' alt='O' width='15px' height='15px'/>";
 var yourTurn = "<img src='/pict/play.png' alt='+' width='100px' height='100px'/>";
 var opTurn ="<img src='/pict/STOP.png' alt='-' width='100px' height='100px'/>";
+var winPict = "<img src='/pict/win.png' alt='-' width='100px' height='80px'/>";
+var failPict = "<img src='/pict/fail.png' alt='-' width='100px' height='80px'/>";
 
 var waitingForPlayer;
 var gamePlaying;
@@ -64,10 +66,16 @@ Update = function(_pID){
 		arrangeShips(data.EnemyShots, "ownTable", true);		
 		
 		if(data.GameMode != "ONGOING"){
-			stopWaitingForMove();
+			
 			if(data.GameMode == "FINISHED"){
-				addEndMessage();
+				if (data.ID == ID){
+					addEndMessage(true);
+				}
+				else{
+					addEndMessage(false);
+				}
 			}
+			stopWaitingForMove();
 		}
 	});	
 };
@@ -187,8 +195,9 @@ function whichPlayer(playerId){
 	
 }
 
-function addEndMessage(){
+function addEndMessage(winner){
 	$("body").append('<div id="endMessage" class="pop_up">');
 	var endMessage = document.getElementById("endMessage");
-	endMessage.innerHTML='<div id="endMsg" class="message" ><br/><h4>Gra zakonczona</h4><br /><br/></div>';
+	var message = winner ? "<br />Wygrałeś !!! <br /><br /> "+winPict : "<br />Przegrałeś !!! <br /><br /> "+ failPict ;
+	endMessage.innerHTML='<div id="endMsg" class="message" ><br/><h4>Gra zakonczona  ' + message + ' </h4><br /><br/></div>';
 }
