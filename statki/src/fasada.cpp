@@ -23,9 +23,9 @@ string GameModeToString(Mode mode)
 string GetGameState(string playerID)
 {
 	Game & game = Game::getInstance();
-	Info* gameInfo = game.getInfo(playerID);
+	Info gameInfo = game.getInfo(playerID);
 
-	return GameModeToString(gameInfo->gameMode);
+	return GameModeToString(gameInfo.gameMode);
 }
 
 GameData ConnectPlayer()
@@ -56,12 +56,12 @@ GameData ConnectPlayer()
 
 	}
 
-	Info * gameInfo = game.getInfo(id);
+	Info gameInfo = game.getInfo(id);
 
 	GameData dataToReturn;
 
 
-	dataToReturn.GameMode = GameModeToString(gameInfo->gameMode);
+	dataToReturn.GameMode = GameModeToString(gameInfo.gameMode);
 	dataToReturn.ID = id;
 	dataToReturn.MyShips = myShips;
 	dataToReturn.EnemyShots = "";
@@ -73,18 +73,18 @@ GameData ConnectPlayer()
 ShotResponse Shoot(string playerID, int pos_i, int pos_j){
 
 	Game & game = Game::getInstance();
-	Info* info = game.getInfo(playerID);
+	Info info = game.getInfo(playerID);
 	ShotResponse response;
 
-	if (info->playerIsUnderAttack == true)
+	if (info.playerIsUnderAttack == true)
 	{
-		response.GameMode = GameModeToString(info->gameMode);
+		response.GameMode = GameModeToString(info.gameMode);
 		response.TargetHit = false;
 		return response;
 	}
 	else
 	{
-		response.GameMode = GameModeToString(game.getInfo(playerID)->gameMode);
+		response.GameMode = GameModeToString(game.getInfo(playerID).gameMode);
 		response.TargetHit = game.shoot((pos_i), (pos_j));
 		return response;
 	}
@@ -97,12 +97,12 @@ ShotResponse Shoot(string playerID, int pos_i, int pos_j){
 UpdateResponse Update(string playerID)
 {
 	Game & game = Game::getInstance();
-	Info* info = game.getInfo(playerID);
+	Info info = game.getInfo(playerID);
 	UpdateResponse response;
 	string enemyShots = "";
-	std::queue<Attack*> enemyAttacks = info->receivedAttacks;
+	std::queue<Attack*> enemyAttacks = info.receivedAttacks;
 
-	for (int i = 0; i < info->receivedAttacks.size(); i++)
+	for (int i = 0; i < info.receivedAttacks.size(); i++)
 	{
 		Attack* current = enemyAttacks.front();
 		enemyAttacks.pop();
@@ -115,7 +115,7 @@ UpdateResponse Update(string playerID)
 		enemyShots += ";";
 	}
 
-	if (info->playerIsUnderAttack == false)
+	if (info.playerIsUnderAttack == false)
 	{
 		response.ID = playerID;
 	}
@@ -125,7 +125,7 @@ UpdateResponse Update(string playerID)
 	}
 
 	
-	response.GameMode = GameModeToString(info->gameMode);
+	response.GameMode = GameModeToString(info.gameMode);
 	response.EnemyShots = enemyShots;
 	
 

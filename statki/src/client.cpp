@@ -71,11 +71,12 @@ string Client::numToLetter(int num){
 		return "J";
 
 }
+
 void Client::connect(){
-	//cout << "Player is connecting to server. Please enter player id (any string)\n";
-	//cin >> id;
+	cout << "Player is connecting to server. Please enter player id (any string)\n";
+	cin >> id;
 	srand(time(NULL));
-	id = to_string(rand() % 100);
+	//id = to_string(rand() % 100);
 	cout << "Player is connecting to server. Player id is: " +id+ "\n";
 	Game & game = Game::getInstance();
 	deque<Position*> shipsPos = game.addPlayer(id);
@@ -112,21 +113,21 @@ void Client::printBoards(){
 void Client::inquireAndReact(){
 	cout << "\n__________________ info for player " << id << " _________________________\n";
 	Game & game = Game::getInstance();
-	Info * gameInfo = game.getInfo(id);
+	Info gameInfo = game.getInfo(id);
 	//GameState * state = game.getGameState();
 	
-	if (gameInfo->gameMode == WAITING)
+	if (gameInfo.gameMode == WAITING)
 		cout << "\nPlayer " << id << " is waiting for the second player to join the game\n.......................................................\n";
-	else if (gameInfo->gameMode == ONGOING){
+	else if (gameInfo.gameMode == ONGOING){
 		
 		gameInfo = game.getInfo(id);
-		if (!gameInfo->playerIsUnderAttack)
+		if (!gameInfo.playerIsUnderAttack)
 			attack();
 		else
 			cout << "Waiting for the opponent to make a move...\n";
 	}
 
-	else if (gameInfo->gameMode == IDLE)
+	else if (gameInfo.gameMode == IDLE)
 		cout << "Game state is idle...\n";
 	else
 		cout << "You lost :(\nGame state is finished\n";
@@ -140,8 +141,8 @@ void Client::attack(){
 	result=shoot(target);
 	
 	//attack is a recursive function for client. Check for changes in game state for this iteration
-	Info* info = Game::getInstance().getInfo(id);
-	if (info->gameMode == FINISHED){
+	Info info = Game::getInstance().getInfo(id);
+	if (info.gameMode == FINISHED){
 		cout << "\n\nYOU WON!!!!!!!\n";
 		return;
 	}

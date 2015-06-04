@@ -3,7 +3,7 @@
  * \brief the C++ file with statki library
  */
 #include "statki.hpp"
-#include <cstdlib>     
+//#include <cstdlib>     
 #include <ctime>
 #include <iostream>
 
@@ -54,10 +54,8 @@ std::deque<Position*> Game::addPlayer(std::string & id){
 		return empty;
 }
 
-Info* Game::getInfo(std::string & playerId){
-	Player * player = getPlayer(playerId);
-	Info * gameInfo = new Info(player, gameState);
-	return gameInfo;
+Info Game::getInfo(std::string & playerId){
+	return Info(getPlayer(playerId), gameState);
 }
 
 Player* Game::getPlayer(std::string & playerId){
@@ -93,7 +91,10 @@ void Game::finish(){
 	gameState = FINISHED;
 }
 
-
+Game::~Game(){
+	delete attacker;
+	delete attacked;
+}
 //=======================================================================
 //=							Position										
 //=======================================================================
@@ -112,7 +113,7 @@ int Position::get_j(){
 Field::Field(){
 	ship = NULL;
 }
-void Field::attach(Ship* ship){
+void Field::attach(ShipPtr ship){
 	this->ship = ship;
 	int temp = 0;
 }
@@ -126,20 +127,21 @@ bool Field::isEmpty(){
 	return ship == NULL;
 }
 
+
+
 //=======================================================================
 //=							Board										
 //=======================================================================
 
 void Board::shootField(int i, int j){
-	Field * f = &fields[i][j];
-	f->notify();
+	fields[i][j].notify();
 }
 
 bool Board::canPlaceShip(int i, int j, int length, int dx, int dy){
 	//check if all fields starting from (i,j) are empty
 	for (int l = 0; l < length; l++){
-		Field * field = &fields[i][j];
-		if (!field->isEmpty())
+		Field  field = fields[i][j];
+		if (!field.isEmpty())
 			return false;
 		//check for neighbors
 		if (!fields[i + 1][j].isEmpty() || !fields[i - 1][j].isEmpty() || !fields[i][j + 1].isEmpty() || !fields[i][j - 1].isEmpty())
@@ -150,7 +152,7 @@ bool Board::canPlaceShip(int i, int j, int length, int dx, int dy){
 	return true;
 }
 
-void Board::placeShip(Ship* ship){
+void Board::placeShip(ShipPtr ship){
 	std::deque<Position*> shipPos = ship->getPositions();
 	for (int k = 0; k < shipPos.size(); k++){
 		fields[shipPos[k]->get_i()][shipPos[k]->get_j()].attach(ship);
@@ -213,7 +215,6 @@ Player::Player(std::string & id, bool isFirstPlayer){
 	ID = id;
 	sustainedDamage = false;
 	remainingShipUnits = 5 + 4 + 4 + 3 + 3 + 3 + 2 + 2 + 2 + 2;
-	//remainingShipUnits = 5;
 	activeFlag = isFirstPlayer;
 }
 
@@ -224,7 +225,7 @@ std::deque<Position*> Player::getShipsPos(){
 		placeShipsRandomly();
 	
 	int temp = ships.size();
-	Ship* shipTemp;
+	ShipPtr shipTemp;
 	for (int i = 0; i < ships.size(); i++){
 		shipTemp = ships[i];
 		std::deque<Position*> shipPositions = shipTemp->getPositions();
@@ -240,7 +241,7 @@ void Player::placeShipsRandomly(){
 	//initialize random seed
 	srand(time(NULL));
 
-	Ship* ship;
+	ShipPtr ship;
 	for (int k = 0; k < shipsNr; k++){
 		int length = statkiLen[k];
 		Ship::Orientation or = statkiOrientation[rand() % 2];
@@ -251,7 +252,7 @@ void Player::placeShipsRandomly(){
 	playerNr++;
 }
 
-Ship* Player::placeShipRandomly(int length, Ship::Orientation or){
+ShipPtr Player::placeShipRandomly(int length, Ship::Orientation or){
 	//set the initial scope for placing ships for i and j index - initally it is set to the full lenght of the board
 	int iScope = N;
 	int jScope = N;
@@ -265,7 +266,7 @@ Ship* Player::placeShipRandomly(int length, Ship::Orientation or){
 		dx = 1;
 	}
 	else {
-		iScope = N - length ;
+		iScope = N - length+1 ;
 		dy = 1;
 	}
 
@@ -280,7 +281,7 @@ Ship* Player::placeShipRandomly(int length, Ship::Orientation or){
 		if (failsafe > 1000)
 			return NULL;
 	}
-	Ship* ship = new Ship(this, length, or, i, j);
+	ShipPtr ship = std::make_shared<Ship>(Ship(this, length, or, i, j));
 	board.placeShip(ship);
 	return ship;
 }
@@ -292,8 +293,7 @@ bool Player::isActive(){
 bool Player::underAttack(int i, int j){
 	sustainedDamage = false;
 	board.shootField(i, j);
-	Attack * attack = new Attack(new Position(i, j), sustainedDamage);
-	receivedAttacks.push(attack);
+	receivedAttacks.push(new Attack(new Position(i, j), sustainedDamage));
 	return sustainedDamage;
 }
 

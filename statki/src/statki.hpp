@@ -5,6 +5,8 @@
 
 #ifndef STATKI_HPP
 #define STATKI_HPP
+
+
 /*
 #ifdef STATKI_EXPORTS
 /** Workaround for Windows DLL library exports 
@@ -19,18 +21,19 @@
 /*
 Assumptions:
 	- Each field can have a pointer to only one ship
-	- Each player has a different ID (string?)
+	- Each player has a different ID (string)
 	- The game board's size is 10x10. The Fields are numbered from 0 till 9
 	- A ships' position on the game board is defined by its starting position (uppermost segment or the first segment on the left side) 
 	  and its orientation. So if lenght=3, orientation=horizontal and pos=(1,1), then the ship is placed on the following fields: (1,1), (1,2), (1,3)
-	- A player cannot shoot the same field more than once (should be implemented in the client)
-	- A player can only shoot when it's their turn (should be implemented by client)
+	- A player cannot shoot the same field more than once (implemented in the client)
+	- A player can only shoot when it's their turn ( implemented by client)
 	- The player can shoot only fields with indexes between 0 and 9 (checked by client)
 */
 
 #include <deque>
 #include <string>
 #include <queue>
+#include <memory>
 
 const int N = 10;
 const int shipsNr = 10;
@@ -43,6 +46,8 @@ class Position;
 class Attack;
 class GameState;
 class Game;
+
+typedef std::shared_ptr<Ship> ShipPtr;
 
 //			0		1		2			3
 enum Mode { IDLE, WAITING, ONGOING, FINISHED };
@@ -67,10 +72,15 @@ public:
 	Mode gameMode;
 };
 
+
+
 class Game{
 public:
 	///singleton method
 	static Game& getInstance();
+
+	///destructor
+	~Game();
 
 	/** \brief Add player method.
 	* \param id the string used to identify player during communication with server
@@ -84,7 +94,7 @@ public:
 	* \param id the string used to identify player during communication with server.
 	* \return Info object containing details about the state of the game
 	*/
-	Info* getInfo(std::string & playerId);
+	Info getInfo(std::string & playerId);
 	
 	/** \brief Shoot opponent's filed.
 	* \param i number of targeted row (value from 0 to 9).
@@ -150,7 +160,7 @@ public:
 	*
 	* This method places a ship on this field. This makes it possible for the ship to be notified of an attack later on
 	*/
-	void attach(Ship* ship);
+	void attach(ShipPtr ship);
 
 	///method notifying a ship that it was attacked
 	void notify();
@@ -158,7 +168,7 @@ public:
 	///checks if a ship is placed on this field
 	bool isEmpty();
 private:
-	Ship* ship;
+	ShipPtr ship;
 };
 
 class Board{
@@ -187,7 +197,7 @@ public:
 	bool canPlaceShip(int i, int j, int length, int dx, int dy);
 
 	///place the ship on board positions assigned to it
-	void placeShip(Ship* ship);
+	void placeShip(ShipPtr ship);
 
 	Field fields[N][N];
 };
@@ -269,7 +279,7 @@ public:
 private:
 	Board board;
 	int remainingShipUnits;
-	std::deque<Ship*> ships;
+	std::deque<ShipPtr> ships;
 	bool sustainedDamage;
 	std::string ID;
 	bool activeFlag;
@@ -283,7 +293,7 @@ private:
 	* \param or Orientation of ship on the board
 	* \return newly created and placed ship
 	*/
-	Ship* placeShipRandomly(int length, Ship::Orientation or);
+	ShipPtr placeShipRandomly(int length, Ship::Orientation or);
 };
 
 
