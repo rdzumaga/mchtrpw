@@ -28,93 +28,19 @@ const int shipsNr = 10;
 const int ERROR = -1;
 
 class Player;
-class Field;
 class Ship;
-class Position;
-class Attack;
-class GameState;
-class Game;
 
 typedef std::shared_ptr<Ship> ShipPtr;
 
 //			0		1		2			3
 enum Mode { IDLE, WAITING, ONGOING, FINISHED };
 
-class Attack{
-public:
-	///default constructor
-	Attack();
 
-	///constructor
-	Attack(Position* pos, bool successful);
-	Position * pos;
-	bool successful;
-};
-
-class Info{
-public:
-	///constructor
-	Info(Player* player, Mode gameMode);
-	std::queue<Attack *> receivedAttacks;
-	bool playerIsUnderAttack;
-	Mode gameMode;
-};
-
-
-
-class Game{
-public:
-	///singleton method
-	static Game& getInstance();
-
-	///destructor
-	~Game();
-
-	/** \brief Add player method.
-	* \param id the string used to identify player during communication with server
-	* \return list of ships' positions
-	*
-	* This method adds one of two possible players to the game and return a list of randomly chosen ships' positions
-	*/
-	std::deque<Position*> addPlayer(std::string & id);
-
-	/** \brief get update about the game.
-	* \param id the string used to identify player during communication with server.
-	* \return Info object containing details about the state of the game
-	*/
-	Info getInfo(std::string & playerId);
-	
-	/** \brief Shoot opponent's filed.
-	* \param i number of targeted row (value from 0 to 9).
-	* \param j number of targeted column (value from 0 to 9).
-	* \return 1 if there was a ship placed on the targeted field, 0 otherwise.
-	*/
-	int shoot(int i, int j);
-	
-private:
-	Player* attacker;
-	Player* attacked;
-	Mode gameState;
-
-	///private method for switching attacking player with attacked player
-	void switchActivePlayer();
-
-
-	/** \brief private get player method
-	* \param id the string used to identify player during communication with server.
-	* \return Handle to player with givem ID
-	*/
-	Player* getPlayer(std::string & playerId);
-
-	///private method for changing the status of the game to FINISHED
-	void finish();
-
-	///private default constructor
-	Game();
-	Game(Game const &) = delete;
-	void operator=(Game const &) = delete;
-};
-
+/**
+* \class    Position
+*
+* \brief    Simple class representing a position on game board
+*/
 class Position{
 public:
 	///default constructor
@@ -137,6 +63,49 @@ private:
 	int j;
 };
 
+
+
+
+
+/**
+* \class    Attack
+*
+* \brief    Simple class representing where an attack tookplace and if it was successful
+*/
+class Attack{
+public:
+	///default constructor
+	Attack();
+
+	///constructor
+	Attack(Position* pos, bool successful);
+	Position * pos;
+	bool successful;
+};
+
+
+/**
+* \class    Info
+*
+* \brief   Simple class for updating a player about current game state
+*/
+class Info{
+public:
+	///constructor
+	Info(Player* player, Mode gameMode);
+	std::queue<Attack *> receivedAttacks;
+	bool playerIsUnderAttack;
+	Mode gameMode;
+};
+
+
+
+
+/**
+* \class    Field
+*
+* \brief    simple class for notifying the ship placed there that it was attacked
+*/
 class Field{
 public:
 
@@ -159,6 +128,12 @@ private:
 	ShipPtr ship;
 };
 
+
+/**
+* \class    Board
+*
+* \brief    Simple class containing the list of fields on the board
+*/
 class Board{
 public:
 	///default constructor
@@ -190,6 +165,12 @@ public:
 	Field fields[N][N];
 };
 
+
+/**
+* \class    Ship
+*
+* \brief    Class representing a ship
+*/
 class Ship{
 public:
 	enum Orientation { HORIZONTAL, VERTICAL };
@@ -222,6 +203,13 @@ private:
 	void notify();
 };
 
+
+
+/**
+* \class    Player
+*
+* \brief    Class representing a player
+*/
 class Player{
 public:
 	///dummy constructor for avoiding null pointer exceptions

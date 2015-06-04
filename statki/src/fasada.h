@@ -1,6 +1,6 @@
 #pragma once
 #include "gameData.h"
-#include "statki.hpp"
+#include "game.h"
 #include <ctime>
 
 
