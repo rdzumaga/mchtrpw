@@ -19,7 +19,7 @@ Game scenario:
 int main(){
 	
 	Game & game = Game::getInstance();
-
+	std::cout << "test";
 	/*GameData first = ConnectPlayer();
 
 	GameData data = ConnectPlayer();
