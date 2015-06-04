@@ -2,6 +2,9 @@ var hitImgSmall = "<img src='/pict/red_x.png' alt='X' width='15px' height='15px'
 var hitImg = "<img src='/pict/red_x.png' alt='X' width='20px' height='20px'/>";
 var missImg = "<img src='/pict/dot.png' alt='O' width='25px' height='25px'/>";
 var missImgSmall ="<img src='/pict/dot.png' alt='O' width='15px' height='15px'/>";
+var yourTurn = "<img src='/pict/play.png' alt='+' width='100px' height='100px'/>";
+var opTurn ="<img src='/pict/STOP.png' alt='-' width='100px' height='100px'/>";
+
 var waitingForPlayer;
 var gamePlaying;
 var ID;
@@ -58,11 +61,8 @@ Update = function(_pID){
 	
 	.success(function(data){
 		whichPlayer(data.ID);
-		if(data.ID == ID){
-			arrangeShips(data.EnemyShots, "ownTable", true);		
-			
-		}
-
+		arrangeShips(data.EnemyShots, "ownTable", true);		
+		
 		if(data.GameMode != "ONGOING"){
 			stopWaitingForMove();
 			if(data.GameMode == "FINISHED"){
@@ -124,12 +124,13 @@ function setEnemyTable() {
 function startGame() {
 	disableButton();
 	ConnectPlayer();
-	waitingForPlayer = setInterval(function(){ myTimer() }, 1000);
+	waitingForPlayer = setInterval(function(){ myTimer() }, 500);
 }
 
 function tableText(row, col, targetHit) {
     var colName = document.getElementById("enemyTable").rows[0].cells[col+1].innerHTML;
-	document.getElementById("selectedCell").innerHTML=colName +" "+ row;
+	var hit = (targetHit == 0) ? "pudło!" : "trafiony!"; 
+	document.getElementById("selectedCell").innerHTML=colName +" "+ row + " - " + hit; 
 	var cell = document.getElementById("enemyTable").rows[row].cells[col+1];
 	cell.innerHTML = (targetHit == 0) ? missImg : hitImg;
 
@@ -145,7 +146,7 @@ function myGameTimer() {
 
 function stopWaitingForPlayer() {
     clearInterval(waitingForPlayer);
-	gamePlaying = setInterval(function(){ myGameTimer() }, 1000);
+	gamePlaying = setInterval(function(){ myGameTimer() }, 500);
 }
 
 function stopWaitingForMove() {
@@ -170,14 +171,18 @@ function disableButton() {
 function whichPlayer(playerId){
 	var playerInfoText = document.getElementById("playerInfo");
 	if (playerId == ID){
-		playerInfoText.innerHTML = "Twoja kolej!";
+		playerInfoText.innerHTML = "TWOJA KOLEJ! <br/> " + yourTurn + "<br /><br /> ";
+		playerInfoText.style.color = "green";
 		document.getElementById('enemyTable').style.cursor = "pointer";
-		tableClickable = true;
+		document.getElementById('enemyTable').style.boxShadow = "0px 5px 10px #14A026";
+		tableClickable = true;		
 	}
 	else {
+		playerInfoText.innerHTML = "KOLEJ PRZECIWNIKA <br/> " + opTurn + "<br/><br /> ";
 		tableClickable = false;
 		document.getElementById('enemyTable').style.cursor = "not-allowed";
-		playerInfoText.innerHTML = "Kolej przeciwnika";
+		document.getElementById('enemyTable').style.boxShadow  = "0px 5px 10px #F51414";
+		playerInfoText.style.color = "red";
 	}
 	
 }

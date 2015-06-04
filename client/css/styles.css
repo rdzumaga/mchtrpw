@@ -97,10 +97,11 @@
 
 .playerInfo {
 	color = red;
+	font-size: 1em;
 	font-style: italic;
 	height: 30px;
-	margin-top: 40px;
-	margin-left: 0px;
+	margin-top: 0px;
+	margin-left: 40px;
 	vertical-align: middle;
 
 } 
@@ -111,7 +112,7 @@
 }
 
 .selectedCell {
-	width:150px;
+	width:230px;
 	height:80px;
 	margin-left: 80px;
 	line-height:80px;
