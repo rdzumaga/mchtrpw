@@ -23,7 +23,7 @@ Attack::Attack(Position* pos, bool succcessful){
 Info::Info(Player* player, Mode gameMode){
 	this->gameMode = gameMode;
 	this->playerIsUnderAttack = !player->isActive();
-	this->receivedAttacks = player->receivedAttacks;
+	this->receivedAttacks = player->getReceivedAttacks();
 }
 
 //=======================================================================
@@ -39,7 +39,7 @@ Game::Game(){
 	gameState = IDLE;
 }
 
-std::deque<Position*> Game::addPlayer(std::string id){
+std::deque<Position*> Game::addPlayer(std::string & id){
 	if (attacker == NULL){
 		attacker = new Player(id, true);
 		gameState = WAITING;
@@ -54,7 +54,13 @@ std::deque<Position*> Game::addPlayer(std::string id){
 		return empty;
 }
 
-Player* Game::getPlayer(std::string playerId){
+Info* Game::getInfo(std::string & playerId){
+	Player * player = getPlayer(playerId);
+	Info * gameInfo = new Info(player, gameState);
+	return gameInfo;
+}
+
+Player* Game::getPlayer(std::string & playerId){
 	if (attacker != NULL){
 		if (playerId == attacker->getId())
 			return attacker;
@@ -72,7 +78,7 @@ int Game::shoot(int i, int j){
 	if (!attackSuccesful)
 		switchActivePlayer();
 
-	return attackSuccesful;
+	return (int)attackSuccesful;
 }
 
 void Game::switchActivePlayer(){
@@ -87,11 +93,6 @@ void Game::finish(){
 	gameState = FINISHED;
 }
 
-Info* Game::getInfo(std::string playerId){
-	Player * player = getPlayer(playerId);
-	Info * gameInfo = new Info(player, gameState);
-	return gameInfo;
-}
 
 //=======================================================================
 //=							Position										
@@ -168,6 +169,15 @@ Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
 	pos = Position(i, j);
 }
 
+void Ship::update(){
+	remainingSegements--;
+	notify();
+}
+
+void Ship::notify(){
+	owner->update();
+}
+
 std::deque<Position*> Ship::getPositions(){
 	std::deque<Position*> answer;
 	answer.push_back(&pos);
@@ -189,39 +199,24 @@ std::deque<Position*> Ship::getPositions(){
 	return answer;
 }
 
-void Ship::update(){
-	remainingSegements--;
-	notify();
-}
-
-void Ship::notify(){
-	owner->update();
-}
-
 //=======================================================================
 //=							Player										
 //=======================================================================
 
-//dummy constructor for avoiding null exceptions
 Player::Player(){
-	IP = "dummy";
+	ID = "dummy";
 	sustainedDamage = false;
 	activeFlag = false;
 }
-Player::Player(std::string id, bool isFirstPlayer){
-	IP = id;
+
+Player::Player(std::string & id, bool isFirstPlayer){
+	ID = id;
 	sustainedDamage = false;
 	remainingShipUnits = 5 + 4 + 4 + 3 + 3 + 3 + 2 + 2 + 2 + 2;
 	//remainingShipUnits = 5;
 	activeFlag = isFirstPlayer;
 }
 
-void Player::toggleActive(){
-	activeFlag = !activeFlag;
-}
-std::string Player::getId(){
-	return IP;
-}
 
 std::deque<Position*> Player::getShipsPos(){
 	std::deque<Position*> answer;
@@ -302,6 +297,10 @@ bool Player::underAttack(int i, int j){
 	return sustainedDamage;
 }
 
+std::queue<Attack *> Player::getReceivedAttacks(){
+	return receivedAttacks;
+}
+
 bool Player::hasLost(){
 	if (remainingShipUnits > 0)
 		return false;
@@ -313,7 +312,13 @@ void Player::update(){
 	sustainedDamage = true;
 }
 
+std::string Player::getId(){
+	return ID;
+}
 
+void Player::toggleActive(){
+	activeFlag = !activeFlag;
+}
 
 
 
