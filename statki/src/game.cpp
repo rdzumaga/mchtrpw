@@ -25,7 +25,7 @@ std::deque<Position*> Game::addPlayer(std::string & id){
 		gameState = WAITING;
 		return attacker->getShipsPos();
 	}
-	else if (attacked == NULL){
+	else if (attacked == NULL || (attacker->getId()!=id) ){
 		attacked = new Player(id, false);
 		gameState = ONGOING;
 		return attacked->getShipsPos();
@@ -34,7 +34,7 @@ std::deque<Position*> Game::addPlayer(std::string & id){
 	return empty;
 }
 
-Info Game::getInfo(std::string & playerId){
+Info Game::getInfo(std::string playerId){
 	return Info(getPlayer(playerId), gameState);
 }
 

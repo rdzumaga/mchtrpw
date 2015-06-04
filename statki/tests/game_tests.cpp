@@ -8,6 +8,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include <string>
+#include<iostream>
 
 #include "../src/game.h"
 
@@ -15,8 +16,79 @@
 using namespace boost;
 using boost::unit_test::test_suite;
 
+
+
 BOOST_AUTO_TEST_SUITE( game_tests )
 
+
+BOOST_AUTO_TEST_CASE (TestGetInfo) {
+	Game& game = Game::getInstance();
+	game.reset();
+	
+	//check if info is correct when there are no players added
+	Info info=game.getInfo("whatever");
+	BOOST_CHECK_EQUAL(info.receivedAttacks.size(), 0);	
+	BOOST_CHECK_EQUAL(info.playerIsUnderAttack, true);	
+	BOOST_CHECK_EQUAL(info.gameMode, IDLE);	
+	
+	
+	//check if info is correct when only one player is connected
+	std::string id1 = "1";
+	game.addPlayer(id1);
+	info=game.getInfo(id1);
+	BOOST_CHECK_EQUAL(info.receivedAttacks.size(), 0);	
+	BOOST_CHECK_EQUAL(info.playerIsUnderAttack, false);	
+	BOOST_CHECK_EQUAL(info.gameMode, WAITING);	
+	
+	//check if info is correct when both players are connected
+	std::string id2 = "2";
+	game.addPlayer(id2);
+	
+	//for player 1
+	info=game.getInfo(id1);
+	BOOST_CHECK_EQUAL(info.receivedAttacks.size(), 0);	
+	BOOST_CHECK_EQUAL(info.playerIsUnderAttack, false);	
+	BOOST_CHECK_EQUAL(info.gameMode, ONGOING);	
+	
+	//for player 2
+	info=game.getInfo(id2);
+	BOOST_CHECK_EQUAL(info.receivedAttacks.size(), 0);	
+	BOOST_CHECK_EQUAL(info.playerIsUnderAttack, true);	
+	BOOST_CHECK_EQUAL(info.gameMode, ONGOING);	
+	
+	//check if info ok after an attack
+	game.shoot(5,6);
+	
+	//for player 1
+	info=game.getInfo(id1);
+	BOOST_CHECK_EQUAL(info.receivedAttacks.size(), 0);	
+	BOOST_CHECK_EQUAL(info.playerIsUnderAttack, true);	
+	BOOST_CHECK_EQUAL(info.gameMode, ONGOING);
+	
+	
+	//for player 2
+	info=game.getInfo(id2);
+	std::cout << info.receivedAttacks.size()<< std::endl;
+	std::cout << info.playerIsUnderAttack << std::endl;
+	std::cout << info.gameMode << std::endl;
+	std::cout<<"----------------------\n";
+	BOOST_CHECK_EQUAL(info.receivedAttacks.size(), 1);	
+	BOOST_CHECK_EQUAL(info.playerIsUnderAttack, false);	
+	BOOST_CHECK_EQUAL(info.gameMode, ONGOING);
+	
+	//?
+	info=game.getInfo(id2);
+	std::cout << info.receivedAttacks.size()<< std::endl;
+	std::cout << info.playerIsUnderAttack << std::endl;
+	std::cout << info.gameMode << std::endl;
+	std::cout<<"----------------------\n";
+	BOOST_CHECK_EQUAL(info.receivedAttacks.size(), 1);	
+	BOOST_CHECK_EQUAL(info.playerIsUnderAttack, false);	
+	BOOST_CHECK_EQUAL(info.gameMode, ONGOING);
+	
+	int buff2;
+	std::cin>>buff2;
+}
 
 BOOST_AUTO_TEST_CASE (TestAddPlayer) {
 
@@ -45,10 +117,11 @@ BOOST_AUTO_TEST_CASE (TestAddPlayer) {
 	id = "3";
 	shipsPos = game.addPlayer(id);
 	BOOST_CHECK_EQUAL(shipsPos.size(), 0);	
+	int buff;
+	std::cin>>buff;
 }
+
 BOOST_AUTO_TEST_SUITE_END()
-
-
 /*
 BOOST_AUTO_TEST_CASE( TestShotResponse )
 {
@@ -75,5 +148,5 @@ BOOST_AUTO_TEST_CASE( TestShotResponse )
 
 }
 
-BOOST_AUTO_TEST_SUITE_END()*/
+*/
 

@@ -38,7 +38,7 @@ public:
 	* \param id the string used to identify player during communication with server.
 	* \return Info object containing details about the state of the game
 	*/
-	Info getInfo(std::string & playerId);
+	Info getInfo(std::string playerId);
 
 	/** \brief Shoot opponent's filed.
 	* \param i number of targeted row (value from 0 to 9).
