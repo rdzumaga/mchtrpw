@@ -3,6 +3,16 @@
 #include "statki.hpp"
 #include <ctime>
 
+
+#ifdef FASADA_EXPORTS
+//Workaround for Windows DLL library exports
+#define FASADA_DLL(X) __declspec(dllexport)X
+#else
+//Workaround for Unix Shared Library exports
+#define FASADA_DLL(X) X
+#endif
+
+
 /**
  * \fn	string GameModeToString(Mode mode);
  *
@@ -13,7 +23,7 @@
  *
  * \return	String representation of the Enum.
  */
-string GameModeToString(Mode mode);
+FASADA_DLL(string GameModeToString(Mode mode));
 
 /**
  * \fn	string GetGameState(string playerID);
@@ -24,7 +34,7 @@ string GameModeToString(Mode mode);
  *
  * \return	The game state as String.
  */
-string GetGameState(string playerID);
+FASADA_DLL(string GetGameState(string playerID));
 
 /**
  * \fn	GameData ConnectPlayer();
@@ -33,7 +43,7 @@ string GetGameState(string playerID);
  *
  * \return	GameData class object, with custom game info.
  */
-GameData ConnectPlayer();
+FASADA_DLL(GameData ConnectPlayer());
 
 /**
  * \fn	ShotResponse Shoot(string playerID, int pos_i, int pos_j);
@@ -47,7 +57,7 @@ GameData ConnectPlayer();
  *
  * \return	ShotResponse class object, with custom shot info.
  */
-ShotResponse Shoot(string playerID, int pos_i, int pos_j);
+FASADA_DLL(ShotResponse Shoot(string playerID, int pos_i, int pos_j));
 
 /**
  * \fn	UpdateResponse Update(string playerID);
@@ -59,4 +69,4 @@ ShotResponse Shoot(string playerID, int pos_i, int pos_j);
  *
  * \return	An UpdateResponse object, with custom game info.
  */
-UpdateResponse Update(string playerID);
+FASADA_DLL(UpdateResponse Update(string playerID));

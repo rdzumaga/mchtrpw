@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-string GameModeToString(Mode mode)
+FASADA_DLL(string GameModeToString(Mode mode))
 {
 	switch (mode) {
 	case IDLE:
@@ -20,7 +20,7 @@ string GameModeToString(Mode mode)
 	}
 }
 
-string GetGameState(string playerID)
+FASADA_DLL(string GetGameState(string playerID))
 {
 	Game & game = Game::getInstance();
 	Info gameInfo = game.getInfo(playerID);
@@ -28,7 +28,7 @@ string GetGameState(string playerID)
 	return GameModeToString(gameInfo.gameMode);
 }
 
-GameData ConnectPlayer()
+FASADA_DLL(GameData ConnectPlayer())
 {
 	string id;
 	string myShips = "";
@@ -70,8 +70,8 @@ GameData ConnectPlayer()
 	return dataToReturn;
 }
 
-ShotResponse Shoot(string playerID, int pos_i, int pos_j){
-
+FASADA_DLL(ShotResponse Shoot(string playerID, int pos_i, int pos_j))
+{
 	Game & game = Game::getInstance();
 	Info info = game.getInfo(playerID);
 	ShotResponse response;
@@ -94,7 +94,7 @@ ShotResponse Shoot(string playerID, int pos_i, int pos_j){
 
 }
 
-UpdateResponse Update(string playerID)
+FASADA_DLL(UpdateResponse Update(string playerID))
 {
 	Game & game = Game::getInstance();
 	Info info = game.getInfo(playerID);
