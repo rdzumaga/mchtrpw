@@ -65,14 +65,14 @@ elif(platform.system() == "Windows"):
    target = '../build_web/statkipy/fasada.pyd'
 env_dll.Command(target, cpplib, copyLibBuilder )
 
-"""
+
 #build tests
 env_test = env.Clone()
 
 if(platform.system() == "Linux"):
    env_test.Append( LIBS = [ 'python2.7', 'boost_unit_test_framework' ] )
-   env_test.Prepend( LIBS = 'calc' )
+   env_test.Prepend( LIBS = 'fasada' )
 elif(platform.system() == "Windows"):
-   env_test.Prepend( LIBS = 'calc' )
-env_test.Program( target = "calc_test", source = 'tests/calc_test.cpp')"""
+   env_test.Prepend( LIBS = 'fasada' )
+env_test.Program( target = "game_tests", source = 'tests/game_tests.cpp')
 

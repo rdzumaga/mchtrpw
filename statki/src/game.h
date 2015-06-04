@@ -4,12 +4,21 @@
 #include"statki.hpp"
 
 
+#ifdef FASADA_EXPORTS
+//Workaround for Windows DLL library exports
+#define FASADA_DLL(X) __declspec(dllexport)X
+#else
+//Workaround for Unix Shared Library exports
+#define FASADA_DLL(X) X
+#endif
+
+
 /**
 * \class    Game
 *
 * \brief    Main game class
 */
-class Game{
+class FASADA_DLL(Game){
 public:
 	///singleton method
 	static Game& getInstance();
@@ -37,6 +46,9 @@ public:
 	* \return 1 if there was a ship placed on the targeted field, 0 otherwise.
 	*/
 	int shoot(int i, int j);
+
+	///method reseting game to its initial state
+	void reset();
 
 private:
 	Player* attacker;

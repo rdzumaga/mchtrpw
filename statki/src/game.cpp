@@ -14,6 +14,11 @@ Game::Game(){
 	gameState = IDLE;
 }
 
+void Game::reset(){
+	attacked = attacker = NULL;
+	gameState = IDLE;
+}
+
 std::deque<Position*> Game::addPlayer(std::string & id){
 	if (attacker == NULL){
 		attacker = new Player(id, true);
