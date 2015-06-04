@@ -55,7 +55,7 @@ env_dll = env.Clone()
 if(platform.system() == "Linux"):
    pass
 elif(platform.system() == "Windows"):
-   env_dll.Append( CPPFLAGS = ' /D "STATKI_EXPORTS" ')
+   env_dll.Append( CPPFLAGS = ' /D "FASADA_EXPORTS" ')
 
 #build C++ library
 cpplib = env_dll.SharedLibrary( target = 'fasada', source = ['../statki/src/statki.cpp','../statki/src/fasada.cpp', '../statki/src/fasadapy.cpp'])
