@@ -1,3 +1,4 @@
+//Varibles used to load images
 var hitImgSmall = "<img src='/pict/red_x.png' alt='X' width='15px' height='15px'/>";
 var hitImg = "<img src='/pict/red_x.png' alt='X' width='20px' height='20px'/>";
 var missImg = "<img src='/pict/dot.png' alt='O' width='25px' height='25px'/>";
@@ -12,6 +13,7 @@ var gamePlaying;
 var ID;
 var tableClickable = true;
 
+//Calling Shoot function from facade
 Shoot = function(_pID, _i, _j){
 	$.ajax({
 		url:"srvmyapp/ajax/statkipy/Shoot",
@@ -20,11 +22,12 @@ Shoot = function(_pID, _i, _j){
 	
 	.success(function(data){
 				if(data.GameMode == "ONGOING"){
-		tableText(_i, _j, data.TargetHit);
+					tableText(_i, _j, data.TargetHit);
 				}
 	});
 }
 
+//Calling GetGameState function from facade
 GetGameState = function(_pID){
 	
 	$.ajax({
@@ -41,7 +44,7 @@ GetGameState = function(_pID){
 	});	
 };
 
-
+//Calling ConnectPlayer function from facade
 ConnectPlayer = function(){
 	
 	$.ajax({
@@ -55,7 +58,9 @@ ConnectPlayer = function(){
 	});
 };
 
+//Calling Update function from facade
 Update = function(_pID){	
+
 	$.ajax({
 		url:"srvmyapp/ajax/statkipy/Update",
 		data: { playerID : _pID }
@@ -65,8 +70,7 @@ Update = function(_pID){
 		whichPlayer(data.ID);
 		arrangeShips(data.EnemyShots, "ownTable", true);		
 		
-		if(data.GameMode != "ONGOING"){
-			
+		if(data.GameMode != "ONGOING"){			
 			if(data.GameMode == "FINISHED"){
 				if (data.ID == ID){
 					addEndMessage(true);
@@ -80,6 +84,7 @@ Update = function(_pID){
 	});	
 };
 
+//Function for marking  field in own table with appropriate symbol
 function arrangeShips(shipsPositions, tableId, ifAddImg) {
 	var table = document.getElementById(tableId);
 	if (shipsPositions){
@@ -100,6 +105,7 @@ function arrangeShips(shipsPositions, tableId, ifAddImg) {
 	}
 }
 
+//initiating function, calling startup window
 window.onload = function () {
 	setEnemyTable();
 	$("body").append('<div id="pop_up" class="pop_up">');
@@ -108,6 +114,7 @@ window.onload = function () {
 	
 }
 
+//Function calling on click on enemy table action
 function setEnemyTable() {
 	var table = document.getElementById('enemyTable');
 	var rows = table.rows;
@@ -129,38 +136,44 @@ function setEnemyTable() {
 	
 }
 
+//Function called after click on start button
 function startGame() {
 	disableButton();
 	ConnectPlayer();
 	waitingForPlayer = setInterval(function(){ myTimer() }, 500);
 }
 
+//Adding information about last shot
 function tableText(row, col, targetHit) {
     var colName = document.getElementById("enemyTable").rows[0].cells[col+1].innerHTML;
 	var hit = (targetHit == 0) ? "pudło!" : "trafiony!"; 
 	document.getElementById("selectedCell").innerHTML=colName +" "+ row + " - " + hit; 
 	var cell = document.getElementById("enemyTable").rows[row].cells[col+1];
 	cell.innerHTML = (targetHit == 0) ? missImg : hitImg;
-
 }
 
+//Function called while waiting for second player
 function myTimer() {
 	GetGameState(ID);
 }
 
+//timer calling Update function
 function myGameTimer() {
 	Update(ID);
 }
 
+//stopping timer calling wait for player function
 function stopWaitingForPlayer() {
     clearInterval(waitingForPlayer);
 	gamePlaying = setInterval(function(){ myGameTimer() }, 500);
 }
 
+// Stopping timer calling Update function
 function stopWaitingForMove() {
     clearInterval(gamePlaying);
 }
 
+//action after clicking on start button, before second player appear, waiting for player function
 function disableButton() {
 	var img = document.createElement("img");
 	img.src = "/pict/loader.gif";
@@ -176,6 +189,7 @@ function disableButton() {
 	src.appendChild(txt);
 }
 
+//Changes after active player change
 function whichPlayer(playerId){
 	var playerInfoText = document.getElementById("playerInfo");
 	if (playerId == ID){
@@ -191,10 +205,10 @@ function whichPlayer(playerId){
 		document.getElementById('enemyTable').style.cursor = "not-allowed";
 		document.getElementById('enemyTable').style.boxShadow  = "0px 5px 10px #F51414";
 		playerInfoText.style.color = "red";
-	}
-	
+	}	
 }
 
+//Function called to show final textbox message 
 function addEndMessage(winner){
 	$("body").append('<div id="endMessage" class="pop_up">');
 	var endMessage = document.getElementById("endMessage");
