@@ -5,14 +5,16 @@
 
 #ifndef STATKI_HPP
 #define STATKI_HPP
-
+/*
 #ifdef STATKI_EXPORTS
-/** Workaround for Windows DLL library exports */
+/** Workaround for Windows DLL library exports 
 #define STATKI_DLL(X) __declspec(dllexport)X
 #else
-/** Workaround for Unix Shared Library exports */
+/** Workaround for Unix Shared Library exports 
 #define STATKI_DLL(X) X
 #endif
+*/
+
 
 /*
 Assumptions:
@@ -30,14 +32,11 @@ Assumptions:
 #include <string>
 #include <queue>
 
-//typedef boost::shared_ptr<Game> game_ptr;
-
 const int N = 10;
 const int shipsNr = 10;
 const int ERROR = -1;
 
 class Player;
-
 class Field;
 class Ship;
 class Position;
@@ -62,16 +61,11 @@ public:
 	std::queue<Attack *> receivedAttacks;
 	bool playerIsUnderAttack;
 	Mode gameMode;
-	
 };
 
 class Game{
 public:
-	static Game& getInstance(){
-		static Game instance;
-		return instance;
-	}
-
+	static Game& getInstance();
 	std::deque<Position*> addPlayer(std::string id);
 	Info* getInfo(std::string playerId);
 	
@@ -80,7 +74,6 @@ public:
 	-1: error
 	 0: shot missed
 	 1: shot successful
-	//TODO 2: ship sunk?
 	*/
 	int shoot(int i, int j);
 	
@@ -178,32 +171,5 @@ const Ship::Orientation statkiOrientation[] = {
 	Ship::Orientation::VERTICAL
 };
 
-
-
-
-
-
-//------------------------------------------------
-
-//! Example C++ calculation. This function return a number.
-STATKI_DLL( int getNumber(); )
-
-
-
-class Y;
-class X
-{
-public:
-	X(int x, Y* y) : m_y(y) {}
-	//X(double);
-private:
-	Y* m_y;
-};
-
-class Y{
-public:
-	Y(int in){ j = in; }
-	int j;
-};
 
 #endif //STATKI_HPP

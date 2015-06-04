@@ -3,21 +3,43 @@
  * \brief the C++ file with statki library
  */
 #include "statki.hpp"
-
-#include <cstdlib>     /* srand, rand */
+#include <cstdlib>     
 #include <ctime>
 #include <iostream>
 
-//-----------------------Game-------------------------
 
+//=======================================================================
+//=							Attack										
+//=======================================================================
+Attack::Attack(Position* pos, bool succcessful){
+	this->pos = pos;
+	this->successful = succcessful;
+}
+
+
+//=======================================================================
+//=							Info										
+//=======================================================================
+Info::Info(Player* player, Mode gameMode){
+	this->gameMode = gameMode;
+	this->playerIsUnderAttack = !player->isActive();
+	this->receivedAttacks = player->receivedAttacks;
+}
+
+//=======================================================================
+//=							Game										
+//=======================================================================
+
+Game& Game::getInstance(){
+	static Game instance;
+	return instance;
+}
 Game::Game(){
-	//playerA = playerB = activePlayer = NULL;
 	attacked = attacker = NULL;
 	gameState = IDLE;
 }
 
 std::deque<Position*> Game::addPlayer(std::string id){
-
 	if (attacker == NULL){
 		attacker = new Player(id, true);
 		gameState = WAITING;
@@ -32,7 +54,6 @@ std::deque<Position*> Game::addPlayer(std::string id){
 		return empty;
 }
 
-
 Player* Game::getPlayer(std::string playerId){
 	if (attacker != NULL){
 		if (playerId == attacker->getId())
@@ -42,6 +63,7 @@ Player* Game::getPlayer(std::string playerId){
 	}
 	return new Player();
 }
+
 int Game::shoot(int i, int j){
 	bool attackSuccesful = attacked->underAttack(i, j);
 	if (attacked->hasLost())
@@ -71,8 +93,114 @@ Info* Game::getInfo(std::string playerId){
 	return gameInfo;
 }
 
+//=======================================================================
+//=							Position										
+//=======================================================================
 
-//-----------------------Player-------------------------
+int Position::get_i(){
+	return i;
+}
+
+int Position::get_j(){
+	return j;
+}
+
+//=======================================================================
+//=							Field										
+//=======================================================================
+Field::Field(){
+	ship = NULL;
+}
+void Field::attach(Ship* ship){
+	this->ship = ship;
+	int temp = 0;
+}
+
+void Field::notify(){
+	if (ship != NULL)
+		ship->update();
+}
+
+bool Field::isEmpty(){
+	return ship == NULL;
+}
+
+//=======================================================================
+//=							Board										
+//=======================================================================
+
+void Board::shootField(int i, int j){
+	Field * f = &fields[i][j];
+	f->notify();
+}
+
+bool Board::canPlaceShip(int i, int j, int length, int dx, int dy){
+	//check if all fields starting from (i,j) are empty
+	for (int l = 0; l < length; l++){
+		Field * field = &fields[i][j];
+		if (!field->isEmpty())
+			return false;
+		//check for neighbors
+		if (!fields[i + 1][j].isEmpty() || !fields[i - 1][j].isEmpty() || !fields[i][j + 1].isEmpty() || !fields[i][j - 1].isEmpty())
+			return false;
+		i += dy;
+		j += dx;
+	}
+	return true;
+}
+
+void Board::placeShip(Ship* ship){
+	std::deque<Position*> shipPos = ship->getPositions();
+	for (int k = 0; k < shipPos.size(); k++){
+		fields[shipPos[k]->get_i()][shipPos[k]->get_j()].attach(ship);
+	}
+}
+
+//=======================================================================
+//=							Ship										
+//=======================================================================
+
+Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
+	this->owner = owner;
+	this->length = length;
+	remainingSegements = length;
+	this->orientation = or;
+	pos = Position(i, j);
+}
+
+std::deque<Position*> Ship::getPositions(){
+	std::deque<Position*> answer;
+	answer.push_back(&pos);
+	int dx = 1;
+	int dy = 1;
+	if (orientation == HORIZONTAL)
+		dy = 0;
+	else
+		dx = 0;
+
+	int x = pos.get_j();
+	int y = pos.get_i();
+	for (int i = 1; i < length; i++){
+		x += dx;
+		y += dy;
+		answer.push_back(new Position(y, x));
+	}
+
+	return answer;
+}
+
+void Ship::update(){
+	remainingSegements--;
+	notify();
+}
+
+void Ship::notify(){
+	owner->update();
+}
+
+//=======================================================================
+//=							Player										
+//=======================================================================
 
 //dummy constructor for avoiding null exceptions
 Player::Player(){
@@ -95,7 +223,6 @@ std::string Player::getId(){
 	return IP;
 }
 
-
 std::deque<Position*> Player::getShipsPos(){
 	std::deque<Position*> answer;
 	if (ships.empty())
@@ -109,16 +236,14 @@ std::deque<Position*> Player::getShipsPos(){
 		for (int j = 0; j < shipPositions.size(); j++)
 			answer.push_back(shipPositions.at(j));
 	}
-
 	return answer;
 }
 
 void Player::placeShipsRandomly(){
 	static int playerNr = 0;
 
-	/* initialize random seed: */
+	//initialize random seed
 	srand(time(NULL));
-	//srand(5000);
 
 	Ship* ship;
 	for (int k = 0; k < shipsNr; k++){
@@ -127,9 +252,6 @@ void Player::placeShipsRandomly(){
 		ship = placeShipRandomly(length, or);
 		if (ship != NULL)
 			ships.push_back(ship);
-		//TO DO remove printing
-		else
-			std::cout << "Error: new random ship is null!\n";
 	}
 	playerNr++;
 }
@@ -167,10 +289,6 @@ Ship* Player::placeShipRandomly(int length, Ship::Orientation or){
 	board.placeShip(ship);
 	return ship;
 }
-/*
-void Player::setActive(bool active){
-	activeFlag = active;
-}*/
 
 bool Player::isActive(){
 	return activeFlag;
@@ -196,135 +314,7 @@ void Player::update(){
 }
 
 
-	
-
-//-----------------------Ship-------------------------
-Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
-	this->owner = owner;
-	this->length = length;
-	remainingSegements = length;
-	this->orientation = or;
-	pos = Position(i, j);
-
-}
-
-std::deque<Position*> Ship::getPositions(){
-	std::deque<Position*> answer;
-	answer.push_back(&pos);
-	int dx = 1;
-	int dy = 1;
-	if (orientation == HORIZONTAL)
-		dy = 0;
-	else
-		dx = 0;
-
-	int x = pos.get_j();
-	int y = pos.get_i();
-	for (int i = 1; i < length; i++){
-		x += dx;
-		y += dy;
-		answer.push_back(new Position(y,x));
-	}
-
-	return answer;
-}
-
-void Ship::update(){
-	remainingSegements--;
-	notify();
-}
-
-void Ship::notify(){
-	owner->update();
-}
 
 
-//-----------------------Board-------------------------
-
-void Board::shootField(int i, int j){
-	Field * f = &fields[i][j];
-	f->notify();
-	//fields[i][j].notify();
-}
-
-
-bool Board::canPlaceShip(int i, int j, int length, int dx, int dy){
-	//check if all fields starting from (i,j) are empty
-	for (int l = 0; l < length; l++){
-		Field * field = &fields[i][j];
-		if (!field->isEmpty())
-			return false;
-		//check for neighbours
-		if (!fields[i + 1][j].isEmpty() || !fields[i - 1][j].isEmpty() || !fields[i][j + 1].isEmpty() || !fields[i][j - 1].isEmpty())
-			return false;
-		i += dy;
-		j += dx;
-	}
-	return true;
-}
-
-void Board::placeShip(Ship* ship){
-	std::deque<Position*> shipPos = ship->getPositions();
-	for (int k = 0; k < shipPos.size(); k++){
-		fields[shipPos[k]->get_i()][shipPos[k]->get_j()].attach(ship);
-	}
-
-}
-//-------------------------Position------------------
-
-int Position::get_i(){
-	return i;
-}
-
-int Position::get_j(){
-	return j;
-}
-
-
-
-
-
-
-//-----------------------Field-------------------------
-Field::Field(){
-	ship = NULL;
-}
-void Field::attach(Ship* ship){
-	this->ship = ship;
-	int temp = 0;
-}
-
-void Field::notify(){
-	if (ship!=NULL)
-		ship->update();
-}
-
-bool Field::isEmpty(){
-	return ship == NULL;
-}
-
-//-----------------------Attack-------------------------
-Attack::Attack(Position* pos, bool succcessful){
-	this->pos = pos;
-	this->successful = succcessful;
-}
-
-
-
-//-------------------------------Info --------------------------------
-Info::Info(Player* player, Mode gameMode){
-	this->gameMode = gameMode;
-	this->playerIsUnderAttack = !player->isActive();
-	this->receivedAttacks = player->receivedAttacks;
-}
-
-
-
-
-//--------------------------------
-
-STATKI_DLL( int getNumber() ) {
-	return 1234;
-}
 
 
