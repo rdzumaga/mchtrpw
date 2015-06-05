@@ -73,13 +73,15 @@ string Client::numToLetter(int num){
 }
 
 void Client::connect(){
-	cout << "Player is connecting to server. Please enter player id (any string)\n";
-	cin >> id;
+	//cout << "Player is connecting to server. Please enter player id (any string)\n";
+	//cin >> id;
+	id = "aaa";
 	srand(time(NULL));
 	//id = to_string(rand() % 100);
 	cout << "Player is connecting to server. Player id is: " +id+ "\n";
 	Game & game = Game::getInstance();
 	deque<Position*> shipsPos = game.addPlayer(id);
+	std::cout << "Ships num=" << shipsPos.size()<< std::endl;
 	loadShipsPos(shipsPos);
 }
 
@@ -88,7 +90,8 @@ void Client::loadShipsPos(deque<Position*> shipsPos){
 		Position* pos = shipsPos[k];
 		board[pos->get_i()][pos->get_j()] = "s ";
 	}
-	printBoards(); 
+	if (shipsPos.size()!=30)
+		printBoards(); 
 }
 
 void Client::printBoards(){

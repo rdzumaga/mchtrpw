@@ -54,8 +54,6 @@ public:
 	///method reseting game to its initial state
 	void reset();
 
-	
-
 private:
 	Player* attacker;
 	Player* attacked;

@@ -123,47 +123,13 @@ public:
 
 	///checks if a ship is placed on this field
 	bool isEmpty();
+
+	///detach Ship if any was placed on this field
+	void detachShip();
+
 private:
 	ShipPtr ship;
 };
-
-
-/**
-* \class    Board
-*
-* \brief    Simple class containing the list of fields on the board
-*/
-class Board{
-public:
-	///default constructor
-	Board(){}
-
-	/** \brief shoot field method.
-	* \param i row index of the targeted field.
-	* \param j column index of the targeted field.
-	*
-	* This method notifies a field that it was shot.
-	*/
-	void shootField(int i, int j);
-
-	/** \brief check if a ship can be placed on that filed
-	* \param i number of row (value from 0 to 9).
-	* \param j number of column (value from 0 to 9).
-	* \param lenght length of the ships to be placed
-	* \param dx indicates vertical orientation if bigger than 0
-	* \param dy indicates horizontak orientation if bigger than 0
-	* \return 1 if there was a ship placed on the targeted field, 0 otherwise.
-	*
-	* Checks if all fields needed for a ship of given length and orientation are free and if there are no ships on neighbouring fields
-	*/
-	bool canPlaceShip(int i, int j, int length, int dx, int dy);
-
-	///place the ship on board positions assigned to it
-	void placeShip(ShipPtr ship);
-
-	Field fields[N][N];
-};
-
 
 /**
 * \class    Ship
@@ -202,6 +168,48 @@ private:
 	void notify();
 };
 
+
+/**
+* \class    Board
+*
+* \brief    Simple class containing the list of fields on the board
+*/
+class Board{
+public:
+	///default constructor
+	Board(){}
+
+	/** \brief shoot field method.
+	* \param i row index of the targeted field.
+	* \param j column index of the targeted field.
+	*
+	* This method notifies a field that it was shot.
+	*/
+	void shootField(int i, int j);
+
+	/** \brief check if a ship can be placed on that filed
+	* \param i number of row (value from 0 to 9).
+	* \param j number of column (value from 0 to 9).
+	* \param lenght length of the ships to be placed
+	* \param dx indicates vertical orientation if bigger than 0
+	* \param dy indicates horizontak orientation if bigger than 0
+	* \return 1 if there was a ship placed on the targeted field, 0 otherwise.
+	*
+	* Checks if all fields needed for a ship of given length and orientation are free and if there are no ships on neighbouring fields
+	*/
+	bool canPlaceShip(int i, int j, int length, int dx, int dy);
+
+	///place the ship on board positions assigned to it
+	void placeShip(ShipPtr ship);
+
+	///reset all fields on the board
+	void reset();
+
+	///method getting positions of fields where ships can be placed
+	std::deque<Position> getAvailableFields(int length, Ship::Orientation or);
+
+	Field fields[N][N];
+};
 
 
 /**
@@ -268,7 +276,10 @@ private:
 	* \param or Orientation of ship on the board
 	* \return newly created and placed ship
 	*/
-	ShipPtr placeShipRandomly(int length, Ship::Orientation or);
+	ShipPtr placeShipRandomly(int length);
+
+	///start placing ships randomly again
+	void startPlacementAgain();
 };
 
 

@@ -18,14 +18,14 @@ public:
 	void connect();
 	void inquireAndReact();
 	int shoot(string target);
-	void printBoards();
+
 	//attributes
 	string board[N][N];
 	string opponentBoard[N][N];
 	string id;
 private:
 	void loadShipsPos(deque<Position*> shipsPos);
-	
+	void printBoards();
 	void attack();
 	void reactToAttack(Info* gameInfo);
 
