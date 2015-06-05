@@ -54,7 +54,7 @@ FASADA_DLL(ShotResponse Shoot(string playerID, int pos_i, int pos_j));
 /**
  * \fn	UpdateResponse Update(string playerID);
  *
- * \brief	Gets updated info about current game for inactive player.
+ * \brief	Gets updated info about current game for inactive player. If game is finished, it is restarted so that new one can be started!
  *
  * 
  * \param	playerID	Identifier for which player to get info.
