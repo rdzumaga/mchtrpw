@@ -17,6 +17,7 @@ FASADA_DLL(string GameModeToString(Mode mode))
 	case FINISHED:
 		return"FINISHED";
 		break;
+
 	}
 }
 
@@ -38,14 +39,11 @@ FASADA_DLL(GameData ConnectPlayer())
 	Game & game = Game::getInstance();
 	deque<Position*> shipsPos = game.addPlayer(id);
 
-	//vector<MapPosition> myShips;
+	
 
 	for (int i = 0; i < shipsPos.size(); i++)
 	{
-		/*MapPosition pos;
-		pos.x = shipsPos[i]->get_i();
-		pos.y = shipsPos[i]->get_j();
-		myShips.push_back(pos);*/
+		
 		int x, y;
 		x = shipsPos[i]->get_i();
 		y = shipsPos[i]->get_j();
@@ -64,8 +62,7 @@ FASADA_DLL(GameData ConnectPlayer())
 	dataToReturn.GameMode = GameModeToString(gameInfo.gameMode);
 	dataToReturn.ID = id;
 	dataToReturn.MyShips = myShips;
-	dataToReturn.EnemyShots = "";
-	dataToReturn.MyShots = "";
+	
 
 	return dataToReturn;
 }

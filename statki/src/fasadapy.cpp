@@ -21,26 +21,12 @@ BOOST_PYTHON_MODULE( fasada )
 	boost::python::def( "Update", Update );
 	
 	
-	// class_<MapPosition>("MapPosition", "TODO Description")
-				// .def_readonly("x", &MapPosition::x)
-				// .def_readonly("y", &MapPosition::y)
-				// ;	
-				
-	 // class_<ShotPosition>("ShotPosition", "TODO Description")
-				// .def_readonly("x", &ShotPosition::x)
-				// .def_readonly("y", &ShotPosition::y)
-				// .def_readonly("TargetHit", &ShotPosition::TargetHit)
-				// ;
-				
-	// class_<MapPos>("MapPos")
-				// .def(vector_indexing_suite<MapPos>() );
+	
 	
 	class_<GameData>("GameData", "TODO Description")
 				.def_readonly("ID", &GameData::ID)
 				.def_readonly("GameMode", &GameData::GameMode)
-				.def_readonly("MyShips", &GameData::MyShips)
-				.def_readonly("EnemyShots", &GameData::EnemyShots)
-				.def_readonly("MyShots", &GameData::MyShots)
+				.def_readonly("MyShips", &GameData::MyShips)				
 				;
 				
 	class_<ShotResponse>("ShotResponse", "TODO Description")

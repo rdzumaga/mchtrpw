@@ -17,9 +17,7 @@ def ConnectPlayer(params):
     return {
             "ID" : srvResponse.ID,
             "GameMode" : srvResponse.GameMode,
-            "MyShips" : srvResponse.MyShips,
-            "MyShots" : srvResponse.MyShots,
-            "EnemyShots" : srvResponse.EnemyShots
+            "MyShips" : srvResponse.MyShips            
     }
 
 def GetGameState(params):
