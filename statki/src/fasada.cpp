@@ -95,6 +95,8 @@ FASADA_DLL(ShotResponse Shoot(string playerID, int pos_i, int pos_j))
 
 FASADA_DLL(UpdateResponse Update(string playerID))
 {
+	static int updateCount = 0;
+
 	Game & game = Game::getInstance();
 	Info info = game.getInfo(playerID);
 	UpdateResponse response;
@@ -129,7 +131,15 @@ FASADA_DLL(UpdateResponse Update(string playerID))
 
 	if (response.GameMode == "FINISHED")
 	{
-		game.reset();
+		if (updateCount == 1)
+		{
+			updateCount = 0;
+			game.reset();
+		}
+		else
+		{
+			updateCount++;
+		}
 	}
 	
 
