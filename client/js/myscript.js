@@ -31,11 +31,9 @@ Shoot = function(_pID, _i, _j){
 				if(data.GameMode == "ONGOING"){
 					tableText(_i, _j, data.TargetHit);
 				}
-						
-				else if(data.GameMode == "FINISHED"){
-					tableText(_i, _j, data.TargetHit);
-					addEndMessage(true);
-					stopWaitingForMove();
+				if(data.GameMode == "FINISHED"){
+					addEndMessage(false);
+				}
 			}
 	});
 }
@@ -94,18 +92,18 @@ Update = function(_pID){
 	})
 	
 	.success(function(data){
-
-		if (data.ID != ID){
-			arrangeShips(data.EnemyShots, "ownTable", true);		
-			
-			if(data.GameMode != "ONGOING"){			
-				if(data.GameMode == "FINISHED"){
-					addEndMessage(false);				
-				}
-				stopWaitingForMove();
-			}
-		}
 		whichPlayer(data.ID);
+		arrangeShips(data.EnemyShots, "ownTable", true);		
+		
+		if(data.GameMode != "ONGOING"){
+			
+			if(data.GameMode == "FINISHED"){
+				if (data.ID != ID){
+					addEndMessage(false);
+				}
+			}
+			stopWaitingForMove();
+		}
 	});	
 };
 
