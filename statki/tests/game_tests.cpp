@@ -20,6 +20,21 @@ using boost::unit_test::test_suite;
 
 BOOST_AUTO_TEST_SUITE( game_tests )
 
+BOOST_AUTO_TEST_CASE(TestShoot){
+	Game & game=Game::getInstance();
+	game.reset();
+	std::string id1 = "1";
+	std::string id2 = "2";
+	game.addPlayer(id1);
+	game.addPlayer(id2);
+	
+	//player 1 is the active one, so he attacks
+	int result=game.shoot(5,4);
+	
+		
+	int buff2;
+	std::cin>>buff2;
+}
 
 BOOST_AUTO_TEST_CASE (TestGetInfo) {
 	Game& game = Game::getInstance();

@@ -1,7 +1,6 @@
 /**
  * \file statki.hpp
- * \brief the C++ statki library interface
- */
+ * \brief the C++ statki library  */
 
 #ifndef STATKI_HPP
 #define STATKI_HPP
@@ -70,7 +69,7 @@ private:
 /**
 * \class    Attack
 *
-* \brief    Simple class representing where an attack tookplace and if it was successful
+* \brief    Simple class representing where an attack took place and if it was successful
 */
 class Attack{
 public:

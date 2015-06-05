@@ -1,3 +1,7 @@
+/**
+* \file game.h
+* \brief Game class file  */
+
 #ifndef GAME_H
 #define GAME_H
 
@@ -50,25 +54,16 @@ public:
 	///method reseting game to its initial state
 	void reset();
 
+	
+
 private:
 	Player* attacker;
 	Player* attacked;
 	Mode gameState;
 
-	///private method for switching attacking player with attacked player
 	void switchActivePlayer();
-
-
-	/** \brief private get player method
-	* \param id the string used to identify player during communication with server.
-	* \return Handle to player with givem ID
-	*/
 	Player* getPlayer(std::string & playerId);
-
-	///private method for changing the status of the game to FINISHED
 	void finish();
-
-	///private default constructor
 	Game();
 	Game(Game const &) = delete;
 	void operator=(Game const &) = delete;
