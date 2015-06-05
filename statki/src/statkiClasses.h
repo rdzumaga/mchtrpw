@@ -146,11 +146,11 @@ public:
 	/** \brief constructor
 	* \param owner Player who owns this ship
 	* \param lenght length of the ships
-	* \param or Orientation of ship on the board
+	* \param orient Orientation of ship on the board
 	* \param i number of row (value from 0 to 9).
 	* \param j number of column (value from 0 to 9).
 	*/
-	Ship(Player* owner, int length, Orientation or, int i, int j);
+	Ship(Player* owner, int length, Orientation orient, int i, int j);
 
 	///method for upadting the ship (that it was attacked) and notifying its owner about the attack
 	void update();
@@ -209,7 +209,7 @@ public:
 	void reset();
 
 	///method getting positions of fields where ships can be placed
-	std::deque<Position> getAvailableFields(int length, Ship::Orientation or);
+	std::deque<Position> getAvailableFields(int length, Ship::Orientation orient);
 
 	Field fields[N][N];
 };
@@ -276,7 +276,7 @@ private:
 
 	/** \brief private method placing one ship of given lenght and orientation on the board
 	* \param lenght length of the ships
-	* \param or Orientation of ship on the board
+	* \param orient Orientation of ship on the board
 	* \return newly created and placed ship
 	*/
 	ShipPtr placeShipRandomly(int length);

@@ -17,7 +17,7 @@ MYAPP_VER_STRING = str(MYAPP_VER_MAJOR) + '.' + str(MYAPP_VER_MINOR) + '.' + MYA
 
 #web
 WWW_BROWSER_WINDOWS='chrome'
-WWW_BROWSER_LINUX='google-chrome'
+WWW_BROWSER_LINUX='chromium-browser'
 WEB_SRV_PREFIX = 'srvmyapp'
 WEB_SRV_HOST = '127.0.0.1'
 WEB_SRV_PORT = '50007'
@@ -25,9 +25,9 @@ WEB_CLIENT_HOST = '127.0.0.1'
 WEB_CLIENT_PORT = '9000'
 
 #database
-DB_NAME='robert'
-DB_USER='robert'
-DB_PASSWORD='robert'
+DB_NAME='mydb'
+DB_USER='mydb'
+DB_PASSWORD='mydb'
 
 Export('MYAPP_VER_MAJOR MYAPP_VER_MINOR MYAPP_VER_COMPILATION MYAPP_VER_INSTALL')
 Export('WWW_BROWSER_WINDOWS WWW_BROWSER_LINUX')
@@ -82,7 +82,9 @@ elif env['r'] == 'd':
     os.system('python build_web/manage.py runserver ' + WEB_CLIENT_HOST + ':' + WEB_CLIENT_PORT)
 elif env['t'] == 'w':
     if(platform.system() == "Linux"):
-        os.system('python build_web/manage.py test version current calcpy')
+        os.system('python build_web/manage.py test statkipy')
+	elif(platform.system() == "Windows"):
+        os.system('python build_web\manage.py test statkipy')
     pass
 elif env['t'] == 'j':
     child_process = subprocess.Popen('python client/tests/srv.py ', shell=True, stdout=subprocess.PIPE)
@@ -93,7 +95,7 @@ elif env['t'] == 'j':
         os.system('taskkill /F /T /PID %d' % child_process.pid)
 elif env['cov'] == 1:
     if(platform.system() == "Linux"):
-        os.system("coverage run --source build_web/ build_web/manage.py test version current calcpy")
+        os.system("coverage run --source build_web/ build_web/manage.py test statkipy")
         print("\n")
         os.system("coverage report -m")
         print("\n")

@@ -60,11 +60,11 @@ void Field::detachShip(){
 //=							Ship										
 //=======================================================================
 
-Ship::Ship(Player* owner, int length, Orientation or, int i, int j){
+Ship::Ship(Player* owner, int length, Orientation orient, int i, int j){
 	this->owner = owner;
 	this->length = length;
 	remainingSegements = length;
-	this->orientation = or;
+	this->orientation = orient;
 	pos = Position(i, j);
 }
 
@@ -141,11 +141,11 @@ void Board::reset(){
 	}
 }
 
-std::deque<Position> Board::getAvailableFields(int length, Ship::Orientation or){
+std::deque<Position> Board::getAvailableFields(int length, Ship::Orientation orient){
 	int iOffset, jOffset;
 	int dx, dy;
 	iOffset = jOffset = dx=dy=0;
-	if (or == Ship::Orientation::HORIZONTAL){
+	if (orient == Ship::Orientation::HORIZONTAL){
 		jOffset = length - 1;
 		dx = 1;
 	}
@@ -211,14 +211,14 @@ void Player::placeShipsRandomly(){
 }
 
 ShipPtr Player::placeShipRandomly(int length){
-	Ship::Orientation or = statkiOrientation[rand() % 2];
-	std::deque<Position> availableFieldsPos = board.getAvailableFields(length, or);
+	Ship::Orientation orient = statkiOrientation[rand() % 2];
+	std::deque<Position> availableFieldsPos = board.getAvailableFields(length, orient);
 
 	if (availableFieldsPos.size() == 0)
 		startPlacementAgain();
 	
 	Position randomField = availableFieldsPos[rand() % availableFieldsPos.size()];
-	ShipPtr ship = std::make_shared<Ship>(Ship(this, length, or, randomField.get_i(), randomField.get_j()));
+	ShipPtr ship = std::make_shared<Ship>(Ship(this, length, orient, randomField.get_i(), randomField.get_j()));
 	board.placeShip(ship);
 	return ship;
 }

@@ -24,7 +24,7 @@ if(platform.system() == "Linux"):
    env.Append( LIBPATH = [Dir('/usr/lib/python2.7'),
                           Dir('.') ] )
 
-   env.Append( CPPFLAGS = '-Wall -pedantic -pthread' )
+   env.Append( CPPFLAGS = ' --std=c++11 -Wall -pedantic -pthread' )
    env.Append( LINKFLAGS = '-Wall -pthread' )
 
    env.Append( LIBS = [ 'boost_python' ] )
