@@ -1,5 +1,5 @@
 /**
- * \file statki.hpp
+ * \file statkiClasses.h
  * \brief library containing all classes necessary to create a fully working game  */
 
 #ifndef STATKI_HPP
@@ -34,7 +34,8 @@ class Ship;
 typedef std::shared_ptr<Ship> ShipPtr;
 
 //			0		1		2			3
-///enum indicating the state of the game
+//! Game mode enum
+/*! indicates the state of the game. */
 enum Mode { IDLE, WAITING, ONGOING, FINISHED };
 
 
@@ -95,7 +96,10 @@ class Info{
 public:
 	///constructor
 	Info(Player* player, Mode gameMode);
+
+	///history of all suffered attacks (successful and not)
 	std::queue<Attack *> receivedAttacks;
+
 	bool playerIsUnderAttack;
 	Mode gameMode;
 };
@@ -141,11 +145,13 @@ private:
 */
 class Ship{
 public:
+
+	//! Enum indicating ship orientation on the board.
 	enum Orientation { HORIZONTAL, VERTICAL };
 
 	/** \brief constructor
 	* \param owner Player who owns this ship
-	* \param lenght length of the ships
+	* \param length length of the ships
 	* \param orient Orientation of ship on the board
 	* \param i number of row (value from 0 to 9).
 	* \param j number of column (value from 0 to 9).

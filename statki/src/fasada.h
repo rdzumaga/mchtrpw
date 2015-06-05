@@ -1,6 +1,6 @@
 /**
 * \file fasada.h
-* \brief facade - functions giving indirect access to statki c++ library  */
+* \brief facade - functions giving indirect access to game c++ library  */
 
 #pragma once
 #include "gameData.h"
