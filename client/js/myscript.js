@@ -28,13 +28,13 @@ Shoot = function(_pID, _i, _j){
 	})
 	
 	.success(function(data){
-				if(data.GameMode == "ONGOING"){
-					tableText(_i, _j, data.TargetHit);
-				}
-				if(data.GameMode == "FINISHED"){
-					addEndMessage(false);
-				}
+			if(data.GameMode == "ONGOING"){
+				tableText(_i, _j, data.TargetHit);
 			}
+			if(data.GameMode == "FINISHED"){
+				addEndMessage(false);
+			}
+			
 	});
 }
 
