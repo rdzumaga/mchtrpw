@@ -18,25 +18,7 @@ Game scenario:
 */
 int main(){
 	
-	Game & game = Game::getInstance();
-	std::cout << "test";
-	/*GameData first = ConnectPlayer();
-
-	GameData data = ConnectPlayer();
-
-	ShotResponse r = Shoot(first.ID, 2, 3);
-	r = Shoot(data.ID, 5, 6);
-
-	UpdateResponse res =  Update(first.ID);
-	res = Update(data.ID);
-
-	Shoot(first.ID, 4, 5);
-	Shoot(data.ID, 7, 8);
-
-	res = Update(first.ID);
-	res = Update(data.ID);*/
-
-	int wait;
-	std::cin >> wait;
+	std::cout << "TEST!";
+	
 	return 0;
 }

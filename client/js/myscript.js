@@ -13,7 +13,14 @@ var gamePlaying;
 var ID;
 var tableClickable = true;
 
-//Calling Shoot function from facade
+
+/**
+ * Calling Shoot function from facade
+ * @param {} _pID
+ * @param {} _i
+ * @param {} _j
+ * @return 
+ */
 Shoot = function(_pID, _i, _j){
 	$.ajax({
 		url:"srvmyapp/ajax/statkipy/Shoot",
@@ -24,10 +31,20 @@ Shoot = function(_pID, _i, _j){
 				if(data.GameMode == "ONGOING"){
 					tableText(_i, _j, data.TargetHit);
 				}
+						
+				else if(data.GameMode == "FINISHED"){
+					addEndMessage(true);
+					stopWaitingForMove();
+			}
 	});
 }
 
-//Calling GetGameState function from facade
+
+/**
+ * Calling GetGameState function from facade
+ * @param {} _pID
+ * @return 
+ */
 GetGameState = function(_pID){
 	
 	$.ajax({
@@ -44,7 +61,11 @@ GetGameState = function(_pID){
 	});	
 };
 
-//Calling ConnectPlayer function from facade
+
+/**
+ * Calling ConnectPlayer function from facade
+ * @return 
+ */
 ConnectPlayer = function(){
 	
 	$.ajax({
@@ -58,7 +79,12 @@ ConnectPlayer = function(){
 	});
 };
 
-//Calling Update function from facade
+
+/**
+ * Calling Update function from facade
+ * @param {} _pID
+ * @return 
+ */
 Update = function(_pID){	
 
 	$.ajax({
@@ -68,23 +94,28 @@ Update = function(_pID){
 	
 	.success(function(data){
 		whichPlayer(data.ID);
+		if (data.ID != ID){
 		arrangeShips(data.EnemyShots, "ownTable", true);		
 		
 		if(data.GameMode != "ONGOING"){			
 			if(data.GameMode == "FINISHED"){
-				if (data.ID == ID){
-					addEndMessage(true);
-				}
-				else{
-					addEndMessage(false);
-				}
+				addEndMessage(false);				
 			}
 			stopWaitingForMove();
+		}
 		}
 	});	
 };
 
-//Function for marking  field in own table with appropriate symbol
+
+/**
+ * Function for marking  field in own table with appropriate symbol
+ * @method arrangeShips
+ * @param {} shipsPositions
+ * @param {} tableId
+ * @param {} ifAddImg
+ * @return 
+ */
 function arrangeShips(shipsPositions, tableId, ifAddImg) {
 	var table = document.getElementById(tableId);
 	if (shipsPositions){
@@ -105,7 +136,12 @@ function arrangeShips(shipsPositions, tableId, ifAddImg) {
 	}
 }
 
-//initiating function, calling startup window
+
+/**
+ * Initiating function, calling startup window
+ * @method onload
+ * @return 
+ */
 window.onload = function () {
 	setEnemyTable();
 	$("body").append('<div id="pop_up" class="pop_up">');
@@ -114,7 +150,12 @@ window.onload = function () {
 	
 }
 
-//Function calling on click on enemy table action
+
+/**
+ * Function calling on click on enemy table action
+ * @method setEnemyTable
+ * @return 
+ */
 function setEnemyTable() {
 	var table = document.getElementById('enemyTable');
 	var rows = table.rows;
@@ -127,7 +168,7 @@ function setEnemyTable() {
 			cell.positionIndex = j;
 			console.log(cell);
 			cell.onclick = function () {
-				if (tableClickable && cell.innerHTML == ""){
+				if (tableClickable && this.innerHTML== ""){
 					Shoot(ID, (this.rowIndex), this.positionIndex);					
 				}
 			};
@@ -136,14 +177,25 @@ function setEnemyTable() {
 	
 }
 
-//Function called after click on start button
+/**
+ * Function called after click on start button
+ * @method startGame
+ * @return 
+ */
 function startGame() {
 	disableButton();
 	ConnectPlayer();
 	waitingForPlayer = setInterval(function(){ myTimer() }, 500);
 }
 
-//Adding information about last shot
+/**
+ * Adding information about last shot
+ * @method tableText
+ * @param {} row
+ * @param {} col
+ * @param {} targetHit
+ * @return 
+ */
 function tableText(row, col, targetHit) {
     var colName = document.getElementById("enemyTable").rows[0].cells[col+1].innerHTML;
 	var hit = (targetHit == 0) ? "pudło!" : "trafiony!"; 
@@ -152,28 +204,48 @@ function tableText(row, col, targetHit) {
 	cell.innerHTML = (targetHit == 0) ? missImg : hitImg;
 }
 
-//Function called while waiting for second player
+/**
+ * Function called while waiting for second player
+ * @method myTimer
+ * @return 
+ */
 function myTimer() {
 	GetGameState(ID);
 }
 
-//timer calling Update function
+/**
+ * Timer calling Update function
+ * @method myGameTimer
+ * @return 
+ */
 function myGameTimer() {
 	Update(ID);
 }
 
-//stopping timer calling wait for player function
+/**
+ * Stopping timer calling wait for player function
+ * @method stopWaitingForPlayer
+ * @return 
+ */
 function stopWaitingForPlayer() {
     clearInterval(waitingForPlayer);
 	gamePlaying = setInterval(function(){ myGameTimer() }, 500);
 }
 
-// Stopping timer calling Update function
+/**
+ * Stopping timer calling Update function
+ * @method stopWaitingForMove
+ * @return 
+ */
 function stopWaitingForMove() {
     clearInterval(gamePlaying);
 }
 
-//action after clicking on start button, before second player appear, waiting for player function
+/**
+ * Action after clicking on start button, before second player appear, waiting for player function
+ * @method disableButton
+ * @return 
+ */
 function disableButton() {
 	var img = document.createElement("img");
 	img.src = "/pict/loader.gif";
@@ -189,7 +261,12 @@ function disableButton() {
 	src.appendChild(txt);
 }
 
-//Changes after active player change
+/**
+ * Changes after active player change
+ * @method whichPlayer
+ * @param {} playerId
+ * @return 
+ */
 function whichPlayer(playerId){
 	var playerInfoText = document.getElementById("playerInfo");
 	if (playerId == ID){
@@ -208,7 +285,12 @@ function whichPlayer(playerId){
 	}	
 }
 
-//Function called to show final textbox message 
+/**
+ * Function called to show final textbox message 
+ * @method addEndMessage
+ * @param {} winner
+ * @return 
+ */
 function addEndMessage(winner){
 	$("body").append('<div id="endMessage" class="pop_up">');
 	var endMessage = document.getElementById("endMessage");

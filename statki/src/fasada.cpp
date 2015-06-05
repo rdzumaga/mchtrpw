@@ -17,6 +17,8 @@ FASADA_DLL(string GameModeToString(Mode mode))
 	case FINISHED:
 		return"FINISHED";
 		break;
+	default:
+		return "IDLE";
 
 	}
 }
@@ -81,8 +83,8 @@ FASADA_DLL(ShotResponse Shoot(string playerID, int pos_i, int pos_j))
 	}
 	else
 	{
-		response.GameMode = GameModeToString(game.getInfo(playerID).gameMode);
 		response.TargetHit = game.shoot((pos_i), (pos_j));
+		response.GameMode = GameModeToString(game.getInfo(playerID).gameMode);		
 		return response;
 	}
 
@@ -124,6 +126,11 @@ FASADA_DLL(UpdateResponse Update(string playerID))
 	
 	response.GameMode = GameModeToString(info.gameMode);
 	response.EnemyShots = enemyShots;
+
+	if (response.GameMode == "FINISHED")
+	{
+		game.reset();
+	}
 	
 
 	return response;
