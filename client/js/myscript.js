@@ -32,7 +32,7 @@ Shoot = function(_pID, _i, _j){
 				tableText(_i, _j, data.TargetHit);
 			}
 			if(data.GameMode == "FINISHED"){
-				addEndMessage(false);
+				addEndMessage(true);
 			}
 			
 	});
