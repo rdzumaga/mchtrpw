@@ -1,9 +1,4 @@
-/**
- * \file statki.cpp
- * \brief the C++ file with statki library
- */
-#include "statki.hpp"
-//#include <cstdlib>     
+#include "statki.hpp"  
 #include <ctime>
 #include <iostream>
 
@@ -154,7 +149,6 @@ std::deque<Position*> Player::getShipsPos(){
 	if (ships.empty())
 		placeShipsRandomly();
 	
-	int temp = ships.size();
 	ShipPtr shipTemp;
 	for (int i = 0; i < ships.size(); i++){
 		shipTemp = ships[i];
