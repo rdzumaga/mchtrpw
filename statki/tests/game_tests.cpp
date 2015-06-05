@@ -9,6 +9,7 @@
 #include <boost/test/unit_test.hpp>
 #include <string>
 #include<iostream>
+#include <queue>
 
 #include "../src/game.h"
 
@@ -16,25 +17,7 @@
 using namespace boost;
 using boost::unit_test::test_suite;
 
-
-
 BOOST_AUTO_TEST_SUITE( game_tests )
-
-BOOST_AUTO_TEST_CASE(TestShoot){
-	Game & game=Game::getInstance();
-	game.reset();
-	std::string id1 = "1";
-	std::string id2 = "2";
-	game.addPlayer(id1);
-	game.addPlayer(id2);
-	
-	//player 1 is the active one, so he attacks
-	int result=game.shoot(5,4);
-	
-		
-	int buff2;
-	std::cin>>buff2;
-}
 
 BOOST_AUTO_TEST_CASE (TestGetInfo) {
 	Game& game = Game::getInstance();
@@ -83,26 +66,12 @@ BOOST_AUTO_TEST_CASE (TestGetInfo) {
 	
 	//for player 2
 	info=game.getInfo(id2);
-	std::cout << info.receivedAttacks.size()<< std::endl;
-	std::cout << info.playerIsUnderAttack << std::endl;
-	std::cout << info.gameMode << std::endl;
-	std::cout<<"----------------------\n";
 	BOOST_CHECK_EQUAL(info.receivedAttacks.size(), 1);	
 	BOOST_CHECK_EQUAL(info.playerIsUnderAttack, false);	
 	BOOST_CHECK_EQUAL(info.gameMode, ONGOING);
 	
-	//?
-	info=game.getInfo(id2);
-	std::cout << info.receivedAttacks.size()<< std::endl;
-	std::cout << info.playerIsUnderAttack << std::endl;
-	std::cout << info.gameMode << std::endl;
-	std::cout<<"----------------------\n";
-	BOOST_CHECK_EQUAL(info.receivedAttacks.size(), 1);	
-	BOOST_CHECK_EQUAL(info.playerIsUnderAttack, false);	
-	BOOST_CHECK_EQUAL(info.gameMode, ONGOING);
-	
-	int buff2;
-	std::cin>>buff2;
+	int dontGoAway;
+	std::cin>>dontGoAway;
 }
 
 BOOST_AUTO_TEST_CASE (TestAddPlayer) {
@@ -132,36 +101,10 @@ BOOST_AUTO_TEST_CASE (TestAddPlayer) {
 	id = "3";
 	shipsPos = game.addPlayer(id);
 	BOOST_CHECK_EQUAL(shipsPos.size(), 0);	
-	int buff;
-	std::cin>>buff;
+	int dontGoAway;
+	std::cin>>dontGoAway;
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-/*
-BOOST_AUTO_TEST_CASE( TestShotResponse )
-{
-	Game& game = Game::getInstance();
-	game.reset();
-	std::string idA, idB;
-	idA = "A";
-	idB = "B";
 
-	addPlayer(game, idA);
-	addPlayer(game, idB);
-	
-	std::deque<Position*> shipsA = game.playerA->getShipsPos();
-	std::deque<Position*> shipsB = game.playerB->getShipsPos();
-
-	int i, j;
-	i = 0;
-	j = 5;
-	int response = game.shoot(i, j, idA);
-	BOOST_CHECK_EQUAL(response, 0);
-	j = 4;
-	response = game.shoot(i, j, idB);
-	BOOST_CHECK_EQUAL(response, 1);
-
-}
-
-*/
 
