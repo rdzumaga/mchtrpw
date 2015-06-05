@@ -33,6 +33,7 @@ Shoot = function(_pID, _i, _j){
 				}
 						
 				else if(data.GameMode == "FINISHED"){
+					tableText(_i, _j, data.TargetHit);
 					addEndMessage(true);
 					stopWaitingForMove();
 			}
@@ -93,17 +94,18 @@ Update = function(_pID){
 	})
 	
 	.success(function(data){
-		whichPlayer(data.ID);
+
 		if (data.ID != ID){
-		arrangeShips(data.EnemyShots, "ownTable", true);		
-		
-		if(data.GameMode != "ONGOING"){			
-			if(data.GameMode == "FINISHED"){
-				addEndMessage(false);				
+			arrangeShips(data.EnemyShots, "ownTable", true);		
+			
+			if(data.GameMode != "ONGOING"){			
+				if(data.GameMode == "FINISHED"){
+					addEndMessage(false);				
+				}
+				stopWaitingForMove();
 			}
-			stopWaitingForMove();
 		}
-		}
+		whichPlayer(data.ID);
 	});	
 };
 
@@ -147,7 +149,6 @@ window.onload = function () {
 	$("body").append('<div id="pop_up" class="pop_up">');
 	var pop = document.getElementById("pop_up");
 	pop.innerHTML='<div id="message" class="message" ><br/><h4>Aby rozpoczac gre, kliknij ponizszy przycisk:</h4><br /><br/><button id="startButton" class="startButton" onclick=startGame()>START</button></div>';
-	
 }
 
 
@@ -186,6 +187,15 @@ function startGame() {
 	disableButton();
 	ConnectPlayer();
 	waitingForPlayer = setInterval(function(){ myTimer() }, 500);
+}
+
+/**
+ * Refresh page with cache
+ * @method restartGame
+ * @return 
+ */
+function restartGame() {
+	window.location.reload(true);
 }
 
 /**
@@ -295,5 +305,5 @@ function addEndMessage(winner){
 	$("body").append('<div id="endMessage" class="pop_up">');
 	var endMessage = document.getElementById("endMessage");
 	var message = winner ? "<br />Wygrałeś !!! <br /><br /> "+winPict : "<br />Przegrałeś !!! <br /><br /> "+ failPict ;
-	endMessage.innerHTML='<div id="endMsg" class="message" ><br/><h4>Gra zakonczona  ' + message + ' </h4><br /><br/></div>';
+	endMessage.innerHTML='<div id="endMsg" class="end_message" ><br/><h4>Gra zakonczona  ' + message + '</h4><br /><br/>	<button id="refreshButton" class="startButton" onclick=restartGame()>Odśwież</button></div>';	
 }
