@@ -149,6 +149,7 @@ std::deque<Position*> Player::getShipsPos(){
 	if (ships.empty())
 		placeShipsRandomly();
 	
+	
 	ShipPtr shipTemp;
 	for (int i = 0; i < ships.size(); i++){
 		shipTemp = ships[i];
@@ -160,7 +161,7 @@ std::deque<Position*> Player::getShipsPos(){
 }
 
 void Player::placeShipsRandomly(){
-	static int playerNr = 0;
+	
 
 	//initialize random seed
 	srand(time(NULL));
@@ -172,8 +173,10 @@ void Player::placeShipsRandomly(){
 		ship = placeShipRandomly(length, or);
 		if (ship != NULL)
 			ships.push_back(ship);
+		
+			
 	}
-	playerNr++;
+	
 }
 
 ShipPtr Player::placeShipRandomly(int length, Ship::Orientation or){
@@ -225,7 +228,11 @@ std::queue<Attack *> Player::getReceivedAttacks(){
 	return receivedAttacks;
 }
 
+
+
 bool Player::hasLost(){
+
+
 	if (remainingShipUnits > 0)
 		return false;
 	return true;

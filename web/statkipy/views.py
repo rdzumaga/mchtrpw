@@ -7,10 +7,10 @@ fasada library interface to client
 export fasada results to client
 """
 import fasada
-#import pdb
 
+## Exports ConnectPlayer from fasada library to client
 def ConnectPlayer(params):
-    """fasada from C++ library"""
+    
     srvResponse = fasada.ConnectPlayer()
 
 
@@ -20,11 +20,13 @@ def ConnectPlayer(params):
             "MyShips" : srvResponse.MyShips            
     }
 
+## Exports GetGameState from fasada library to client
 def GetGameState(params):
     data = (params.dict())
     _playerID = str(data['playerID'])
     return { "GameMode" : fasada.GetGameState(_playerID) }
 
+## Exports Shoot from fasada library to client
 def Shoot(params):
     data = (params.dict())
     _playerID = str(data['playerID'])
@@ -33,12 +35,13 @@ def Shoot(params):
 
 
     srvResponse = fasada.Shoot(_playerID, _pos_i, _pos_j)
-    #pdb.set_trace()
+    
     return {
             "GameMode" : srvResponse.GameMode,
             "TargetHit" : srvResponse.TargetHit }
 
 
+## Exports Update from fasada library to client
 def Update(params):
     data = (params.dict())
     _playerID = str(data['playerID'])
@@ -46,7 +49,7 @@ def Update(params):
 
 
     srvResponse = fasada.Update(_playerID)
-    #pdb.set_trace()
+    
     return {
             "GameMode" : srvResponse.GameMode,
             "ID" : srvResponse.ID,

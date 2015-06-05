@@ -49,8 +49,10 @@ Player* Game::getPlayer(std::string & playerId){
 	return new Player();
 }
 
+
+
 int Game::shoot(int i, int j){
-	bool attackSuccesful = attacked->underAttack(i, j);
+	bool attackSuccesful = attacked->underAttack(i, j);	
 	if (attacked->hasLost())
 		finish();
 
