@@ -4,7 +4,7 @@ var hitImg = "<img src='/pict/red_x.png' alt='X' width='20px' height='20px'/>";
 var missImg = "<img src='/pict/dot.png' alt='O' width='25px' height='25px'/>";
 var missImgSmall ="<img src='/pict/dot.png' alt='O' width='15px' height='15px'/>";
 var yourTurn = "<img src='/pict/play.png' alt='+' width='100px' height='100px'/>";
-var opTurn ="<img src='/pict/STOP.png' alt='-' width='100px' height='100px'/>";
+var opTurn ="<img src='/pict/stop.png' alt='-' width='100px' height='100px'/>";
 var winPict = "<img src='/pict/win.png' alt='-' width='100px' height='80px'/>";
 var failPict = "<img src='/pict/fail.png' alt='-' width='80px' height='80px'/>";
 
