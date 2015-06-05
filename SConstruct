@@ -86,7 +86,7 @@ elif env['t'] == 'w':
     pass
 elif env['t'] == 'j':
     child_process = subprocess.Popen('python client/tests/srv.py ', shell=True, stdout=subprocess.PIPE)
-    os.system( WWW_BROWSER + ' ' + os.getcwd() + ' client/unit_test_out.html --disable-web-security')
+    os.system( WWW_BROWSER + ' ' + os.getcwd() + '/client/unit_test_out.html --disable-web-security')
     if(platform.system() == "Linux"):
         os.system("kill " + str(child_process.pid))
     else:
