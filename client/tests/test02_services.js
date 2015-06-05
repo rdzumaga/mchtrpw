@@ -16,38 +16,38 @@ function functionResponseCheck() {
     ok( 1 == "1", "function response check");
 }
 
-asyncTest( "service getVersion", function() {
-    expect( 1 );
-	var srv = injector.get('srvInfo');
-	srv.getVersion(functionResponseCheck);
-    setTimeout(
-		function() {
-			start();
-		},
-		100);
-});
+// asyncTest( "service getVersion", function() {
+    // expect( 1 );
+	// var srv = injector.get('srvInfo');
+	// srv.getVersion(functionResponseCheck);
+    // setTimeout(
+		// function() {
+			// start();
+		// },
+		// 100);
+// });
 
-asyncTest( "service getCurrent", function() {
-    expect( 1 );
-	var srv = injector.get('srvInfo');
-	srv.getCurrent(functionResponseCheck);
-    setTimeout(
-		function() {
-			start();
-		},
-		100);
-});
+// asyncTest( "service getCurrent", function() {
+    // expect( 1 );
+	// var srv = injector.get('srvInfo');
+	// srv.getCurrent(functionResponseCheck);
+    // setTimeout(
+		// function() {
+			// start();
+		// },
+		// 100);
+// });
 
-asyncTest( "service getCppNumber", function() {
-    expect( 1 );
-	var srv = injector.get('srvInfo');
-	srv.getCppNumber(functionResponseCheck);
-    setTimeout(
-		function() {
-			start();
-		},
-		100);
-});
+// asyncTest( "service getCppNumber", function() {
+    // expect( 1 );
+	// var srv = injector.get('srvInfo');
+	// srv.getCppNumber(functionResponseCheck);
+    // setTimeout(
+		// function() {
+			// start();
+		// },
+		// 100);
+// });
 
 
 
