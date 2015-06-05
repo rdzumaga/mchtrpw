@@ -83,9 +83,8 @@ elif env['r'] == 'd':
 elif env['t'] == 'w':
     if(platform.system() == "Linux"):
         os.system('python build_web/manage.py test statkipy')
-	elif(platform.system() == "Windows"):
-        os.system('python build_web\manage.py test statkipy')
-    pass
+    elif(platform.system() == "Windows"):
+        os.system('python build_web\manage.py test statkipy')    
 elif env['t'] == 'j':
     child_process = subprocess.Popen('python client/tests/srv.py ', shell=True, stdout=subprocess.PIPE)
     os.system( WWW_BROWSER + ' ' + os.getcwd() + '/client/unit_test_out.html --disable-web-security')

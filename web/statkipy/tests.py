@@ -11,6 +11,7 @@ class StatkiPyLibraryTestCase(django.test.TestCase):
 	id = ""
 	
 	def test01connectPlayer(self):
+		"""test if game state is correct after adding 1st player"""
 		
 		testResponse = fasada.ConnectPlayer()
 		
@@ -20,6 +21,7 @@ class StatkiPyLibraryTestCase(django.test.TestCase):
 
 
 	def test02connectSecondPlayer(self):
+		"""test if game state is correct after adding 2nd player"""
 
 		
 		testResponse = fasada.ConnectPlayer()
@@ -29,10 +31,12 @@ class StatkiPyLibraryTestCase(django.test.TestCase):
 		self.assertNotEqual(testResponse.MyShips, None)
 
 	def test03getGameState(self):
+		"""test if  GetGameState function return not empty data"""
 		
 		self.assertNotEqual(fasada.GetGameState("test"), "IDLE")
 
 	def test04shoot(self):
+		"""test if Shoot function returns not empty"""
 
 		
 		shotTestResponse = fasada.Shoot(self.id, 1, 1)
@@ -40,6 +44,7 @@ class StatkiPyLibraryTestCase(django.test.TestCase):
 		self.assertNotEqual(shotTestResponse.GameMode, None)
 
 	def test05update(self):
+		"""test if Update function returns not empty data"""
 		updateTestResponse = fasada.Update(self.id)
 		self.assertNotEqual(updateTestResponse.GameMode, None)
 		self.assertNotEqual(updateTestResponse.ID, None)

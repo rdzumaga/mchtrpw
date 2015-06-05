@@ -8,9 +8,9 @@ export fasada results to client
 """
 import fasada
 
-## Exports ConnectPlayer from fasada library to client
+
 def ConnectPlayer(params):
-    
+    """Exports ConnectPlayer from fasada library to client"""
     srvResponse = fasada.ConnectPlayer()
 
 
@@ -20,14 +20,16 @@ def ConnectPlayer(params):
             "MyShips" : srvResponse.MyShips            
     }
 
-## Exports GetGameState from fasada library to client
+
 def GetGameState(params):
+	"""Exports GetGameState from fasada library to client"""
     data = (params.dict())
     _playerID = str(data['playerID'])
     return { "GameMode" : fasada.GetGameState(_playerID) }
 
-## Exports Shoot from fasada library to client
+
 def Shoot(params):
+	"""Exports Shoot from fasada library to client"""
     data = (params.dict())
     _playerID = str(data['playerID'])
     _pos_i = int(data['pos_i'])
@@ -41,8 +43,9 @@ def Shoot(params):
             "TargetHit" : srvResponse.TargetHit }
 
 
-## Exports Update from fasada library to client
+
 def Update(params):
+	"""Exports Update from fasada library to client"""
     data = (params.dict())
     _playerID = str(data['playerID'])
 
