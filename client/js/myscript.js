@@ -156,21 +156,23 @@ window.onload = function () {
  * @return 
  */
 function setEnemyTable() {
+	
 	var table = document.getElementById('enemyTable');
-	var rows = table.rows;
-
-	for (var i = 0; i < rows.length; i++) {
-		var cells = rows[i].getElementsByTagName("td");
-		for (var j = 0; j < cells.length; j++) {
-			var cell = cells[j];
-			cell.rowIndex = i;
-			cell.positionIndex = j;
-			console.log(cell);
-			cell.onclick = function () {
-				if (tableClickable && this.innerHTML== ""){
-					Shoot(ID, (this.rowIndex), this.positionIndex);					
-				}
-			};
+	if(table != null){
+		var rows = table.rows;
+		for (var i = 0; i < rows.length; i++) {
+			var cells = rows[i].getElementsByTagName("td");
+			for (var j = 0; j < cells.length; j++) {
+				var cell = cells[j];
+				cell.rowIndex = i;
+				cell.positionIndex = j;
+				console.log(cell);
+				cell.onclick = function () {
+					if (tableClickable && this.innerHTML== ""){
+						Shoot(ID, (this.rowIndex), this.positionIndex);					
+					}
+				};
+			}
 		}
 	}
 	
