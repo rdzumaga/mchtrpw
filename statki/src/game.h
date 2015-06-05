@@ -5,7 +5,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include"statki.hpp"
+#include"statkiClasses.h"
 
 
 #ifdef FASADA_EXPORTS
