@@ -1,3 +1,7 @@
+/**
+* \file gameData.h
+* \brief custom classes used to communicate with client  */
+
 using namespace std;
 
 #include <string>

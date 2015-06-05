@@ -36,7 +36,7 @@ class StatkiPyLibraryTestCase(django.test.TestCase):
 		self.assertNotEqual(fasada.GetGameState("test"), "IDLE")
 
 	def test04shoot(self):
-		"""test if Shoot function returns not empty"""
+		"""test if Shoot function returns not empty data"""
 
 		
 		shotTestResponse = fasada.Shoot(self.id, 1, 1)
