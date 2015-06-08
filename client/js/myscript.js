@@ -143,10 +143,11 @@ function arrangeShips(shipsPositions, tableId, ifAddImg) {
  * @return 
  */
 window.onload = function () {
-	setEnemyTable();
-	$("body").append('<div id="pop_up" class="pop_up">');
-	var pop = document.getElementById("pop_up");
-	pop.innerHTML='<div id="message" class="message" ><br/><h4>Aby rozpoczac gre, kliknij ponizszy przycisk:</h4><br /><br/><button id="startButton" class="startButton" onclick=startGame()>START</button></div>';
+	if(setEnemyTable()){
+		$("body").append('<div id="pop_up" class="pop_up">');
+		var pop = document.getElementById("pop_up");
+		pop.innerHTML='<div id="message" class="message" ><br/><h4>Aby rozpoczac gre, kliknij ponizszy przycisk:</h4><br /><br/><button id="startButton" class="startButton" onclick=startGame()>START</button></div>';
+	}
 }
 
 
@@ -174,6 +175,10 @@ function setEnemyTable() {
 				};
 			}
 		}
+		return true;
+	}
+	else{
+		return false;
 	}
 	
 }

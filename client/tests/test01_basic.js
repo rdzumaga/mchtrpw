@@ -26,10 +26,10 @@ test( "simple click test", function( assert ) {
   $body.trigger( "click" );
 });
 
-test("ConnectPlayer returns player ID", function(){
-		ConnectPlayer();
-	notEqual (ID, "", "ID is not null");
-});
+ test("ConnectPlayer returns player ID", function(){
+		 ConnectPlayer();
+	 notEqual (ID, "", "ID is not null");
+ });
 
 test("Check if whichPlayer function set proper gui elements for active player", function(){
 	ID='99';
